@@ -13,7 +13,7 @@
 			],
 			"files": [
 				{
-					"path": "registry/c-ui/alert.tsx",
+					"path": "registry/new-york/alert.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/alert.tsx"
 				}
@@ -31,12 +31,12 @@
 			],
 			"files": [
 				{
-					"path": "registry/c-ui/confirm-provider.tsx",
+					"path": "registry/new-york/confirm-provider.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/confirm-provider.tsx"
 				},
 				{
-					"path": "registry/c-ui/confirm-dialog.tsx",
+					"path": "registry/new-york/confirm-dialog.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/confirm-dialog.tsx"
 				}
@@ -56,7 +56,7 @@
 			],
 			"files": [
 				{
-					"path": "registry/c-ui/loading-button.tsx",
+					"path": "registry/new-york/loading-button.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/loading-button.tsx"
 				}
