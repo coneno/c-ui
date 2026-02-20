@@ -1,0 +1,66 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"name": "c-ui",
+	"homepage": "https://github.com/kevin/c-ui",
+	"items": [
+		{
+			"name": "alert",
+			"type": "registry:component",
+			"title": "Alert",
+			"description": "An alert component built on top of AlertDialog.",
+			"registryDependencies": [
+				"alert-dialog"
+			],
+			"files": [
+				{
+					"path": "registry/c-ui/alert.tsx",
+					"type": "registry:component",
+					"target": "components/c-ui/alert.tsx"
+				}
+			]
+		},
+		{
+			"name": "confirm",
+			"type": "registry:component",
+			"title": "Confirm Dialog",
+			"description": "A confirmation dialog service with provider and hook.",
+			"registryDependencies": [
+				"alert-dialog",
+				"input",
+				"label"
+			],
+			"files": [
+				{
+					"path": "registry/c-ui/confirm-provider.tsx",
+					"type": "registry:component",
+					"target": "components/c-ui/confirm-provider.tsx"
+				},
+				{
+					"path": "registry/c-ui/confirm-dialog.tsx",
+					"type": "registry:component",
+					"target": "components/c-ui/confirm-dialog.tsx"
+				}
+			]
+		},
+		{
+			"name": "loading-button",
+			"type": "registry:component",
+			"title": "Loading Button",
+			"description": "A button with a loading state.",
+			"registryDependencies": [
+				"button"
+			],
+			"dependencies": [
+				"lucide-react",
+				"class-variance-authority"
+			],
+			"files": [
+				{
+					"path": "registry/c-ui/loading-button.tsx",
+					"type": "registry:component",
+					"target": "components/c-ui/loading-button.tsx"
+				}
+			]
+		}
+	]
+}
