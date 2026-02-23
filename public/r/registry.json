@@ -1,7 +1,7 @@
 {
 	"$schema": "https://ui.shadcn.com/schema/registry.json",
 	"name": "c-ui",
-	"homepage": "https://github.com/kevin/c-ui",
+	"homepage": "https://coneno.github.io/c-ui",
 	"items": [
 		{
 			"name": "alert",
