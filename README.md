@@ -2,7 +2,7 @@
 
 Custom [shadcn/ui](https://ui.shadcn.com) registry for common Coneno components.
 
-This repo publishes registry JSON files from `public/r` to GitHub Pages.
+This repo builds registry JSON files into `public/r` and deploys them via the static export in `out/` (GitHub Pages).
 
 ## Hosted registry URLs
 
@@ -20,7 +20,7 @@ npx shadcn@latest add https://coneno.github.io/c-ui/r/loading-button.json
 Example for local testing while this repo is running:
 
 ```bash
-npx shadcn@latest add http://localhost:3000/r/loading-button.json
+npx shadcn@latest add http://localhost:3000/c-ui/r/loading-button.json
 ```
 
 Current components in this registry:
@@ -44,7 +44,8 @@ The workflow does:
 
 1. Install dependencies with pnpm.
 2. Build registry output with `pnpm registry:build`.
-3. Publish `public/` to GitHub Pages.
+3. Build the static site with `pnpm build`.
+4. Publish `out/` to GitHub Pages.
 
 ## Local development
 
@@ -54,7 +55,7 @@ Install dependencies:
 pnpm install
 ```
 
-Run the app locally (serves `public/r/*`):
+Run the app locally (registry files available at `/c-ui/r/*`):
 
 ```bash
 pnpm dev
@@ -81,7 +82,7 @@ pnpm registry:build
 6. Validate install in a consumer app:
 
 ```bash
-npx shadcn@latest add http://localhost:3000/r/my-component.json
+npx shadcn@latest add http://localhost:3000/c-ui/r/my-component.json
 ```
 
 7. Commit both source files and generated registry output.
