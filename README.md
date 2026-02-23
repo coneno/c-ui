@@ -1,6 +1,6 @@
 # c-ui registry
 
-Custom [shadcn/ui](https://ui.shadcn.com) registry for common Coneno components.
+Custom [shadcn/ui](https://ui.shadcn.com) registry for common coneno components.
 
 This repo builds registry JSON files into `public/r` and deploys them via the static export in `out/` (GitHub Pages).
 
@@ -9,18 +9,54 @@ This repo builds registry JSON files into `public/r` and deploys them via the st
 - Registry index: `https://coneno.github.io/c-ui/r/registry.json`
 - Component entries: `https://coneno.github.io/c-ui/r/<component-name>.json`
 
-## Install a component (consumer side)
+## Install via namespace (recommended)
 
-From any app that already uses shadcn:
+Configure the registry once in your consumer app's `components.json`:
+
+```json
+{
+  "registries": {
+    "@c-ui": "https://coneno.github.io/c-ui/r/{name}.json"
+  }
+}
+```
+
+Then install components without repeating full URLs:
+
+```bash
+npx shadcn@latest add @c-ui/loading-button
+```
+
+You can also install multiple components in one command:
+
+```bash
+npx shadcn@latest add @c-ui/alert @c-ui/confirm
+```
+
+## Local registry testing
+
+For local development/testing of this registry, point `@c-ui` to localhost in the consumer app:
+
+```json
+{
+  "registries": {
+    "@c-ui": "http://localhost:3000/c-ui/r/{name}.json"
+  }
+}
+```
+
+Then install as usual:
+
+```bash
+npx shadcn@latest add @c-ui/loading-button
+```
+
+## Direct URL install (optional)
+
+If needed, you can still install directly from a component URL:
 
 ```bash
 npx shadcn@latest add https://coneno.github.io/c-ui/r/loading-button.json
-```
-
-Example for local testing while this repo is running:
-
-```bash
-npx shadcn@latest add http://localhost:3000/c-ui/r/loading-button.json
 ```
 
 Current components in this registry:
@@ -82,7 +118,7 @@ pnpm registry:build
 6. Validate install in a consumer app:
 
 ```bash
-npx shadcn@latest add http://localhost:3000/c-ui/r/my-component.json
+npx shadcn@latest add @c-ui/my-component
 ```
 
 7. Commit both source files and generated registry output.
