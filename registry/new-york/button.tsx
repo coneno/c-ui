@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 type CuiButtonProps = React.ComponentProps<typeof Button>
@@ -21,4 +21,4 @@ const CuiButton = React.forwardRef<HTMLButtonElement, CuiButtonProps>(
 
 CuiButton.displayName = "Button"
 
-export { CuiButton as Button }
+export { CuiButton as Button, buttonVariants }
