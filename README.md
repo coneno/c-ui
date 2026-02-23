@@ -108,6 +108,9 @@ pnpm registry:build
 1. Create the component source file in `registry/new-york/` (example: `registry/new-york/my-component.tsx`).
 2. Add a new item to `registry.json`.
 3. Set `name`, `type`, `title`, `description`, `registryDependencies`, and `files`.
+   - You can organize component files in subfolders as well.
+   - Example source path: `registry/new-york/forms/my-component.tsx`
+   - Example target path: `components/c-ui/forms/my-component.tsx`
 4. Rebuild output:
 
 ```bash
