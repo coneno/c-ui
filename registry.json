@@ -48,7 +48,7 @@
 			"title": "Button",
 			"description": "A base button with a subtle press animation.",
 			"registryDependencies": [
-				"https://ui.shadcn.com/r/button.json"
+				"@shadcn/button"
 			],
 			"files": [
 				{
@@ -64,18 +64,13 @@
 			"title": "Loading Button",
 			"description": "A button with a loading state.",
 			"registryDependencies": [
-				"https://ui.shadcn.com/r/button.json"
+				"@c-ui/button"
 			],
 			"dependencies": [
 				"lucide-react",
 				"class-variance-authority"
 			],
 			"files": [
-				{
-					"path": "registry/new-york/button.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/button.tsx"
-				},
 				{
 					"path": "registry/new-york/loading-button.tsx",
 					"type": "registry:component",

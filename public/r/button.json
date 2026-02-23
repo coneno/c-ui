@@ -4,7 +4,7 @@
   "title": "Button",
   "description": "A base button with a subtle press animation.",
   "registryDependencies": [
-    "https://ui.shadcn.com/r/button.json"
+    "@shadcn/button"
   ],
   "files": [
     {
