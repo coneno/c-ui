@@ -62,8 +62,27 @@ npx shadcn@latest add https://coneno.github.io/c-ui/r/loading-button.json
 Current components in this registry:
 
 - `alert`
+- `button`
 - `confirm`
 - `loading-button`
+
+## Usage examples
+
+```tsx
+import { Button } from "@/components/c-ui/button"
+
+export function SaveAction() {
+  return <Button>Save changes</Button>
+}
+```
+
+```tsx
+import { LoadingButton } from "@/components/c-ui/loading-button"
+
+export function SubmitAction() {
+  return <LoadingButton isLoading>Submitting</LoadingButton>
+}
+```
 
 ## Deployment (GitHub Pages)
 

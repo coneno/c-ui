@@ -1,9 +1,29 @@
 import registry from "@/registry.json";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Button as AnimatedButton } from "@/registry/new-york/button";
 
 const hostedBaseUrl = "https://coneno.github.io/c-ui/r";
 const registryAlias = "@c-ui";
 const registryTemplateUrl = `${hostedBaseUrl}/{name}.json`;
+const usageExamples: Record<string, string> = {
+	button: `import { Button as ShadcnButton } from "@/components/ui/button"
+import { Button as AnimatedButton } from "@/components/c-ui/button"
+
+export function ButtonComparison() {
+	return (
+		<div className="flex flex-wrap gap-3">
+			<ShadcnButton>shadcn/ui Button</ShadcnButton>
+			<AnimatedButton>Animated Button</AnimatedButton>
+		</div>
+	)
+}`,
+	"loading-button": `import { LoadingButton } from "@/components/c-ui/loading-button"
+
+export function SubmitAction() {
+	return <LoadingButton isLoading>Submitting</LoadingButton>
+}`,
+};
 
 export default function Home() {
 	const configureRegistriesJson = `{
@@ -49,6 +69,8 @@ export default function Home() {
 				{registry.items.map((item) => {
 					const addCommand = `npx shadcn@latest add ${registryAlias}/${item.name}`;
 					const directUrlCommand = `npx shadcn@latest add ${hostedBaseUrl}/${item.name}.json`;
+					const usageExample = usageExamples[item.name];
+					const isButtonItem = item.name === "button";
 
 					return (
 						<article
@@ -63,11 +85,11 @@ export default function Home() {
 									code={addCommand}
 									codeblock={{ className: "my-0" }}
 								/>
-								<details className="text-sm">
+								<details className="text-xs mt-2 ps-4">
 									<summary className="cursor-pointer text-muted-foreground">
 										Direct URL install
 									</summary>
-									<div className="mt-2">
+									<div className="mt-1">
 										<DynamicCodeBlock
 											lang="bash"
 											code={directUrlCommand}
@@ -75,6 +97,27 @@ export default function Home() {
 										/>
 									</div>
 								</details>
+								{isButtonItem ? (
+									<div>
+										<p className="mb-2 text-sm text-muted-foreground">
+											Live preview (press and hold each button)
+										</p>
+										<div className="flex flex-wrap gap-3 rounded-md border p-3">
+											<ShadcnButton>shadcn/ui Button</ShadcnButton>
+											<AnimatedButton>Animated Button</AnimatedButton>
+										</div>
+									</div>
+								) : null}
+								{usageExample ? (
+									<div>
+										<p className="mb-2 text-sm text-muted-foreground">Usage</p>
+										<DynamicCodeBlock
+											lang="tsx"
+											code={usageExample}
+											codeblock={{ className: "my-0" }}
+										/>
+									</div>
+								) : null}
 							</div>
 						</article>
 					);

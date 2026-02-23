@@ -81,6 +81,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 				)}
 				<AlertDialogFooter>
 					<AlertDialogCancel
+						className="active:scale-[0.97] transition-transform duration-150"
 						onClick={(e) => {
 							e.preventDefault();
 							setTypedValue("");
@@ -91,6 +92,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 					</AlertDialogCancel>
 					<AlertDialogAction
 						variant={props.variant}
+						className="active:scale-[0.97] transition-transform duration-150"
 						disabled={!canConfirm}
 						onClick={(e) => {
 							e.preventDefault();

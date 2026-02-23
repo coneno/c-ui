@@ -51,7 +51,7 @@ function AlertDialogContent_({
 				{children != null ? <div className="py-2">{children}</div> : null}
 				<AlertDialogFooter className="justify-center sm:justify-center">
 					<AlertDialogAction
-						className="min-w-24"
+						className="min-w-24 active:scale-[0.97] transition-transform duration-150"
 					>{buttonLabel}</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
