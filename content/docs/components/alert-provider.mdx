@@ -1,0 +1,73 @@
+---
+title: Alert Provider
+description: Promise-based alert dialog service with provider and hook.
+---
+
+import { AlertDialogInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/alert-provider
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/alert-provider.json
+```
+
+## Live Example
+
+<AlertDialogInteractiveExample />
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { AlertDialogProvider, useAlert } from "@/components/c-ui/alert-provider"
+
+function AlertAction() {
+	const alert = useAlert()
+
+	return (
+		<Button
+			onClick={() =>
+				void alert({
+					title: "Heads up",
+					description: "Your changes were applied.",
+					buttonLabel: "OK",
+				})
+			}
+		>
+			Open alert
+		</Button>
+	)
+}
+
+export function AlertExample() {
+	return (
+		<AlertDialogProvider>
+			<AlertAction />
+		</AlertDialogProvider>
+	)
+}
+```
+
+## Configuration
+
+`useAlert()` accepts these options:
+
+| Option | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `title` | `string` | `"Notice"` | Dialog title |
+| `description` | `string` | `""` | Supporting text under title |
+| `buttonLabel` | `string` | `"OK"` | Dismiss button label |
+| `dismissButtonVariant` | `AlertDialogCancel["variant"]` | `"default"` | Button style variant |
+| `dismissButtonClassName` | `string` | `undefined` | Extra class names for dismiss button |
+| `children` | `ReactNode` | `undefined` | Optional custom content between description and footer |
+
+API behavior:
+
+- `alert(options)` opens the dialog and resolves when dismissed.
+- `alert.dismiss()` closes the current dialog and resolves any pending call.

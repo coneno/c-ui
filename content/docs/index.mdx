@@ -1,0 +1,45 @@
+---
+title: Getting Started
+description: Configure your project once, then install c-ui components via namespace aliases.
+---
+
+import { ComponentOverview } from "@/components/docs/component-overview";
+
+## Required Setup
+
+Add `@c-ui` to your consumer app's `components.json` and set style to `radix-nova`:
+
+```json
+{
+  "style": "radix-nova",
+  "registries": {
+    "@c-ui": "https://coneno.github.io/c-ui/r/{style}/{name}.json"
+  }
+}
+```
+
+This registry currently supports only `radix-nova`.
+
+## Install Components
+
+Install a component by alias:
+
+```bash
+npx shadcn@latest add @c-ui/loading-button
+```
+
+Install multiple components at once:
+
+```bash
+npx shadcn@latest add @c-ui/alert-provider @c-ui/confirm @c-ui/dialog
+```
+
+Registry index:
+
+`https://coneno.github.io/c-ui/r/radix-nova/registry.json`
+
+## Component Overview
+
+Select a component to view installation, live example, and configuration details.
+
+<ComponentOverview />
