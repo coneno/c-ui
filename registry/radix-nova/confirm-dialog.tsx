@@ -52,13 +52,18 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 				{requireTyped && (
 					<div className="grid gap-2">
 						<Label htmlFor="confirm-type-input">
-							{labelParts.map((part, i) =>
-								i < labelParts.length - 1 ? (
-									<span key={i}>{part}<span className="font-bold">{requiredTerm}</span></span>
-								) : (
-									<span key={i}>{part}</span>
-								)
-							)}
+							<span>
+								{labelParts.map((part, i) =>
+									i < labelParts.length - 1 ? (
+										<span key={i}>
+											{part}
+											<span className="font-bold">{requiredTerm}</span>
+										</span>
+									) : (
+										<span key={i}>{part}</span>
+									)
+								)}
+							</span>
 						</Label>
 						<Input
 							id="confirm-type-input"
