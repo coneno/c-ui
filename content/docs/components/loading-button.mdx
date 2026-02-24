@@ -1,0 +1,56 @@
+---
+title: Loading Button
+description: Button wrapper with built-in loading state handling.
+---
+
+import { LoadingButtonInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/loading-button
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/loading-button.json
+```
+
+## Live Example
+
+<LoadingButtonInteractiveExample />
+
+## Usage
+
+```tsx
+import { LoadingButton } from "@/components/c-ui/loading-button"
+import { useState } from "react"
+
+export function SubmitAction() {
+	const [isLoading, setIsLoading] = useState(false)
+
+	const submit = async () => {
+		setIsLoading(true)
+		await new Promise((resolve) => setTimeout(resolve, 1200))
+		setIsLoading(false)
+	}
+
+	return (
+		<LoadingButton isLoading={isLoading} onClick={() => void submit()}>
+			{isLoading ? "Submitting..." : "Submit"}
+		</LoadingButton>
+	)
+}
+```
+
+## Configuration
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `isLoading` | `boolean` | `false` | Shows spinner and disables button |
+| `variant` | same as `Button` variants | `"default"` | Forwarded to base button |
+| `size` | same as `Button` sizes | `"default"` | Forwarded to base button |
+| `asChild` | `boolean` | `false` | Forwarded to base button |
+
+All native `<button>` props are supported and forwarded.

@@ -18,9 +18,12 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
+      "fumadocs-mdx:collections/*": [
+        "./.source/*"
+      ],
       "@/components/c-ui/*": [
         "./components/c-ui/*",
-        "./registry/radix-nova/*",
+        "./registry/radix-nova/*"
       ],
       "@/*": [
         "./*"

@@ -1,162 +1,94 @@
 # c-ui registry
 
-Custom [shadcn/ui](https://ui.shadcn.com) registry for common coneno components.
+Repository for the coneno shadcn registry and its documentation site.
 
-This repo builds registry JSON files into `public/r/radix-nova` and deploys them via the static export in `out/` (GitHub Pages).
-
-## Hosted registry URLs
-
+- Public docs: `https://coneno.github.io/c-ui/docs/`
 - Registry index: `https://coneno.github.io/c-ui/r/radix-nova/registry.json`
-- Style-aware component entries: `https://coneno.github.io/c-ui/r/<style>/<component-name>.json`
-- Canonical style: `radix-nova`
 
-## Install via namespace (recommended)
+This README is intentionally contributor-focused. End-user installation and component usage live in the docs site.
 
-Configure the registry once in your consumer app's `components.json`:
+## What this repo contains
 
-```json
-{
-  "style": "radix-nova",
-  "registries": {
-    "@c-ui": "https://coneno.github.io/c-ui/r/{style}/{name}.json"
-  }
-}
-```
+- `registry/radix-nova/*`: source component files used to generate registry JSON.
+- `registry.json`: registry manifest consumed by `shadcn build`.
+- `public/r/radix-nova/*`: generated registry JSON artifacts (committed).
+- `content/docs/*`: Fumadocs content for the documentation pages.
+- `app/docs/*`: Fumadocs app routes/layout.
+- `.github/workflows/deploy-registry-pages.yml`: GitHub Pages build/deploy workflow.
 
-This registry currently supports only `radix-nova`. Set `"style": "radix-nova"` in the consumer app before installing components.
+## Prerequisites
 
-Then install components without repeating full URLs:
+- Node.js 22 (matches CI)
+- pnpm 10.28.2
 
-```bash
-npx shadcn@latest add @c-ui/loading-button
-```
-
-You can also install multiple components in one command:
+## Common commands
 
 ```bash
-npx shadcn@latest add @c-ui/alert-provider @c-ui/confirm
+pnpm install         # install dependencies
+pnpm dev             # run local site at http://localhost:3000/c-ui
+pnpm registry:build  # generate registry JSON into public/r/radix-nova
+pnpm build           # GitHub Pages build (basePath=/c-ui) + static export into out/
+pnpm start           # serve ./out with a static file server
 ```
 
-## Local registry testing
+## Contributor workflow
 
-For local development/testing of this registry, point `@c-ui` to localhost in the consumer app:
+1. Install dependencies with `pnpm install`.
+2. Make your code/docs changes.
+3. Regenerate registry artifacts with `pnpm registry:build` if registry items changed.
+4. Validate with `pnpm build`.
+5. Commit source changes and generated `public/r/radix-nova/*` output together.
 
-```json
-{
-  "style": "radix-nova",
-  "registries": {
-    "@c-ui": "http://localhost:3000/c-ui/r/{style}/{name}.json"
-  }
-}
-```
+## Add a new registry item
 
-Then install as usual:
+1. Add the component source file(s) under `registry/radix-nova/`.
+2. Add an item in `registry.json`:
+   - required baseline: `name`, `type`, `title`, `description`, `files`, `style`
+   - optional: `registryDependencies`, `dependencies`
+3. Ensure each `files[]` entry has:
+   - `path`: source file in this repo
+   - `target`: destination path in consumer projects
+   - `type`: usually `registry:component`
+4. Run:
 
-```bash
-npx shadcn@latest add @c-ui/loading-button
-```
+   ```bash
+   pnpm registry:build
+   ```
 
-## Direct URL install (optional)
+5. Confirm generated files:
+   - `public/r/radix-nova/<name>.json`
+   - `public/r/radix-nova/registry.json` includes the item
+6. Add docs page for the new item:
+   - create `content/docs/components/<name>.mdx`
+   - add the page slug to `content/docs/components/meta.json`
+7. Run `pnpm build` and verify the docs route and static export succeed.
 
-If needed, you can still install directly from a component URL:
+## Update existing items
 
-```bash
-npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/loading-button.json
-```
+When component APIs or behavior change:
 
-Current components in this registry:
+1. Update source files in `registry/radix-nova/`.
+2. Update metadata in `registry.json` if title/description/dependencies changed.
+3. Update the corresponding docs page in `content/docs/components/`.
+4. Regenerate registry JSON with `pnpm registry:build`.
 
-- `alert-provider`: Alert dialog service with provider + hook for promise-based alerts.
-- `button`: Press-animated base button used across components.
-- `confirm`: Confirmation dialog service with provider + hook.
-- `dialog`: Customized replacement for shadcn `components/ui/dialog.tsx` with overridable close labels to support i18n and screen-reader accessibility.
-- `loading-button`: Button with a built-in loading state.
+## Docs authoring notes
 
-## Usage examples
+- Docs are built with Fumadocs and rendered from `content/docs`.
+- Sidebar order is controlled by `meta.json` files.
+- Interactive demos used in docs live in `components/docs/interactive-examples.tsx`.
 
-```tsx
-import { Button } from "@/components/ui/button"
+## Deployment
 
-export function SaveAction() {
-  return <Button>Save changes</Button>
-}
-```
+Deploy runs automatically on pushes to `main` via GitHub Actions:
 
-```tsx
-import { LoadingButton } from "@/components/c-ui/loading-button"
+1. `pnpm install --frozen-lockfile`
+2. `pnpm registry:build`
+3. `pnpm build`
+4. publish `out/` to GitHub Pages
 
-export function SubmitAction() {
-  return <LoadingButton isLoading>Submitting</LoadingButton>
-}
-```
+## Important conventions
 
-## Deployment (GitHub Pages)
-
-The workflow in `.github/workflows/deploy-registry-pages.yml` deploys on pushes to `main`.
-
-First-time setup:
-
-1. Open GitHub repository settings.
-2. Go to **Pages**.
-3. Set **Source** to **GitHub Actions**.
-4. Push to `main` (or run the workflow manually from the Actions tab).
-
-The workflow does:
-
-1. Install dependencies with pnpm.
-2. Build registry output with `pnpm registry:build`.
-3. Build the static site with `pnpm build`.
-4. Publish `out/` to GitHub Pages.
-
-## Local development
-
-Install dependencies:
-
-```bash
-pnpm install
-```
-
-Run the app locally (registry files available at `/c-ui/r/radix-nova/*`):
-
-```bash
-pnpm dev
-```
-
-Build registry JSON output:
-
-```bash
-pnpm registry:build
-```
-
-## Add a new component to the registry
-
-1. Create the component source file in `registry/radix-nova/` (example: `registry/radix-nova/my-component.tsx`).
-2. Add a new item to `registry.json`.
-3. Set `name`, `type`, `title`, `description`, `registryDependencies`, and `files`.
-   - You can organize component files in subfolders as well.
-   - Example source path: `registry/radix-nova/forms/my-component.tsx`
-   - Example target path: `components/c-ui/forms/my-component.tsx`
-4. Rebuild output:
-
-```bash
-pnpm registry:build
-```
-
-5. Confirm generated files exist in `public/r/radix-nova/`.
-6. Validate install in a consumer app:
-
-```bash
-npx shadcn@latest add @c-ui/my-component
-```
-
-7. Commit both source files and generated registry output.
-
-## Build output details
-
-`pnpm registry:build` runs:
-
-```bash
-shadcn build --output public/r/radix-nova
-```
-
-That command reads `registry.json` and writes distributable registry JSON files to `public/r/radix-nova`.
+- Do not edit `public/r/radix-nova/*` manually.
+- Always rebuild artifacts after changing `registry.json` or files in `registry/radix-nova/`.
+- Keep docs in sync with component APIs to avoid stale installation/configuration guidance.

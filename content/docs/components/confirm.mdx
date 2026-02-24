@@ -1,0 +1,82 @@
+---
+title: Confirm Dialog
+description: Promise-based confirmation service with optional typed confirmation guard.
+---
+
+import { ConfirmDialogInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/confirm
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/confirm.json
+```
+
+## Live Example
+
+<ConfirmDialogInteractiveExample />
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { ConfirmDialogProvider, useConfirm } from "@/components/c-ui/confirm-provider"
+
+function DeleteAction() {
+	const confirm = useConfirm()
+
+	return (
+		<Button
+			variant="destructive"
+			onClick={async () => {
+				const confirmed = await confirm({
+					title: "Delete item?",
+					description: "This action cannot be undone.",
+					confirmButtonText: "Delete",
+					variant: "destructive",
+				})
+
+				if (confirmed) {
+					// perform destructive action
+				}
+			}}
+		>
+			Delete item
+		</Button>
+	)
+}
+
+export function ConfirmExample() {
+	return (
+		<ConfirmDialogProvider>
+			<DeleteAction />
+		</ConfirmDialogProvider>
+	)
+}
+```
+
+## Configuration
+
+`useConfirm()` accepts these options:
+
+| Option | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `title` | `string` | `"Confirm Action"` | Dialog title |
+| `description` | `string` | `"Are you sure you want to proceed?"` | Description text |
+| `confirmButtonText` | `string` | `"Confirm"` | Confirm action label |
+| `cancelButtonText` | `string` | `"Cancel"` | Cancel action label |
+| `variant` | `"default" \| "destructive"` | `"default"` | Confirm button style |
+| `requireConfirmationInput` | `RequireConfirmationInput` | `undefined` | Forces typed confirmation |
+
+`RequireConfirmationInput`:
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `confirmTerm` | `string` | Yes | Exact term user must type |
+| `label` | `string` | No | Supports `{{confirmTerm}}` placeholder |
+| `hint` | `string` | No | Helper text below input |

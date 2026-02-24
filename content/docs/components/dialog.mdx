@@ -1,0 +1,72 @@
+---
+title: Dialog
+description: Customized shadcn dialog primitives with overridable close labels for better i18n and accessibility.
+---
+
+import { DialogInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/dialog
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/dialog.json
+```
+
+## Live Example
+
+<DialogInteractiveExample />
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog"
+
+export function ExampleDialog() {
+	return (
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button>Open dialog</Button>
+			</DialogTrigger>
+			<DialogContent closeLabel="Close dialog">
+				<DialogHeader>
+					<DialogTitle>Dialog title</DialogTitle>
+					<DialogDescription>Dialog description.</DialogDescription>
+				</DialogHeader>
+				<DialogFooter showCloseButton closeLabel="Dismiss" />
+			</DialogContent>
+		</Dialog>
+	)
+}
+```
+
+## Configuration
+
+`DialogContent` adds:
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `showCloseButton` | `boolean` | `true` | Toggles top-right close icon button |
+| `closeLabel` | `string` | `"Close"` | `aria-label` + screen reader text for close control |
+
+`DialogFooter` adds:
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `showCloseButton` | `boolean` | `false` | Adds a secondary footer close button |
+| `closeLabel` | `string` | `"Close"` | Label for footer close button |
+
+All other shadcn/Radix dialog props remain available.

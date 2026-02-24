@@ -1,9 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/registry/radix-nova/button";
 import { AlertDialogProvider, useAlert } from "@/registry/radix-nova/alert-provider";
+import { Button } from "@/registry/radix-nova/button";
 import { ConfirmDialogProvider, useConfirm } from "@/registry/radix-nova/confirm-provider";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/registry/radix-nova/dialog";
 import { LoadingButton } from "@/registry/radix-nova/loading-button";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -21,27 +30,11 @@ function AlertExampleContent() {
 		setStatus("Alert dismissed.");
 	};
 
-	const openAlert2 = async () => {
-		await alert({
-			title: "Heads up 2",
-			description: "This is an interactive alert demo 2.",
-			buttonLabel: "Alright",
-			dismissButtonVariant: "outline",
-			dismissButtonClassName: "min-w-32",
-		});
-		setStatus("Alert 2 dismissed.");
-	};
-
 	return (
 		<div className="space-y-2">
-			<div className="flex flex-row gap-2">
-				<Button type="button" onClick={() => void openAlert()}>
-					Open Alert
-				</Button>
-				<Button type="button" onClick={() => void openAlert2()}>
-					Open Alert 2
-				</Button>
-			</div>
+			<Button type="button" onClick={() => void openAlert()}>
+				Open Alert
+			</Button>
 			<p className="text-xs text-muted-foreground">{status}</p>
 		</div>
 	);
@@ -84,11 +77,40 @@ export function AlertDialogInteractiveExample() {
 	);
 }
 
+export function ButtonInteractiveExample() {
+	return (
+		<div className="flex flex-wrap gap-3">
+			<Button>Default</Button>
+			<Button variant="outline">Outline</Button>
+			<Button size="sm">Small</Button>
+		</div>
+	);
+}
+
 export function ConfirmDialogInteractiveExample() {
 	return (
 		<ConfirmDialogProvider>
 			<ConfirmExampleContent />
 		</ConfirmDialogProvider>
+	);
+}
+
+export function DialogInteractiveExample() {
+	return (
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button type="button">Open Dialog</Button>
+			</DialogTrigger>
+			<DialogContent closeLabel="Close dialog">
+				<DialogHeader>
+					<DialogTitle>Profile updated</DialogTitle>
+					<DialogDescription>
+						This example uses custom close labels and the footer close button.
+					</DialogDescription>
+				</DialogHeader>
+				<DialogFooter showCloseButton closeLabel="Dismiss" />
+			</DialogContent>
+		</Dialog>
 	);
 }
 
@@ -98,7 +120,7 @@ export function LoadingButtonInteractiveExample() {
 
 	const triggerLoading = async () => {
 		setIsLoading(true);
-		await wait(1400);
+		await wait(1200);
 		setIsLoading(false);
 		setCount((prev) => prev + 1);
 	};
