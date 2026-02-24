@@ -93,6 +93,7 @@ export const AlertDialogProvider = ({ children }: { children: ReactNode }) => {
 	}, [resolvePending]);
 
 	const alert = useMemo(
+		// eslint-disable-next-line react-hooks/refs
 		() => Object.assign(alertFn, { dismiss: handleDismiss }),
 		[alertFn, handleDismiss]
 	);
