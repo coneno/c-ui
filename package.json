@@ -7,7 +7,8 @@
 		"dev": "next dev",
 		"build": "next build",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"registry:build": "shadcn build --output public/r/radix-nova"
+		"registry:build": "shadcn build --output public/r/radix-nova",
+		"start": "pnpm dlx serve@latest out"
 	},
 	"author": "coneno GmbH",
 	"packageManager": "pnpm@10.28.2",

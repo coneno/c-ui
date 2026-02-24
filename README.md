@@ -27,7 +27,8 @@ This README is intentionally contributor-focused. End-user installation and comp
 pnpm install         # install dependencies
 pnpm dev             # run local site at http://localhost:3000/c-ui
 pnpm registry:build  # generate registry JSON into public/r/radix-nova
-pnpm build           # production build + static export into out/
+pnpm build           # GitHub Pages build (basePath=/c-ui) + static export into out/
+pnpm start           # serve ./out with a static file server
 ```
 
 ## Contributor workflow
@@ -49,9 +50,11 @@ pnpm build           # production build + static export into out/
    - `target`: destination path in consumer projects
    - `type`: usually `registry:component`
 4. Run:
+
    ```bash
    pnpm registry:build
    ```
+
 5. Confirm generated files:
    - `public/r/radix-nova/<name>.json`
    - `public/r/radix-nova/registry.json` includes the item
