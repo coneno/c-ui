@@ -18,6 +18,10 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
+      "@/components/c-ui/*": [
+        "./components/c-ui/*",
+        "./registry/new-york/*"
+      ],
       "@/*": [
         "./*"
       ]
