@@ -70,7 +70,6 @@ export const AlertDialogProvider = ({ children }: { children: ReactNode }) => {
 			return null;
 		});
 		setIsOpen(false);
-		setOptions({});
 	}, []);
 
 	const alertFn = useCallback((alertOptions: AlertOptions) => {
