@@ -1,32 +1,113 @@
 import registry from "@/registry.json";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-import { Button as ShadcnButton } from "@/components/ui/button";
-import { Button as AnimatedButton } from "@/registry/new-york/button";
+import { Button } from "@/registry/radix-nova/button";
+import {
+	AlertDialogInteractiveExample,
+	ConfirmDialogInteractiveExample,
+	LoadingButtonInteractiveExample,
+} from "./interactive-examples";
 
 const hostedBaseUrl = "https://coneno.github.io/c-ui/r";
+const supportedStyle = "radix-nova";
 const registryAlias = "@c-ui";
-const registryTemplateUrl = `${hostedBaseUrl}/{name}.json`;
+const registryTemplateUrl = `${hostedBaseUrl}/{style}/{name}.json`;
+const registryIndexUrl = `${hostedBaseUrl}/${supportedStyle}/registry.json`;
 const usageExamples: Record<string, string> = {
-	button: `import { Button as ShadcnButton } from "@/components/ui/button"
-import { Button as AnimatedButton } from "@/components/c-ui/button"
+	"alert-provider": `import { Button } from "@/components/ui/button"
+import { AlertDialogProvider, useAlert } from "@/components/c-ui/alert-provider"
 
-export function ButtonComparison() {
+function AlertAction() {
+	const alert = useAlert()
+
+	return (
+		<Button
+			onClick={() =>
+				void alert({
+					title: "Heads up",
+					description: "Your changes were applied.",
+					buttonLabel: "OK",
+				})
+			}
+		>
+			Open alert
+		</Button>
+	)
+}
+
+export function AlertExample() {
+	return (
+		<AlertDialogProvider>
+			<AlertAction />
+		</AlertDialogProvider>
+	)
+}`,
+	"button": `import { Button } from "@/components/ui/button"
+
+export function ButtonExample() {
 	return (
 		<div className="flex flex-wrap gap-3">
-			<ShadcnButton>shadcn/ui Button</ShadcnButton>
-			<AnimatedButton>Animated Button</AnimatedButton>
+			<Button>Default</Button>
+			<Button variant="outline">Outline</Button>
 		</div>
 	)
 }`,
+	"confirm": `import { Button } from "@/components/ui/button"
+import { ConfirmDialogProvider, useConfirm } from "@/components/c-ui/confirm-provider"
+
+function DeleteAction() {
+	const confirm = useConfirm()
+
+	return (
+		<Button
+			variant="destructive"
+			onClick={async () => {
+				const confirmed = await confirm({
+					title: "Delete item?",
+					description: "This action cannot be undone.",
+					confirmButtonText: "Delete",
+					variant: "destructive",
+				})
+
+				if (confirmed) {
+					// perform destructive action
+				}
+			}}
+		>
+			Delete item
+		</Button>
+	)
+}
+
+export function ConfirmExample() {
+	return (
+		<ConfirmDialogProvider>
+			<DeleteAction />
+		</ConfirmDialogProvider>
+	)
+}`,
 	"loading-button": `import { LoadingButton } from "@/components/c-ui/loading-button"
+import { useState } from "react"
 
 export function SubmitAction() {
-	return <LoadingButton isLoading>Submitting</LoadingButton>
+	const [isLoading, setIsLoading] = useState(false)
+
+	const submit = async () => {
+		setIsLoading(true)
+		await new Promise((resolve) => setTimeout(resolve, 1200))
+		setIsLoading(false)
+	}
+
+	return (
+		<LoadingButton isLoading={isLoading} onClick={() => void submit()}>
+			{isLoading ? "Submitting..." : "Submit"}
+		</LoadingButton>
+	)
 }`,
 };
 
 export default function Home() {
 	const configureRegistriesJson = `{
+  "style": "${supportedStyle}",
   "registries": {
     "${registryAlias}": "${registryTemplateUrl}"
   }
@@ -40,19 +121,21 @@ export default function Home() {
 					Configure this registry once, then install components via{" "}
 					<code>{registryAlias}/&lt;component&gt;</code>.
 				</p>
+				<p className="text-sm text-muted-foreground">
+					This registry currently supports only <code>{supportedStyle}</code>. In the
+					importing project, set <code>{`"style": "${supportedStyle}"`}</code> in{" "}
+					<code>components.json</code> before installing components.
+				</p>
 				<p className="text-sm">
 					Registry index:{" "}
-					<a
-						className="underline underline-offset-4"
-						href={`${hostedBaseUrl}/registry.json`}
-					>
-						{`${hostedBaseUrl}/registry.json`}
+					<a className="underline underline-offset-4" href={registryIndexUrl}>
+						{registryIndexUrl}
 					</a>
 				</p>
 			</div>
 
 			<section className="mt-8 rounded-lg border bg-card p-4 text-card-foreground">
-				<h2 className="text-lg font-medium">1. Configure registries in components.json</h2>
+				<h2 className="text-lg font-medium">1. Configure style and registries in components.json</h2>
 				<p className="mt-1 text-sm text-muted-foreground">
 					Add this once in your consumer project:
 				</p>
@@ -68,9 +151,11 @@ export default function Home() {
 			<section className="mt-6 space-y-4">
 				{registry.items.map((item) => {
 					const addCommand = `npx shadcn@latest add ${registryAlias}/${item.name}`;
-					const directUrlCommand = `npx shadcn@latest add ${hostedBaseUrl}/${item.name}.json`;
+					const directUrlCommand = `npx shadcn@latest add ${hostedBaseUrl}/${supportedStyle}/${item.name}.json`;
 					const usageExample = usageExamples[item.name];
-					const isButtonItem = item.name === "button";
+					const hasLivePreview = ["alert-provider", "button", "confirm", "loading-button"].includes(
+						item.name
+					);
 
 					return (
 						<article
@@ -97,14 +182,21 @@ export default function Home() {
 										/>
 									</div>
 								</details>
-								{isButtonItem ? (
+								{hasLivePreview ? (
 									<div>
 										<p className="mb-2 text-sm text-muted-foreground">
-											Live preview (press and hold each button)
+											Live preview
 										</p>
-										<div className="flex flex-wrap gap-3 rounded-md border p-3">
-											<ShadcnButton>shadcn/ui Button</ShadcnButton>
-											<AnimatedButton>Animated Button</AnimatedButton>
+										<div className="rounded-md border p-3">
+											{item.name === "button" ? (
+												<div className="flex flex-wrap gap-3">
+													<Button>Default</Button>
+													<Button variant="outline">Outline</Button>
+												</div>
+											) : null}
+											{item.name === "alert-provider" ? <AlertDialogInteractiveExample /> : null}
+											{item.name === "confirm" ? <ConfirmDialogInteractiveExample /> : null}
+											{item.name === "loading-button" ? <LoadingButtonInteractiveExample /> : null}
 										</div>
 									</div>
 								) : null}
