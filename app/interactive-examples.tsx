@@ -21,11 +21,27 @@ function AlertExampleContent() {
 		setStatus("Alert dismissed.");
 	};
 
+	const openAlert2 = async () => {
+		await alert({
+			title: "Heads up 2",
+			description: "This is an interactive alert demo 2.",
+			buttonLabel: "Alright",
+			dismissButtonVariant: "outline",
+			dismissButtonClassName: "min-w-32",
+		});
+		setStatus("Alert 2 dismissed.");
+	};
+
 	return (
 		<div className="space-y-2">
-			<Button type="button" onClick={() => void openAlert()}>
-				Open Alert
-			</Button>
+			<div className="flex flex-row gap-2">
+				<Button type="button" onClick={() => void openAlert()}>
+					Open Alert
+				</Button>
+				<Button type="button" onClick={() => void openAlert2()}>
+					Open Alert 2
+				</Button>
+			</div>
 			<p className="text-xs text-muted-foreground">{status}</p>
 		</div>
 	);
