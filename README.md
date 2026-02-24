@@ -2,12 +2,13 @@
 
 Custom [shadcn/ui](https://ui.shadcn.com) registry for common coneno components.
 
-This repo builds registry JSON files into `public/r` and deploys them via the static export in `out/` (GitHub Pages).
+This repo builds registry JSON files into `public/r/radix-nova` and deploys them via the static export in `out/` (GitHub Pages).
 
 ## Hosted registry URLs
 
-- Registry index: `https://coneno.github.io/c-ui/r/registry.json`
-- Component entries: `https://coneno.github.io/c-ui/r/<component-name>.json`
+- Registry index: `https://coneno.github.io/c-ui/r/radix-nova/registry.json`
+- Style-aware component entries: `https://coneno.github.io/c-ui/r/<style>/<component-name>.json`
+- Canonical style: `radix-nova`
 
 ## Install via namespace (recommended)
 
@@ -15,11 +16,14 @@ Configure the registry once in your consumer app's `components.json`:
 
 ```json
 {
+  "style": "radix-nova",
   "registries": {
-    "@c-ui": "https://coneno.github.io/c-ui/r/{name}.json"
+    "@c-ui": "https://coneno.github.io/c-ui/r/{style}/{name}.json"
   }
 }
 ```
+
+This registry currently supports only `radix-nova`. Set `"style": "radix-nova"` in the consumer app before installing components.
 
 Then install components without repeating full URLs:
 
@@ -30,7 +34,7 @@ npx shadcn@latest add @c-ui/loading-button
 You can also install multiple components in one command:
 
 ```bash
-npx shadcn@latest add @c-ui/alert @c-ui/confirm
+npx shadcn@latest add @c-ui/alert-provider @c-ui/confirm
 ```
 
 ## Local registry testing
@@ -39,8 +43,9 @@ For local development/testing of this registry, point `@c-ui` to localhost in th
 
 ```json
 {
+  "style": "radix-nova",
   "registries": {
-    "@c-ui": "http://localhost:3000/c-ui/r/{name}.json"
+    "@c-ui": "http://localhost:3000/c-ui/r/{style}/{name}.json"
   }
 }
 ```
@@ -56,20 +61,21 @@ npx shadcn@latest add @c-ui/loading-button
 If needed, you can still install directly from a component URL:
 
 ```bash
-npx shadcn@latest add https://coneno.github.io/c-ui/r/loading-button.json
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/loading-button.json
 ```
 
 Current components in this registry:
 
-- `alert`
-- `button`
-- `confirm`
-- `loading-button`
+- `alert-provider`: Alert dialog service with provider + hook for promise-based alerts.
+- `button`: Press-animated base button used across components.
+- `confirm`: Confirmation dialog service with provider + hook.
+- `dialog`: Customized replacement for shadcn `components/ui/dialog.tsx` with overridable close labels to support i18n and screen-reader accessibility.
+- `loading-button`: Button with a built-in loading state.
 
 ## Usage examples
 
 ```tsx
-import { Button } from "@/components/c-ui/button"
+import { Button } from "@/components/ui/button"
 
 export function SaveAction() {
   return <Button>Save changes</Button>
@@ -110,7 +116,7 @@ Install dependencies:
 pnpm install
 ```
 
-Run the app locally (registry files available at `/c-ui/r/*`):
+Run the app locally (registry files available at `/c-ui/r/radix-nova/*`):
 
 ```bash
 pnpm dev
@@ -124,11 +130,11 @@ pnpm registry:build
 
 ## Add a new component to the registry
 
-1. Create the component source file in `registry/new-york/` (example: `registry/new-york/my-component.tsx`).
+1. Create the component source file in `registry/radix-nova/` (example: `registry/radix-nova/my-component.tsx`).
 2. Add a new item to `registry.json`.
 3. Set `name`, `type`, `title`, `description`, `registryDependencies`, and `files`.
    - You can organize component files in subfolders as well.
-   - Example source path: `registry/new-york/forms/my-component.tsx`
+   - Example source path: `registry/radix-nova/forms/my-component.tsx`
    - Example target path: `components/c-ui/forms/my-component.tsx`
 4. Rebuild output:
 
@@ -136,7 +142,7 @@ pnpm registry:build
 pnpm registry:build
 ```
 
-5. Confirm generated files exist in `public/r/`.
+5. Confirm generated files exist in `public/r/radix-nova/`.
 6. Validate install in a consumer app:
 
 ```bash
@@ -150,7 +156,7 @@ npx shadcn@latest add @c-ui/my-component
 `pnpm registry:build` runs:
 
 ```bash
-shadcn build --output public/r
+shadcn build --output public/r/radix-nova
 ```
 
-That command reads `registry.json` and writes distributable registry JSON files to `public/r`.
+That command reads `registry.json` and writes distributable registry JSON files to `public/r/radix-nova`.

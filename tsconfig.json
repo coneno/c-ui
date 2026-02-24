@@ -20,7 +20,7 @@
     "paths": {
       "@/components/c-ui/*": [
         "./components/c-ui/*",
-        "./registry/new-york/*"
+        "./registry/radix-nova/*",
       ],
       "@/*": [
         "./*"

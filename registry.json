@@ -4,20 +4,21 @@
 	"homepage": "https://coneno.github.io/c-ui",
 	"items": [
 		{
-			"name": "alert",
+			"name": "alert-provider",
 			"type": "registry:component",
-			"title": "Alert",
-			"description": "An alert component built on top of AlertDialog.",
+			"title": "Alert Provider",
+			"description": "An alert dialog service with provider and hook.",
 			"registryDependencies": [
-				"alert-dialog"
+				"@shadcn/alert-dialog"
 			],
 			"files": [
 				{
-					"path": "registry/new-york/alert.tsx",
+					"path": "registry/radix-nova/alert-provider.tsx",
 					"type": "registry:component",
-					"target": "components/c-ui/alert.tsx"
+					"target": "components/c-ui/alert-provider.tsx"
 				}
-			]
+			],
+			"style": "radix-nova"
 		},
 		{
 			"name": "confirm",
@@ -25,38 +26,54 @@
 			"title": "Confirm Dialog",
 			"description": "A confirmation dialog service with provider and hook.",
 			"registryDependencies": [
-				"alert-dialog",
-				"input",
-				"label"
+				"@shadcn/alert-dialog",
+				"@shadcn/input",
+				"@shadcn/label"
 			],
 			"files": [
 				{
-					"path": "registry/new-york/confirm-provider.tsx",
+					"path": "registry/radix-nova/confirm-provider.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/confirm-provider.tsx"
 				},
 				{
-					"path": "registry/new-york/confirm-dialog.tsx",
+					"path": "registry/radix-nova/confirm-dialog.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/confirm-dialog.tsx"
 				}
-			]
+			],
+			"style": "radix-nova"
 		},
 		{
 			"name": "button",
 			"type": "registry:component",
 			"title": "Button",
-			"description": "A base button with a subtle press animation.",
+			"description": "A button with a subtle press animation.",
+			"files": [
+				{
+					"path": "registry/radix-nova/button.tsx",
+					"type": "registry:component",
+					"target": "components/ui/button.tsx"
+				}
+			],
+			"style": "radix-nova"
+		},
+		{
+			"name": "dialog",
+			"type": "registry:component",
+			"title": "Dialog",
+			"description": "A customized shadcn dialog with overridable close labels for i18n-friendly accessibility.",
 			"registryDependencies": [
-				"@shadcn/button"
+				"@c-ui/button"
 			],
 			"files": [
 				{
-					"path": "registry/new-york/button.tsx",
+					"path": "registry/radix-nova/dialog.tsx",
 					"type": "registry:component",
-					"target": "components/c-ui/button.tsx"
+					"target": "components/ui/dialog.tsx"
 				}
-			]
+			],
+			"style": "radix-nova"
 		},
 		{
 			"name": "loading-button",
@@ -72,11 +89,12 @@
 			],
 			"files": [
 				{
-					"path": "registry/new-york/loading-button.tsx",
+					"path": "registry/radix-nova/loading-button.tsx",
 					"type": "registry:component",
 					"target": "components/c-ui/loading-button.tsx"
 				}
-			]
+			],
+			"style": "radix-nova"
 		}
 	]
 }

@@ -7,7 +7,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"registry:build": "shadcn build --output public/r"
+		"registry:build": "shadcn build --output public/r/radix-nova"
 	},
 	"author": "coneno GmbH",
 	"packageManager": "pnpm@10.28.2",
@@ -26,6 +26,7 @@
 		"typescript-eslint": "^8.56.0"
 	},
 	"dependencies": {
+		"@radix-ui/react-slot": "^1.2.4",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"fumadocs-core": "^16.6.5",
