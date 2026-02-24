@@ -1,12 +1,15 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from "react";
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { createContext, useContext, useState, useCallback, useMemo, useRef, type ComponentProps, type ReactNode } from "react";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { cn } from "@/lib/utils";
 
 export interface AlertOptions {
 	title?: string;
 	description?: string;
 	buttonLabel?: string;
+	dismissButtonClassName?: string;
+	dismissButtonVariant?: ComponentProps<typeof AlertDialogCancel>["variant"];
 	children?: ReactNode;
 }
 
@@ -26,6 +29,8 @@ function AlertDialogContent_({
 	title,
 	description,
 	buttonLabel,
+	dismissButtonClassName,
+	dismissButtonVariant,
 	children,
 	onDismiss,
 }: {
@@ -33,6 +38,8 @@ function AlertDialogContent_({
 	title: string;
 	description: string;
 	buttonLabel: string;
+	dismissButtonClassName?: string;
+	dismissButtonVariant?: ComponentProps<typeof AlertDialogCancel>["variant"];
 	children?: ReactNode;
 	onDismiss: () => void;
 }) {
@@ -50,9 +57,10 @@ function AlertDialogContent_({
 				</AlertDialogHeader>
 				{children != null ? <div className="py-2">{children}</div> : null}
 				<AlertDialogFooter className="justify-center sm:justify-center">
-					<AlertDialogAction
-						className="min-w-24 active:scale-[0.97] transition-transform duration-150"
-					>{buttonLabel}</AlertDialogAction>
+					<AlertDialogCancel
+						className={cn("min-w-24 active:scale-[0.97] transition-transform duration-150", dismissButtonClassName)}
+						variant={dismissButtonVariant ?? "default"}
+					>{buttonLabel}</AlertDialogCancel>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
@@ -62,27 +70,27 @@ function AlertDialogContent_({
 export const AlertDialogProvider = ({ children }: { children: ReactNode }) => {
 	const [options, setOptions] = useState<AlertOptions>({});
 	const [isOpen, setIsOpen] = useState(false);
-	const [, setResolver] = useState<(() => void) | null>(null);
+	const resolverRef = useRef<(() => void) | null>(null);
 
-	const handleDismiss = useCallback(() => {
-		setResolver((prev) => {
-			if (prev) prev();
-			return null;
-		});
-		setIsOpen(false);
+	const resolvePending = useCallback(() => {
+		const resolver = resolverRef.current;
+		if (resolver) resolver();
+		resolverRef.current = null;
 	}, []);
 
+	const handleDismiss = useCallback(() => {
+		resolvePending();
+		setIsOpen(false);
+	}, [resolvePending]);
+
 	const alertFn = useCallback((alertOptions: AlertOptions) => {
-		setResolver((prev) => {
-			if (prev) prev();
-			return null;
-		});
+		resolvePending();
 		setOptions(alertOptions);
 		setIsOpen(true);
 		return new Promise<void>((resolve) => {
-			setResolver(() => resolve);
+			resolverRef.current = resolve;
 		});
-	}, []);
+	}, [resolvePending]);
 
 	const alert = useMemo(
 		() => Object.assign(alertFn, { dismiss: handleDismiss }),
@@ -97,6 +105,8 @@ export const AlertDialogProvider = ({ children }: { children: ReactNode }) => {
 				title={options.title ?? "Notice"}
 				description={options.description ?? ""}
 				buttonLabel={options.buttonLabel ?? "OK"}
+				dismissButtonClassName={options.dismissButtonClassName}
+				dismissButtonVariant={options.dismissButtonVariant}
 				onDismiss={handleDismiss}
 			>
 				{options.children}

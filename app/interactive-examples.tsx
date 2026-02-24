@@ -26,6 +26,8 @@ function AlertExampleContent() {
 			title: "Heads up 2",
 			description: "This is an interactive alert demo 2.",
 			buttonLabel: "Alright",
+			dismissButtonVariant: "outline",
+			dismissButtonClassName: "min-w-32",
 		});
 		setStatus("Alert 2 dismissed.");
 	};
