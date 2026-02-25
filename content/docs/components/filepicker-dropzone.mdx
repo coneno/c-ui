@@ -1,0 +1,153 @@
+---
+title: Filepicker Dropzone
+description: A shadcn-styled dropzone file picker with translatable labels and practical upload options.
+---
+
+import { FilepickerDropzoneInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/filepicker-dropzone
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/filepicker-dropzone.json
+```
+
+## Live Example
+
+<div className="not-prose">
+	<FilepickerDropzoneInteractiveExample />
+</div>
+
+## Usage
+
+```tsx
+import { FilepickerDropzone } from "@/components/c-ui/filepicker-dropzone"
+
+export function UploadArea() {
+	return (
+		<FilepickerDropzone
+			id="invoice-upload"
+			label="Upload invoice"
+			description="PDF up to 10MB."
+			accept={{ "application/pdf": [".pdf"] }}
+			maxSize={10 * 1024 * 1024}
+			onChange={(files) => {
+				console.log(files)
+			}}
+		/>
+	)
+}
+```
+
+## React Hook Form
+
+```tsx
+"use client"
+
+import { Controller, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+
+import { FilepickerDropzone } from "@/components/c-ui/filepicker-dropzone"
+import { Button } from "@/components/ui/button"
+
+const formSchema = z.object({
+	attachments: z
+		.array(z.instanceof(File))
+		.min(1, "Please upload at least one file.")
+		.max(3, "You can upload up to 3 files."),
+})
+
+type FormValues = z.infer<typeof formSchema>
+
+export function UploadForm() {
+	const form = useForm<FormValues>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			attachments: [],
+		},
+	})
+
+	const onSubmit = (values: FormValues) => {
+		console.log(values.attachments)
+	}
+
+	return (
+		<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+			<Controller
+				control={form.control}
+				name="attachments"
+				render={({ field, fieldState }) => (
+					<FilepickerDropzone
+						id="form-rhf-attachments"
+						name={field.name}
+						multiple
+						maxFiles={3}
+						maxSize={5 * 1024 * 1024}
+						accept={{
+							"application/pdf": [".pdf"],
+							"image/png": [".png"],
+							"image/jpeg": [".jpg", ".jpeg"],
+						}}
+						label="Attachments"
+						description="Upload up to 3 files. PDF, PNG, JPG. Max 5MB each."
+						error={fieldState.error?.message}
+						onChange={(files) => {
+							field.onChange([...files])
+							form.clearErrors("attachments")
+						}}
+						onDropRejected={() => {
+							if (!fieldState.error) {
+								form.setError("attachments", {
+									type: "manual",
+									message: "Some files were rejected. Check type, size, and count limits.",
+								})
+							}
+						}}
+					/>
+				)}
+			/>
+
+			<div className="flex gap-2">
+				<Button type="button" variant="outline" onClick={() => form.reset()}>
+					Reset
+				</Button>
+				<Button type="submit">Submit</Button>
+			</div>
+		</form>
+	)
+}
+```
+
+## Configuration
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `id` | `string` | required | Input id and label binding |
+| `name` | `string` | `undefined` | Native input name |
+| `label` | `ReactNode` | `undefined` | Optional field label |
+| `description` | `ReactNode` | `undefined` | Helper text below label |
+| `error` | `ReactNode` | `undefined` | Optional error message below the dropzone |
+| `accept` | `Accept` | `undefined` | Accepted MIME types/extensions |
+| `multiple` | `boolean` | `false` | Allow selecting multiple files |
+| `disabled` | `boolean` | `false` | Disable picking and drag/drop |
+| `required` | `boolean` | `false` | Mark input as required |
+| `maxFiles` | `number` | `undefined` | Maximum accepted files |
+| `maxSize` | `number` | `undefined` | Max file size in bytes |
+| `minSize` | `number` | `undefined` | Min file size in bytes |
+| `labels` | `Partial<FilepickerDropzoneLabels>` | defaults provided | Override all user-facing copy for i18n, including `selectedCount` template (`{{count}}` or `{count}`) and rejection messages (`rejectInvalidType`, `rejectTooLarge`, `rejectTooSmall`, `rejectTooMany`) |
+| `dropzoneClassName` | `string` | `undefined` | Extend dropzone container styles |
+| `labelClassName` | `string` | `undefined` | Extend field label styles |
+| `contentClassName` | `string` | `undefined` | Extend field content layout styles |
+| `descriptionClassName` | `string` | `undefined` | Extend description styles |
+| `errorClassName` | `string` | `undefined` | Extend error styles |
+| `icon` | `ReactNode` | upload icon | Replace default icon |
+| `onChange` | `(files) => void` | `undefined` | Called when accepted files change |
+| `onDropRejected` | `(rejections) => void` | `undefined` | Called when dropped files are rejected |
+
+All additional native `<div>` props are forwarded to the wrapper element.
