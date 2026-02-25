@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { FileUpIcon } from "lucide-react"
 import {
   useDropzone,
@@ -17,6 +16,7 @@ import {
   FieldError,
   FieldLabel,
 } from "@/components/ui/field"
+import { useCallback, useEffect, useEffectEvent, useMemo } from "react"
 
 export interface FilepickerDropzoneLabels {
   upload: string
@@ -98,14 +98,19 @@ function FilepickerDropzone({
 }: FilepickerDropzoneProps) {
   const mergedLabels = { ...defaultLabels, ...labels }
   const descriptionId = description ? `${id}-description` : undefined
-  const onAcceptedFilesChange = React.useEffectEvent(
+
+  const onAcceptedFilesChange = useEffectEvent(
     (files: readonly FileWithPath[]) => {
       onChange?.(files)
     }
   )
-  const onRejectedFiles = React.useEffectEvent((rejections: FileRejection[]) => {
-    onDropRejected?.(rejections)
-  })
+
+  const onRejectedFiles = useCallback(
+    (rejections: FileRejection[]) => {
+      onDropRejected?.(rejections)
+    },
+    [onDropRejected]
+  )
 
   const {
     acceptedFiles,
@@ -125,7 +130,7 @@ function FilepickerDropzone({
     onDropRejected: onRejectedFiles,
   })
 
-  const rejectionMessages = React.useMemo(() => {
+  const rejectionMessages = useMemo(() => {
     if (fileRejections.length === 0) {
       return []
     }
@@ -172,7 +177,7 @@ function FilepickerDropzone({
   const errorId = hasError ? `${id}-error` : undefined
   const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || undefined
 
-  React.useEffect(() => {
+  useEffect(() => {
     onAcceptedFilesChange(acceptedFiles)
   }, [acceptedFiles])
 
