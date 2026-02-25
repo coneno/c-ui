@@ -95,6 +95,27 @@
 				}
 			],
 			"style": "radix-nova"
+		},
+		{
+			"name": "filepicker-dropzone",
+			"type": "registry:component",
+			"title": "Filepicker Dropzone",
+			"description": "A shadcn-styled file picker dropzone with translatable labels.",
+			"registryDependencies": [
+				"@shadcn/field"
+			],
+			"dependencies": [
+				"react-dropzone",
+				"lucide-react"
+			],
+			"files": [
+				{
+					"path": "registry/radix-nova/filepicker-dropzone.tsx",
+					"type": "registry:component",
+					"target": "components/c-ui/filepicker-dropzone.tsx"
+				}
+			],
+			"style": "radix-nova"
 		}
 	]
 }
