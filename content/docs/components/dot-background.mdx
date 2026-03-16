@@ -1,0 +1,103 @@
+---
+title: Dot Background
+description: A dotted surface wrapper with semantic color and spacing variants plus CSS variable overrides.
+---
+
+import { DotBackgroundInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/dot-background
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/dot-background.json
+```
+
+## Live Example
+
+<div className="not-prose">
+	<DotBackgroundInteractiveExample />
+</div>
+
+## Usage
+
+```tsx
+import { DotBackground } from "@/components/ui/dot-background"
+
+export function HeroSurface() {
+	return (
+		<DotBackground variant="card" spacing="relaxed" className="rounded-2xl border p-8">
+			<div className="max-w-md">
+				<p className="text-sm text-muted-foreground">Patterned container</p>
+				<h2 className="mt-2 text-2xl font-semibold tracking-tight">
+					Add subtle texture without leaving your design tokens.
+				</h2>
+			</div>
+		</DotBackground>
+	)
+}
+```
+
+## Color Variants
+
+```tsx
+<DotBackground variant="default" className="rounded-xl border p-6" />
+<DotBackground variant="muted" className="rounded-xl border p-6" />
+<DotBackground variant="card" className="rounded-xl border p-6" />
+<DotBackground variant="accent" className="rounded-xl border p-6" />
+<DotBackground variant="secondary" className="rounded-xl border p-6" />
+```
+
+## Spacing Variants
+
+```tsx
+<DotBackground spacing="dense" className="rounded-xl border p-6" />
+<DotBackground spacing="default" className="rounded-xl border p-6" />
+<DotBackground spacing="relaxed" className="rounded-xl border p-6" />
+<DotBackground spacing="loose" className="rounded-xl border p-6" />
+```
+
+## Custom Overrides
+
+Use `variant="custom"` and `spacing="custom"` when you want the surface to be driven entirely by `vars`.
+
+```tsx
+<DotBackground
+	variant="custom"
+	spacing="custom"
+	vars={{
+		backgroundColor: "color-mix(in oklab, var(--primary) 10%, var(--background))",
+		dotColor: "color-mix(in oklab, var(--primary) 28%, transparent)",
+		spacing: 24,
+		dotSize: 2,
+	}}
+	className="rounded-2xl border p-8"
+>
+	<div className="max-w-md">
+		<p className="text-sm text-muted-foreground">Custom surface</p>
+		<h2 className="mt-2 text-2xl font-semibold tracking-tight">
+			Tune the density and dot size with numbers or raw CSS lengths.
+		</h2>
+	</div>
+</DotBackground>
+```
+
+## Configuration
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "muted" \| "card" \| "accent" \| "secondary" \| "custom"` | `"default"` | Semantic background palette |
+| `spacing` | `"dense" \| "default" \| "relaxed" \| "loose" \| "custom"` | `"default"` | Controls the dot grid spacing |
+| `vars.backgroundColor` | `string` | `undefined` | Overrides the surface color |
+| `vars.dotColor` | `string` | `undefined` | Overrides the dot color |
+| `vars.spacing` | `number \| string` | `undefined` | Custom dot spacing; numbers become `px` |
+| `vars.dotSize` | `number \| string` | `undefined` | Custom dot size; numbers become `px` |
+| `asChild` | `boolean` | `false` | Render the pattern styles onto a child element via Radix `Slot` |
+| `className` | `string` | `undefined` | Extends layout and border styling |
+| `style` | `React.CSSProperties` | `undefined` | Supports the `--dot-background-*` CSS custom properties directly |
+
+All native `<div>` props are forwarded.
