@@ -76,6 +76,20 @@
 			"style": "radix-nova"
 		},
 		{
+			"name": "dot-background",
+			"type": "registry:component",
+			"title": "Dot Background",
+			"description": "A dotted surface wrapper with semantic color and spacing variants.",
+			"files": [
+				{
+					"path": "registry/radix-nova/dot-background.tsx",
+					"type": "registry:component",
+					"target": "components/ui/dot-background.tsx"
+				}
+			],
+			"style": "radix-nova"
+		},
+		{
 			"name": "loading-button",
 			"type": "registry:component",
 			"title": "Loading Button",
