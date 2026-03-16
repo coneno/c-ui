@@ -84,7 +84,7 @@
 				{
 					"path": "registry/radix-nova/dot-background.tsx",
 					"type": "registry:component",
-					"target": "components/ui/dot-background.tsx"
+					"target": "components/c-ui/dot-background.tsx"
 				}
 			],
 			"style": "radix-nova"
