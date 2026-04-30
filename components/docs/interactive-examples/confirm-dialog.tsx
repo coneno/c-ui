@@ -37,7 +37,7 @@ export function ConfirmDialogInteractiveExample() {
       messages={{
         confirmButtonText: "Delete",
         cancelButtonText: "Keep item",
-        getRequireConfirmationLabel: (confirmTerm) => `Type ${confirmTerm} to delete this item`,
+        requireConfirmationLabel: "Type {{confirmTerm}} to delete this item",
       }}
     >
       <ConfirmExampleContent />

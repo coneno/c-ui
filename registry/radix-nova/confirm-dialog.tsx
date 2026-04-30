@@ -22,7 +22,7 @@ interface ConfirmDialogProps {
 	variant: "default" | "destructive";
 	isOpen: boolean;
 	requireConfirmationInput?: RequireConfirmationInput;
-	getRequireConfirmationLabel: (confirmTerm: string) => string;
+	requireConfirmationLabel: string;
 }
 
 const ConfirmDialog = (props: ConfirmDialogProps) => {
@@ -32,12 +32,8 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 	const requiredTerm = requireTyped?.confirmTerm ?? "";
 	const canConfirm = !requireTyped || typedValue === requiredTerm;
 
-	const labelMessage = requireTyped?.label ?? props.getRequireConfirmationLabel(requiredTerm);
-	const labelParts = labelMessage.includes("{{confirmTerm}}")
-		? labelMessage.split("{{confirmTerm}}")
-		: requiredTerm && labelMessage.includes(requiredTerm)
-			? labelMessage.split(requiredTerm)
-			: [labelMessage];
+	const labelMessage = requireTyped?.label ?? props.requireConfirmationLabel;
+	const labelParts = labelMessage.split("{{confirmTerm}}");
 
 	return (
 		<AlertDialog

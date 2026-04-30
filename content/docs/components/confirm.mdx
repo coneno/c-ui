@@ -76,8 +76,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 				description: "Review this action before continuing.",
 				confirmButtonText: "Continue",
 				cancelButtonText: "Go back",
-				getRequireConfirmationLabel: (confirmTerm) =>
-					`Type ${confirmTerm} to continue`,
+				requireConfirmationLabel: "Type {{confirmTerm}} to continue",
 			}}
 		>
 			{children}
@@ -115,8 +114,7 @@ export function AppDialogProviders({ children }: { children: ReactNode }) {
 					description: tConfirm("description"),
 					confirmButtonText: tConfirm("confirmButtonText"),
 					cancelButtonText: tConfirm("cancelButtonText"),
-					getRequireConfirmationLabel: (confirmTerm) =>
-						tConfirm("requireConfirmationLabel", { confirmTerm }),
+					requireConfirmationLabel: tConfirm("requireConfirmationLabel"),
 				}}
 			>
 				{children}
@@ -127,6 +125,8 @@ export function AppDialogProviders({ children }: { children: ReactNode }) {
 ```
 
 Then place `AppDialogProviders` near the top of your app tree, for example in `app/providers.tsx` or `app/layout.tsx`.
+
+The `dialogs.confirm.requireConfirmationLabel` message should keep the `{{confirmTerm}}` placeholder, for example `"Type {{confirmTerm}} to confirm"`.
 
 ## Configuration
 
@@ -155,3 +155,5 @@ Then place `AppDialogProviders` near the top of your app tree, for example in `a
 | `confirmTerm` | `string` | Yes | Exact term user must type |
 | `label` | `string` | No | Per-call label. Supports `{{confirmTerm}}` placeholder. |
 | `hint` | `string` | No | Helper text below input |
+
+`ConfirmDialogProvider.messages.requireConfirmationLabel` uses the same `{{confirmTerm}}` placeholder as `RequireConfirmationInput.label`.

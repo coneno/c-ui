@@ -19,7 +19,7 @@ export interface ConfirmDialogMessages {
 	description: string;
 	confirmButtonText: string;
 	cancelButtonText: string;
-	getRequireConfirmationLabel: (confirmTerm: string) => string;
+	requireConfirmationLabel: string;
 }
 
 export interface ConfirmDialogProviderProps {
@@ -39,7 +39,7 @@ const DEFAULT_CONFIRM_MESSAGES: ConfirmDialogMessages = {
 	description: "Are you sure you want to proceed?",
 	confirmButtonText: "Confirm",
 	cancelButtonText: "Cancel",
-	getRequireConfirmationLabel: (confirmTerm) => `Type ${confirmTerm} to confirm`,
+	requireConfirmationLabel: "Type {{confirmTerm}} to confirm",
 };
 
 export const ConfirmDialogProvider = ({ children, messages, defaultVariant = "default" }: ConfirmDialogProviderProps) => {
@@ -93,7 +93,7 @@ export const ConfirmDialogProvider = ({ children, messages, defaultVariant = "de
 				cancelButtonText={options.cancelButtonText ?? resolvedMessages.cancelButtonText}
 				variant={options.variant ?? defaultVariant}
 				requireConfirmationInput={options.requireConfirmationInput}
-				getRequireConfirmationLabel={resolvedMessages.getRequireConfirmationLabel}
+				requireConfirmationLabel={resolvedMessages.requireConfirmationLabel}
 				onConfirm={handleConfirm}
 				onCancel={handleCancel}
 			/>
