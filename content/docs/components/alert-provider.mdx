@@ -54,15 +54,42 @@ export function AlertExample() {
 }
 ```
 
+## Provider Defaults
+
+`AlertDialogProvider` can define app-level copy defaults. Per-call values passed to `alert()` still win.
+
+```tsx
+import { AlertDialogProvider } from "@/components/c-ui/alert-provider"
+
+export function AppProviders({ children }: { children: React.ReactNode }) {
+	return (
+		<AlertDialogProvider
+			messages={{
+				title: "Notice",
+				buttonLabel: "Understood",
+			}}
+		>
+			{children}
+		</AlertDialogProvider>
+	)
+}
+```
+
 ## Configuration
+
+`AlertDialogProvider` accepts:
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `messages` | `Partial<AlertDialogMessages>` | `undefined` | App-level copy defaults |
 
 `useAlert()` accepts these options:
 
 | Option | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `title` | `string` | `"Notice"` | Dialog title |
+| `title` | `string` | Provider default or `"Notice"` | Dialog title |
 | `description` | `string` | `""` | Supporting text under title |
-| `buttonLabel` | `string` | `"OK"` | Dismiss button label |
+| `buttonLabel` | `string` | Provider default or `"OK"` | Dismiss button label |
 | `dismissButtonVariant` | `AlertDialogCancel["variant"]` | `"default"` | Button style variant |
 | `dismissButtonClassName` | `string` | `undefined` | Extra class names for dismiss button |
 | `children` | `ReactNode` | `undefined` | Optional custom content between description and footer |

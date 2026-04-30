@@ -12,8 +12,6 @@ function ConfirmExampleContent() {
     const isConfirmed = await confirm({
       title: "Delete item?",
       description: "This action cannot be undone.",
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
       variant: "destructive",
       requireConfirmationInput: {
         confirmTerm: "DELETE",
@@ -35,7 +33,13 @@ function ConfirmExampleContent() {
 
 export function ConfirmDialogInteractiveExample() {
   return (
-    <ConfirmDialogProvider>
+    <ConfirmDialogProvider
+      messages={{
+        confirmButtonText: "Delete",
+        cancelButtonText: "Keep item",
+        getRequireConfirmationLabel: (confirmTerm) => `Type ${confirmTerm} to delete this item`,
+      }}
+    >
       <ConfirmExampleContent />
     </ConfirmDialogProvider>
   )

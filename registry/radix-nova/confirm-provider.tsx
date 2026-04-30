@@ -5,7 +5,7 @@ import ConfirmDialog, { type RequireConfirmationInput } from "./confirm-dialog";
 
 export type { RequireConfirmationInput };
 
-interface ConfirmOptions {
+export interface ConfirmOptions {
 	title?: string;
 	description?: string;
 	confirmButtonText?: string;
@@ -14,16 +14,42 @@ interface ConfirmOptions {
 	requireConfirmationInput?: RequireConfirmationInput;
 }
 
+export interface ConfirmDialogMessages {
+	title: string;
+	description: string;
+	confirmButtonText: string;
+	cancelButtonText: string;
+	getRequireConfirmationLabel: (confirmTerm: string) => string;
+}
+
+export interface ConfirmDialogProviderProps {
+	children: ReactNode;
+	messages?: Partial<ConfirmDialogMessages>;
+	defaultVariant?: ConfirmOptions["variant"];
+}
+
 interface ConfirmContextType {
 	confirm: (options: ConfirmOptions) => Promise<boolean>;
 }
 
 const ConfirmContext = createContext<ConfirmContextType | undefined>(undefined);
 
-export const ConfirmDialogProvider = ({ children }: { children: ReactNode }) => {
+const DEFAULT_CONFIRM_MESSAGES: ConfirmDialogMessages = {
+	title: "Confirm Action",
+	description: "Are you sure you want to proceed?",
+	confirmButtonText: "Confirm",
+	cancelButtonText: "Cancel",
+	getRequireConfirmationLabel: (confirmTerm) => `Type ${confirmTerm} to confirm`,
+};
+
+export const ConfirmDialogProvider = ({ children, messages, defaultVariant = "default" }: ConfirmDialogProviderProps) => {
 	const [options, setOptions] = useState<ConfirmOptions>({});
 	const [isOpen, setIsOpen] = useState(false);
 	const [resolver, setResolver] = useState<((value: boolean) => void) | null>(null);
+	const resolvedMessages = {
+		...DEFAULT_CONFIRM_MESSAGES,
+		...messages,
+	};
 
 	const confirm = useCallback((confirmOptions: ConfirmOptions) => {
 		setResolver((prev: ((value: boolean) => void) | null) => {
@@ -61,12 +87,13 @@ export const ConfirmDialogProvider = ({ children }: { children: ReactNode }) => 
 			{children}
 			<ConfirmDialog
 				isOpen={isOpen}
-				title={options.title || "Confirm Action"}
-				description={options.description || "Are you sure you want to proceed?"}
-				confirmButtonText={options.confirmButtonText || "Confirm"}
-				cancelButtonText={options.cancelButtonText || "Cancel"}
-				variant={options.variant || "default"}
+				title={options.title ?? resolvedMessages.title}
+				description={options.description ?? resolvedMessages.description}
+				confirmButtonText={options.confirmButtonText ?? resolvedMessages.confirmButtonText}
+				cancelButtonText={options.cancelButtonText ?? resolvedMessages.cancelButtonText}
+				variant={options.variant ?? defaultVariant}
 				requireConfirmationInput={options.requireConfirmationInput}
+				getRequireConfirmationLabel={resolvedMessages.getRequireConfirmationLabel}
 				onConfirm={handleConfirm}
 				onCancel={handleCancel}
 			/>
