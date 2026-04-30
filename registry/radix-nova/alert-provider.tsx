@@ -13,6 +13,16 @@ export interface AlertOptions {
 	children?: ReactNode;
 }
 
+export interface AlertDialogMessages {
+	title: string;
+	buttonLabel: string;
+}
+
+export interface AlertDialogProviderProps {
+	children: ReactNode;
+	messages?: Partial<AlertDialogMessages>;
+}
+
 export interface AlertApi {
 	(options: AlertOptions): Promise<void>;
 	dismiss: () => void;
@@ -23,6 +33,11 @@ interface AlertContextType {
 }
 
 const AlertContext = createContext<AlertContextType | undefined>(undefined);
+
+const DEFAULT_ALERT_MESSAGES: AlertDialogMessages = {
+	title: "Notice",
+	buttonLabel: "OK",
+};
 
 function AlertDialogContent_({
 	isOpen,
@@ -67,10 +82,14 @@ function AlertDialogContent_({
 	);
 }
 
-export const AlertDialogProvider = ({ children }: { children: ReactNode }) => {
+export const AlertDialogProvider = ({ children, messages }: AlertDialogProviderProps) => {
 	const [options, setOptions] = useState<AlertOptions>({});
 	const [isOpen, setIsOpen] = useState(false);
 	const resolverRef = useRef<(() => void) | null>(null);
+	const resolvedMessages = {
+		...DEFAULT_ALERT_MESSAGES,
+		...messages,
+	};
 
 	const resolvePending = useCallback(() => {
 		const resolver = resolverRef.current;
@@ -103,9 +122,9 @@ export const AlertDialogProvider = ({ children }: { children: ReactNode }) => {
 			{children}
 			<AlertDialogContent_
 				isOpen={isOpen}
-				title={options.title ?? "Notice"}
+				title={options.title ?? resolvedMessages.title}
 				description={options.description ?? ""}
-				buttonLabel={options.buttonLabel ?? "OK"}
+				buttonLabel={options.buttonLabel ?? resolvedMessages.buttonLabel}
 				dismissButtonClassName={options.dismissButtonClassName}
 				dismissButtonVariant={options.dismissButtonVariant}
 				onDismiss={handleDismiss}

@@ -60,17 +60,92 @@ export function ConfirmExample() {
 }
 ```
 
+## Provider Defaults
+
+`ConfirmDialogProvider` can define app-level defaults for copy and variant. Per-call values passed to `confirm()` still win.
+
+```tsx
+import { ConfirmDialogProvider } from "@/components/c-ui/confirm-provider"
+
+export function AppProviders({ children }: { children: React.ReactNode }) {
+	return (
+		<ConfirmDialogProvider
+			defaultVariant="destructive"
+			messages={{
+				title: "Please confirm",
+				description: "Review this action before continuing.",
+				confirmButtonText: "Continue",
+				cancelButtonText: "Go back",
+				requireConfirmationLabel: "Type {{confirmTerm}} to continue",
+			}}
+		>
+			{children}
+		</ConfirmDialogProvider>
+	)
+}
+```
+
+## Next.js + next-intl
+
+Keep translation hooks in your app and pass the resolved strings into the provider:
+
+```tsx
+"use client"
+
+import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
+import { AlertDialogProvider } from "@/components/c-ui/alert-provider"
+import { ConfirmDialogProvider } from "@/components/c-ui/confirm-provider"
+
+export function AppDialogProviders({ children }: { children: ReactNode }) {
+	const tConfirm = useTranslations("dialogs.confirm")
+	const tAlert = useTranslations("dialogs.alert")
+
+	return (
+		<AlertDialogProvider
+			messages={{
+				title: tAlert("title"),
+				buttonLabel: tAlert("buttonLabel"),
+			}}
+		>
+			<ConfirmDialogProvider
+				messages={{
+					title: tConfirm("title"),
+					description: tConfirm("description"),
+					confirmButtonText: tConfirm("confirmButtonText"),
+					cancelButtonText: tConfirm("cancelButtonText"),
+					requireConfirmationLabel: tConfirm("requireConfirmationLabel"),
+				}}
+			>
+				{children}
+			</ConfirmDialogProvider>
+		</AlertDialogProvider>
+	)
+}
+```
+
+Then place `AppDialogProviders` near the top of your app tree, for example in `app/providers.tsx` or `app/layout.tsx`.
+
+The `dialogs.confirm.requireConfirmationLabel` message should keep the `{{confirmTerm}}` placeholder, for example `"Type {{confirmTerm}} to confirm"`.
+
 ## Configuration
+
+`ConfirmDialogProvider` accepts:
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `messages` | `Partial<ConfirmDialogMessages>` | `undefined` | App-level copy defaults |
+| `defaultVariant` | `"default" \| "destructive"` | `"default"` | Default confirm button variant |
 
 `useConfirm()` accepts these options:
 
 | Option | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `title` | `string` | `"Confirm Action"` | Dialog title |
-| `description` | `string` | `"Are you sure you want to proceed?"` | Description text |
-| `confirmButtonText` | `string` | `"Confirm"` | Confirm action label |
-| `cancelButtonText` | `string` | `"Cancel"` | Cancel action label |
-| `variant` | `"default" \| "destructive"` | `"default"` | Confirm button style |
+| `title` | `string` | Provider default or `"Confirm Action"` | Dialog title |
+| `description` | `string` | Provider default or `"Are you sure you want to proceed?"` | Description text |
+| `confirmButtonText` | `string` | Provider default or `"Confirm"` | Confirm action label |
+| `cancelButtonText` | `string` | Provider default or `"Cancel"` | Cancel action label |
+| `variant` | `"default" \| "destructive"` | Provider `defaultVariant` or `"default"` | Confirm button style |
 | `requireConfirmationInput` | `RequireConfirmationInput` | `undefined` | Forces typed confirmation |
 
 `RequireConfirmationInput`:
@@ -78,5 +153,7 @@ export function ConfirmExample() {
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `confirmTerm` | `string` | Yes | Exact term user must type |
-| `label` | `string` | No | Supports `{{confirmTerm}}` placeholder |
+| `label` | `string` | No | Per-call label. Supports `{{confirmTerm}}` placeholder. |
 | `hint` | `string` | No | Helper text below input |
+
+`ConfirmDialogProvider.messages.requireConfirmationLabel` uses the same `{{confirmTerm}}` placeholder as `RequireConfirmationInput.label`.

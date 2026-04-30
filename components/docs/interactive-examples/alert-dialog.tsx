@@ -12,7 +12,6 @@ function AlertExampleContent() {
     await alert({
       title: "Heads up",
       description: "This is an interactive alert demo.",
-      buttonLabel: "Understood",
     })
     setStatus("Alert dismissed.")
   }
@@ -29,7 +28,11 @@ function AlertExampleContent() {
 
 export function AlertDialogInteractiveExample() {
   return (
-    <AlertDialogProvider>
+    <AlertDialogProvider
+      messages={{
+        buttonLabel: "Understood",
+      }}
+    >
       <AlertExampleContent />
     </AlertDialogProvider>
   )
