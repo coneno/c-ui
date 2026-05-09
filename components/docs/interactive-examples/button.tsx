@@ -1,4 +1,4 @@
-import { Button } from "@/registry/radix-nova/button"
+import { Button } from "@/registry/radix-nova/button";
 
 export function ButtonInteractiveExample() {
   return (
@@ -7,5 +7,5 @@ export function ButtonInteractiveExample() {
       <Button variant="outline">Outline</Button>
       <Button size="sm">Small</Button>
     </div>
-  )
+  );
 }

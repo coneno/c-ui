@@ -1,144 +1,169 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useMemo, useRef, type ComponentProps, type ReactNode } from "react";
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
 export interface AlertOptions {
-	title?: string;
-	description?: string;
-	buttonLabel?: string;
-	dismissButtonClassName?: string;
-	dismissButtonVariant?: ComponentProps<typeof AlertDialogCancel>["variant"];
-	children?: ReactNode;
+  title?: string;
+  description?: string;
+  buttonLabel?: string;
+  dismissButtonClassName?: string;
+  dismissButtonVariant?: ComponentProps<typeof AlertDialogCancel>["variant"];
+  children?: ReactNode;
 }
 
 export interface AlertDialogMessages {
-	title: string;
-	buttonLabel: string;
+  title: string;
+  buttonLabel: string;
 }
 
 export interface AlertDialogProviderProps {
-	children: ReactNode;
-	messages?: Partial<AlertDialogMessages>;
+  children: ReactNode;
+  messages?: Partial<AlertDialogMessages>;
 }
 
 export interface AlertApi {
-	(options: AlertOptions): Promise<void>;
-	dismiss: () => void;
+  (options: AlertOptions): Promise<void>;
+  dismiss: () => void;
 }
 
 interface AlertContextType {
-	alert: AlertApi;
+  alert: AlertApi;
 }
 
 const AlertContext = createContext<AlertContextType | undefined>(undefined);
 
 const DEFAULT_ALERT_MESSAGES: AlertDialogMessages = {
-	title: "Notice",
-	buttonLabel: "OK",
+  title: "Notice",
+  buttonLabel: "OK",
 };
 
 function AlertDialogContent_({
-	isOpen,
-	title,
-	description,
-	buttonLabel,
-	dismissButtonClassName,
-	dismissButtonVariant,
-	children,
-	onDismiss,
+  isOpen,
+  title,
+  description,
+  buttonLabel,
+  dismissButtonClassName,
+  dismissButtonVariant,
+  children,
+  onDismiss,
 }: {
-	isOpen: boolean;
-	title: string;
-	description: string;
-	buttonLabel: string;
-	dismissButtonClassName?: string;
-	dismissButtonVariant?: ComponentProps<typeof AlertDialogCancel>["variant"];
-	children?: ReactNode;
-	onDismiss: () => void;
+  isOpen: boolean;
+  title: string;
+  description: string;
+  buttonLabel: string;
+  dismissButtonClassName?: string;
+  dismissButtonVariant?: ComponentProps<typeof AlertDialogCancel>["variant"];
+  children?: ReactNode;
+  onDismiss: () => void;
 }) {
-	return (
-		<AlertDialog
-			open={isOpen}
-			onOpenChange={(open) => {
-				if (!open) onDismiss();
-			}}
-		>
-			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>{title}</AlertDialogTitle>
-					{description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
-				</AlertDialogHeader>
-				{children != null ? <div className="py-2">{children}</div> : null}
-				<AlertDialogFooter className="justify-center sm:justify-center">
-					<AlertDialogCancel
-						className={cn("min-w-24 active:scale-[0.97] transition-transform duration-150", dismissButtonClassName)}
-						variant={dismissButtonVariant ?? "default"}
-					>{buttonLabel}</AlertDialogCancel>
-				</AlertDialogFooter>
-			</AlertDialogContent>
-		</AlertDialog>
-	);
+  return (
+    <AlertDialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onDismiss();
+      }}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
+        </AlertDialogHeader>
+        {children != null ? <div className="py-2">{children}</div> : null}
+        <AlertDialogFooter className="justify-center sm:justify-center">
+          <AlertDialogCancel
+            className={cn(
+              "min-w-24 transition-transform duration-150 active:scale-[0.97]",
+              dismissButtonClassName,
+            )}
+            variant={dismissButtonVariant ?? "default"}
+          >
+            {buttonLabel}
+          </AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
 export const AlertDialogProvider = ({ children, messages }: AlertDialogProviderProps) => {
-	const [options, setOptions] = useState<AlertOptions>({});
-	const [isOpen, setIsOpen] = useState(false);
-	const resolverRef = useRef<(() => void) | null>(null);
-	const resolvedMessages = {
-		...DEFAULT_ALERT_MESSAGES,
-		...messages,
-	};
+  const [options, setOptions] = useState<AlertOptions>({});
+  const [isOpen, setIsOpen] = useState(false);
+  const resolverRef = useRef<(() => void) | null>(null);
+  const resolvedMessages = {
+    ...DEFAULT_ALERT_MESSAGES,
+    ...messages,
+  };
 
-	const resolvePending = useCallback(() => {
-		const resolver = resolverRef.current;
-		if (resolver) resolver();
-		resolverRef.current = null;
-	}, []);
+  const resolvePending = useCallback(() => {
+    const resolver = resolverRef.current;
+    if (resolver) resolver();
+    resolverRef.current = null;
+  }, []);
 
-	const handleDismiss = useCallback(() => {
-		resolvePending();
-		setIsOpen(false);
-	}, [resolvePending]);
+  const handleDismiss = useCallback(() => {
+    resolvePending();
+    setIsOpen(false);
+  }, [resolvePending]);
 
-	const alertFn = useCallback((alertOptions: AlertOptions) => {
-		resolvePending();
-		setOptions(alertOptions);
-		setIsOpen(true);
-		return new Promise<void>((resolve) => {
-			resolverRef.current = resolve;
-		});
-	}, [resolvePending]);
+  const alertFn = useCallback(
+    (alertOptions: AlertOptions) => {
+      resolvePending();
+      setOptions(alertOptions);
+      setIsOpen(true);
+      return new Promise<void>((resolve) => {
+        resolverRef.current = resolve;
+      });
+    },
+    [resolvePending],
+  );
 
-	const alert = useMemo(
-		// eslint-disable-next-line react-hooks/refs
-		() => Object.assign(alertFn, { dismiss: handleDismiss }),
-		[alertFn, handleDismiss]
-	);
+  const alert = useMemo(
+    // eslint-disable-next-line react-hooks/refs
+    () => Object.assign(alertFn, { dismiss: handleDismiss }),
+    [alertFn, handleDismiss],
+  );
 
-	return (
-		<AlertContext.Provider value={{ alert }}>
-			{children}
-			<AlertDialogContent_
-				isOpen={isOpen}
-				title={options.title ?? resolvedMessages.title}
-				description={options.description ?? ""}
-				buttonLabel={options.buttonLabel ?? resolvedMessages.buttonLabel}
-				dismissButtonClassName={options.dismissButtonClassName}
-				dismissButtonVariant={options.dismissButtonVariant}
-				onDismiss={handleDismiss}
-			>
-				{options.children}
-			</AlertDialogContent_>
-		</AlertContext.Provider>
-	);
+  return (
+    <AlertContext.Provider value={{ alert }}>
+      {children}
+      <AlertDialogContent_
+        isOpen={isOpen}
+        title={options.title ?? resolvedMessages.title}
+        description={options.description ?? ""}
+        buttonLabel={options.buttonLabel ?? resolvedMessages.buttonLabel}
+        dismissButtonClassName={options.dismissButtonClassName}
+        dismissButtonVariant={options.dismissButtonVariant}
+        onDismiss={handleDismiss}
+      >
+        {options.children}
+      </AlertDialogContent_>
+    </AlertContext.Provider>
+  );
 };
 
 export const useAlert = () => {
-	const context = useContext(AlertContext);
-	if (!context) {
-		throw new Error("useAlert must be used within an AlertDialogProvider");
-	}
-	return context.alert;
+  const context = useContext(AlertContext);
+  if (!context) {
+    throw new Error("useAlert must be used within an AlertDialogProvider");
+  }
+  return context.alert;
 };

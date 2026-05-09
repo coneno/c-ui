@@ -24,25 +24,25 @@ npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/button.json
 ## Usage
 
 ```tsx
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export function ButtonExample() {
-	return (
-		<div className="flex flex-wrap gap-3">
-			<Button>Default</Button>
-			<Button variant="outline">Outline</Button>
-		</div>
-	)
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button>Default</Button>
+      <Button variant="outline">Outline</Button>
+    </div>
+  );
 }
 ```
 
 ## Configuration
 
-| Prop | Type | Default | Notes |
-| --- | --- | --- | --- |
-| `variant` | `"default" \| "outline" \| "secondary" \| "ghost" \| "destructive" \| "link"` | `"default"` | Visual style |
-| `size` | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Button sizing |
-| `asChild` | `boolean` | `false` | Render with Radix `Slot` for custom child element |
-| `className` | `string` | `undefined` | Extends styles |
+| Prop        | Type                                                                                 | Default     | Notes                                             |
+| ----------- | ------------------------------------------------------------------------------------ | ----------- | ------------------------------------------------- |
+| `variant`   | `"default" \| "outline" \| "secondary" \| "ghost" \| "destructive" \| "link"`        | `"default"` | Visual style                                      |
+| `size`      | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Button sizing                                     |
+| `asChild`   | `boolean`                                                                            | `false`     | Render with Radix `Slot` for custom child element |
+| `className` | `string`                                                                             | `undefined` | Extends styles                                    |
 
 All native `<button>` props are supported.

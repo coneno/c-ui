@@ -1,135 +1,117 @@
 {
-	"$schema": "https://ui.shadcn.com/schema/registry.json",
-	"name": "c-ui",
-	"homepage": "https://coneno.github.io/c-ui",
-	"items": [
-		{
-			"name": "alert-provider",
-			"type": "registry:component",
-			"title": "Alert Provider",
-			"description": "An alert dialog service with provider and hook.",
-			"registryDependencies": [
-				"@shadcn/alert-dialog"
-			],
-			"files": [
-				{
-					"path": "registry/radix-nova/alert-provider.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/alert-provider.tsx"
-				}
-			],
-			"style": "radix-nova"
-		},
-		{
-			"name": "confirm",
-			"type": "registry:component",
-			"title": "Confirm Dialog",
-			"description": "A confirmation dialog service with provider and hook.",
-			"registryDependencies": [
-				"@shadcn/alert-dialog",
-				"@shadcn/input",
-				"@shadcn/label"
-			],
-			"files": [
-				{
-					"path": "registry/radix-nova/confirm-provider.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/confirm-provider.tsx"
-				},
-				{
-					"path": "registry/radix-nova/confirm-dialog.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/confirm-dialog.tsx"
-				}
-			],
-			"style": "radix-nova"
-		},
-		{
-			"name": "button",
-			"type": "registry:component",
-			"title": "Button",
-			"description": "A button with a subtle press animation.",
-			"files": [
-				{
-					"path": "registry/radix-nova/button.tsx",
-					"type": "registry:component",
-					"target": "components/ui/button.tsx"
-				}
-			],
-			"style": "radix-nova"
-		},
-		{
-			"name": "dialog",
-			"type": "registry:component",
-			"title": "Dialog",
-			"description": "A customized shadcn dialog with overridable close labels for i18n-friendly accessibility.",
-			"registryDependencies": [
-				"@c-ui/button"
-			],
-			"files": [
-				{
-					"path": "registry/radix-nova/dialog.tsx",
-					"type": "registry:component",
-					"target": "components/ui/dialog.tsx"
-				}
-			],
-			"style": "radix-nova"
-		},
-		{
-			"name": "dot-background",
-			"type": "registry:component",
-			"title": "Dot Background",
-			"description": "A dotted surface wrapper with semantic color and spacing variants.",
-			"files": [
-				{
-					"path": "registry/radix-nova/dot-background.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/dot-background.tsx"
-				}
-			],
-			"style": "radix-nova"
-		},
-		{
-			"name": "loading-button",
-			"type": "registry:component",
-			"title": "Loading Button",
-			"description": "A button with a loading state.",
-			"registryDependencies": [
-				"@c-ui/button"
-			],
-			"dependencies": [
-				"lucide-react",
-				"class-variance-authority"
-			],
-			"files": [
-				{
-					"path": "registry/radix-nova/loading-button.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/loading-button.tsx"
-				}
-			],
-			"style": "radix-nova"
-		},
-		{
-			"name": "filepicker-dropzone",
-			"type": "registry:component",
-			"title": "Filepicker Dropzone",
-			"description": "A shadcn-styled file picker dropzone with translatable labels.",
-			"registryDependencies": [
-				"@shadcn/field"
-			],
-			"dependencies": [
-				"react-dropzone",
-				"lucide-react"
-			],
-			"files": [
-				{
-					"path": "registry/radix-nova/filepicker-dropzone.tsx",
-					"type": "registry:component",
-					"target": "components/c-ui/filepicker-dropzone.tsx"
-				}
-			],
-			"style": "radix-nova"
-		}
-	]
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "c-ui",
+  "homepage": "https://coneno.github.io/c-ui",
+  "items": [
+    {
+      "name": "alert-provider",
+      "type": "registry:component",
+      "title": "Alert Provider",
+      "description": "An alert dialog service with provider and hook.",
+      "registryDependencies": ["@shadcn/alert-dialog"],
+      "files": [
+        {
+          "path": "registry/radix-nova/alert-provider.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/alert-provider.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "confirm",
+      "type": "registry:component",
+      "title": "Confirm Dialog",
+      "description": "A confirmation dialog service with provider and hook.",
+      "registryDependencies": ["@shadcn/alert-dialog", "@shadcn/input", "@shadcn/label"],
+      "files": [
+        {
+          "path": "registry/radix-nova/confirm-provider.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/confirm-provider.tsx"
+        },
+        {
+          "path": "registry/radix-nova/confirm-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/confirm-dialog.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "button",
+      "type": "registry:component",
+      "title": "Button",
+      "description": "A button with a subtle press animation.",
+      "files": [
+        {
+          "path": "registry/radix-nova/button.tsx",
+          "type": "registry:component",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "dialog",
+      "type": "registry:component",
+      "title": "Dialog",
+      "description": "A customized shadcn dialog with overridable close labels for i18n-friendly accessibility.",
+      "registryDependencies": ["@c-ui/button"],
+      "files": [
+        {
+          "path": "registry/radix-nova/dialog.tsx",
+          "type": "registry:component",
+          "target": "components/ui/dialog.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "dot-background",
+      "type": "registry:component",
+      "title": "Dot Background",
+      "description": "A dotted surface wrapper with semantic color and spacing variants.",
+      "files": [
+        {
+          "path": "registry/radix-nova/dot-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/dot-background.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "loading-button",
+      "type": "registry:component",
+      "title": "Loading Button",
+      "description": "A button with a loading state.",
+      "registryDependencies": ["@c-ui/button"],
+      "dependencies": ["lucide-react", "class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/radix-nova/loading-button.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/loading-button.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "filepicker-dropzone",
+      "type": "registry:component",
+      "title": "Filepicker Dropzone",
+      "description": "A shadcn-styled file picker dropzone with translatable labels.",
+      "registryDependencies": ["@shadcn/field"],
+      "dependencies": ["react-dropzone", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/radix-nova/filepicker-dropzone.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/filepicker-dropzone.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    }
+  ]
 }

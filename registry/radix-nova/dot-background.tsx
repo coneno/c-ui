@@ -1,8 +1,8 @@
-import * as React from "react"
-import { cva } from "class-variance-authority"
-import { Slot } from "radix-ui"
+import * as React from "react";
+import { cva } from "class-variance-authority";
+import { Slot } from "radix-ui";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const dotBackgroundColorVariants = {
   default: {
@@ -23,17 +23,13 @@ const dotBackgroundColorVariants = {
   },
   secondary: {
     backgroundColor: "var(--secondary)",
-    dotColor:
-      "color-mix(in oklab, var(--secondary-foreground) 16%, transparent)",
+    dotColor: "color-mix(in oklab, var(--secondary-foreground) 16%, transparent)",
   },
   custom: {
     backgroundColor: "var(--background)",
     dotColor: "var(--border)",
   },
-} as const satisfies Record<
-  string,
-  { backgroundColor: string; dotColor: string }
->
+} as const satisfies Record<string, { backgroundColor: string; dotColor: string }>;
 
 const dotBackgroundSpacingVariants = {
   dense: { spacing: "0.875rem" },
@@ -41,19 +37,20 @@ const dotBackgroundSpacingVariants = {
   relaxed: { spacing: "1.75rem" },
   loose: { spacing: "2.25rem" },
   custom: { spacing: "1.25rem" },
-} as const satisfies Record<string, { spacing: string }>
+} as const satisfies Record<string, { spacing: string }>;
 
-type DotBackgroundVariant = keyof typeof dotBackgroundColorVariants
-type DotBackgroundSpacingVariant = keyof typeof dotBackgroundSpacingVariants
+type DotBackgroundVariant = keyof typeof dotBackgroundColorVariants;
+type DotBackgroundSpacingVariant = keyof typeof dotBackgroundSpacingVariants;
 
-const defaultDotBackgroundVariant: DotBackgroundVariant = "default"
-const defaultDotBackgroundSpacing: DotBackgroundSpacingVariant = "default"
-const defaultDotBackgroundDotSize = "1px"
+const defaultDotBackgroundVariant: DotBackgroundVariant = "default";
+const defaultDotBackgroundSpacing: DotBackgroundSpacingVariant = "default";
+const defaultDotBackgroundDotSize = "1px";
 
 function createVariantEntries<T extends Record<string, unknown>>(variants: T) {
-  return Object.fromEntries(
-    Object.keys(variants).map((key) => [key, ""])
-  ) as Record<keyof T, string>
+  return Object.fromEntries(Object.keys(variants).map((key) => [key, ""])) as Record<
+    keyof T,
+    string
+  >;
 }
 
 const dotBackgroundVariants = cva("relative isolate", {
@@ -65,43 +62,43 @@ const dotBackgroundVariants = cva("relative isolate", {
     variant: defaultDotBackgroundVariant,
     spacing: defaultDotBackgroundSpacing,
   },
-})
+});
 
 type DotBackgroundStyle = React.CSSProperties & {
-  "--dot-background-color"?: string
-  "--dot-background-dot-color"?: string
-  "--dot-background-spacing"?: string
-  "--dot-background-dot-size"?: string
-}
+  "--dot-background-color"?: string;
+  "--dot-background-dot-color"?: string;
+  "--dot-background-spacing"?: string;
+  "--dot-background-dot-size"?: string;
+};
 
 type DotBackgroundResolvedStyle = DotBackgroundStyle & {
-  "--dot-pattern-bg"?: string
-  "--dot-pattern-color"?: string
-  "--dot-pattern-spacing"?: string
-  "--dot-pattern-dot-size"?: string
-}
+  "--dot-pattern-bg"?: string;
+  "--dot-pattern-color"?: string;
+  "--dot-pattern-spacing"?: string;
+  "--dot-pattern-dot-size"?: string;
+};
 
 type DotBackgroundVars = {
-  backgroundColor?: string
-  dotColor?: string
-  spacing?: number | string
-  dotSize?: number | string
-}
+  backgroundColor?: string;
+  dotColor?: string;
+  spacing?: number | string;
+  dotSize?: number | string;
+};
 
 type DotBackgroundProps = Omit<React.ComponentProps<"div">, "style"> & {
-  asChild?: boolean
-  variant?: DotBackgroundVariant
-  spacing?: DotBackgroundSpacingVariant
-  vars?: DotBackgroundVars
-  style?: DotBackgroundStyle
-}
+  asChild?: boolean;
+  variant?: DotBackgroundVariant;
+  spacing?: DotBackgroundSpacingVariant;
+  vars?: DotBackgroundVars;
+  style?: DotBackgroundStyle;
+};
 
 function resolveCssLength(value: number | string | undefined) {
   if (typeof value === "number") {
-    return `${value}px`
+    return `${value}px`;
   }
 
-  return value
+  return value;
 }
 
 function DotBackground({
@@ -113,9 +110,9 @@ function DotBackground({
   style,
   ...props
 }: DotBackgroundProps) {
-  const Comp = asChild ? Slot.Root : "div"
-  const colorVariant = dotBackgroundColorVariants[variant]
-  const spacingVariant = dotBackgroundSpacingVariants[spacing]
+  const Comp = asChild ? Slot.Root : "div";
+  const colorVariant = dotBackgroundColorVariants[variant];
+  const spacingVariant = dotBackgroundSpacingVariants[spacing];
 
   const resolvedStyle: DotBackgroundResolvedStyle = {
     "--dot-background-color": vars?.backgroundColor,
@@ -132,7 +129,7 @@ function DotBackground({
     backgroundSize: "var(--dot-pattern-spacing) var(--dot-pattern-spacing)",
     backgroundPosition: "0 0",
     ...style,
-  }
+  };
 
   return (
     <Comp
@@ -143,7 +140,7 @@ function DotBackground({
       style={resolvedStyle}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -151,11 +148,11 @@ export {
   dotBackgroundColorVariants,
   dotBackgroundSpacingVariants,
   dotBackgroundVariants,
-}
+};
 export type {
   DotBackgroundProps,
   DotBackgroundSpacingVariant,
   DotBackgroundStyle,
   DotBackgroundVariant,
   DotBackgroundVars,
-}
+};

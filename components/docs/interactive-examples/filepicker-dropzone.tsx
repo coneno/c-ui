@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { FilepickerDropzone } from "@/registry/radix-nova/filepicker-dropzone"
+import { useState } from "react";
+import { FilepickerDropzone } from "@/registry/radix-nova/filepicker-dropzone";
 
 export function FilepickerDropzoneInteractiveExample() {
-  const [files, setFiles] = useState<string[]>([])
+  const [files, setFiles] = useState<string[]>([]);
 
   return (
     <div className="space-y-2">
@@ -20,12 +20,14 @@ export function FilepickerDropzoneInteractiveExample() {
         multiple
         maxSize={1 * 1024 * 1024}
         onChange={(selectedFiles) => {
-          setFiles(selectedFiles.map((file) => file.name))
+          setFiles(selectedFiles.map((file) => file.name));
         }}
       />
       <p className="text-xs text-muted-foreground">
-        {files.length > 0 ? `${files.length} file(s): ${files.join(", ")}` : "No files selected yet."}
+        {files.length > 0
+          ? `${files.length} file(s): ${files.join(", ")}`
+          : "No files selected yet."}
       </p>
     </div>
-  )
+  );
 }

@@ -1,58 +1,55 @@
-"use client"
+"use client";
 
-import { FileUpIcon } from "lucide-react"
-import {
-  useDropzone,
-  type Accept,
-  type FileRejection,
-  type FileWithPath,
-} from "react-dropzone"
+import { FileUpIcon } from "lucide-react";
+import { useDropzone, type Accept, type FileRejection, type FileWithPath } from "react-dropzone";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   Field,
   FieldContent,
   FieldDescription,
   FieldError,
   FieldLabel,
-} from "@/components/ui/field"
-import { useCallback, useEffect, useEffectEvent, useMemo } from "react"
+} from "@/components/ui/field";
+import { useCallback, useEffect, useEffectEvent, useMemo } from "react";
 
 export interface FilepickerDropzoneLabels {
-  upload: string
-  drag: string
-  active: string
-  reject: string
-  rejectInvalidType: string
-  rejectTooLarge: string
-  rejectTooSmall: string
-  rejectTooMany: string
-  selectedCount: string
+  upload: string;
+  drag: string;
+  active: string;
+  reject: string;
+  rejectInvalidType: string;
+  rejectTooLarge: string;
+  rejectTooSmall: string;
+  rejectTooMany: string;
+  selectedCount: string;
 }
 
-export interface FilepickerDropzoneProps
-  extends Omit<React.ComponentProps<typeof Field>, "children" | "onChange"> {
-  id: string
-  name?: string
-  label?: React.ReactNode
-  description?: React.ReactNode
-  error?: React.ReactNode
-  accept?: Accept
-  multiple?: boolean
-  disabled?: boolean
-  required?: boolean
-  maxFiles?: number
-  maxSize?: number
-  minSize?: number
-  icon?: React.ReactNode
-  labelClassName?: string
-  contentClassName?: string
-  descriptionClassName?: string
-  errorClassName?: string
-  dropzoneClassName?: string
-  labels?: Partial<FilepickerDropzoneLabels>
-  onChange?: (files: readonly FileWithPath[]) => void
-  onDropRejected?: (fileRejections: FileRejection[]) => void
+export interface FilepickerDropzoneProps extends Omit<
+  React.ComponentProps<typeof Field>,
+  "children" | "onChange"
+> {
+  id: string;
+  name?: string;
+  label?: React.ReactNode;
+  description?: React.ReactNode;
+  error?: React.ReactNode;
+  accept?: Accept;
+  multiple?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  maxFiles?: number;
+  maxSize?: number;
+  minSize?: number;
+  icon?: React.ReactNode;
+  labelClassName?: string;
+  contentClassName?: string;
+  descriptionClassName?: string;
+  errorClassName?: string;
+  dropzoneClassName?: string;
+  labels?: Partial<FilepickerDropzoneLabels>;
+  onChange?: (files: readonly FileWithPath[]) => void;
+  onDropRejected?: (fileRejections: FileRejection[]) => void;
 }
 
 const defaultLabels: FilepickerDropzoneLabels = {
@@ -65,10 +62,10 @@ const defaultLabels: FilepickerDropzoneLabels = {
   rejectTooSmall: "One or more files are below the minimum size.",
   rejectTooMany: "Too many files selected.",
   selectedCount: "{{count}} files selected",
-}
+};
 
 function interpolateCount(template: string, count: number) {
-  return template.replace(/\{\{\s*count\s*\}\}|\{count\}/g, String(count))
+  return template.replace(/\{\{\s*count\s*\}\}|\{count\}/g, String(count));
 }
 
 function FilepickerDropzone({
@@ -96,21 +93,19 @@ function FilepickerDropzone({
   onDropRejected,
   ...props
 }: FilepickerDropzoneProps) {
-  const mergedLabels = { ...defaultLabels, ...labels }
-  const descriptionId = description ? `${id}-description` : undefined
+  const mergedLabels = { ...defaultLabels, ...labels };
+  const descriptionId = description ? `${id}-description` : undefined;
 
-  const onAcceptedFilesChange = useEffectEvent(
-    (files: readonly FileWithPath[]) => {
-      onChange?.(files)
-    }
-  )
+  const onAcceptedFilesChange = useEffectEvent((files: readonly FileWithPath[]) => {
+    onChange?.(files);
+  });
 
   const onRejectedFiles = useCallback(
     (rejections: FileRejection[]) => {
-      onDropRejected?.(rejections)
+      onDropRejected?.(rejections);
     },
-    [onDropRejected]
-  )
+    [onDropRejected],
+  );
 
   const {
     acceptedFiles,
@@ -128,42 +123,42 @@ function FilepickerDropzone({
     maxSize,
     minSize,
     onDropRejected: onRejectedFiles,
-  })
+  });
 
   const rejectionMessages = useMemo(() => {
     if (fileRejections.length === 0) {
-      return []
+      return [];
     }
 
     const codes = new Set(
       fileRejections.flatMap((rejection) =>
-        rejection.errors.map((dropzoneError) => dropzoneError.code)
-      )
-    )
+        rejection.errors.map((dropzoneError) => dropzoneError.code),
+      ),
+    );
 
-    const messages: string[] = []
+    const messages: string[] = [];
 
     if (codes.has("file-invalid-type")) {
-      messages.push(mergedLabels.rejectInvalidType)
+      messages.push(mergedLabels.rejectInvalidType);
     }
 
     if (codes.has("file-too-large")) {
-      messages.push(mergedLabels.rejectTooLarge)
+      messages.push(mergedLabels.rejectTooLarge);
     }
 
     if (codes.has("file-too-small")) {
-      messages.push(mergedLabels.rejectTooSmall)
+      messages.push(mergedLabels.rejectTooSmall);
     }
 
     if (codes.has("too-many-files")) {
-      messages.push(mergedLabels.rejectTooMany)
+      messages.push(mergedLabels.rejectTooMany);
     }
 
     if (messages.length === 0) {
-      messages.push(mergedLabels.reject)
+      messages.push(mergedLabels.reject);
     }
 
-    return messages
+    return messages;
   }, [
     fileRejections,
     mergedLabels.reject,
@@ -171,20 +166,17 @@ function FilepickerDropzone({
     mergedLabels.rejectTooLarge,
     mergedLabels.rejectTooSmall,
     mergedLabels.rejectTooMany,
-  ])
+  ]);
 
-  const hasError = Boolean(error) || rejectionMessages.length > 0
-  const errorId = hasError ? `${id}-error` : undefined
-  const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || undefined
+  const hasError = Boolean(error) || rejectionMessages.length > 0;
+  const errorId = hasError ? `${id}-error` : undefined;
+  const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || undefined;
 
   useEffect(() => {
-    onAcceptedFilesChange(acceptedFiles)
-  }, [acceptedFiles])
+    onAcceptedFilesChange(acceptedFiles);
+  }, [acceptedFiles]);
 
-  const selectedCountLabel = interpolateCount(
-    mergedLabels.selectedCount,
-    acceptedFiles.length
-  )
+  const selectedCountLabel = interpolateCount(mergedLabels.selectedCount, acceptedFiles.length);
 
   return (
     <Field
@@ -210,14 +202,14 @@ function FilepickerDropzone({
         <div
           {...getRootProps({
             className: cn(
-              "dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 relative rounded-lg border border-dashed bg-transparent p-4 transition-colors outline-none focus-visible:ring-3 aria-invalid:ring-3",
+              "relative rounded-lg border border-dashed border-input bg-transparent p-4 transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
               disabled
-                ? "bg-input/50 dark:bg-input/80 pointer-events-none cursor-not-allowed opacity-50"
+                ? "pointer-events-none cursor-not-allowed bg-input/50 opacity-50 dark:bg-input/80"
                 : "cursor-pointer hover:bg-muted/30",
               isDragActive && "border-primary bg-primary/5",
               isDragReject && "border-destructive/60 bg-destructive/5",
-              isFocused && "border-ring ring-ring/50 ring-3",
-              dropzoneClassName
+              isFocused && "border-ring ring-3 ring-ring/50",
+              dropzoneClassName,
             ),
             "aria-invalid": hasError ? true : undefined,
           })}
@@ -236,7 +228,7 @@ function FilepickerDropzone({
               className={cn(
                 "text-muted-foreground",
                 isDragActive && "text-primary",
-                isDragReject && "text-destructive"
+                isDragReject && "text-destructive",
               )}
               aria-hidden="true"
             >
@@ -244,21 +236,17 @@ function FilepickerDropzone({
             </span>
             <p className="text-sm">
               {isDragReject && (
-                <span className="text-destructive font-medium">
-                  {mergedLabels.reject}
-                </span>
+                <span className="font-medium text-destructive">{mergedLabels.reject}</span>
               )}
               {!isDragReject && isDragActive && (
-                <span className="text-primary font-medium">{mergedLabels.active}</span>
+                <span className="font-medium text-primary">{mergedLabels.active}</span>
               )}
               {!isDragReject && !isDragActive && acceptedFiles.length > 0 && (
                 <span className="font-medium">{selectedCountLabel}</span>
               )}
               {!isDragReject && !isDragActive && acceptedFiles.length === 0 && (
                 <>
-                  <span className="text-foreground font-medium">
-                    {mergedLabels.upload}
-                  </span>{" "}
+                  <span className="font-medium text-foreground">{mergedLabels.upload}</span>{" "}
                   <span className="text-muted-foreground">{mergedLabels.drag}</span>
                 </>
               )}
@@ -279,7 +267,7 @@ function FilepickerDropzone({
         ) : null}
       </FieldContent>
     </Field>
-  )
+  );
 }
 
-export { FilepickerDropzone }
+export { FilepickerDropzone };

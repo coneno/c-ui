@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AlertDialogProvider, useAlert } from "@/registry/radix-nova/alert-provider"
-import { Button } from "@/registry/radix-nova/button"
+import { useState } from "react";
+import { AlertDialogProvider, useAlert } from "@/registry/radix-nova/alert-provider";
+import { Button } from "@/registry/radix-nova/button";
 
 function AlertExampleContent() {
-  const alert = useAlert()
-  const [status, setStatus] = useState("No alert shown yet.")
+  const alert = useAlert();
+  const [status, setStatus] = useState("No alert shown yet.");
 
   const openAlert = async () => {
     await alert({
       title: "Heads up",
       description: "This is an interactive alert demo.",
-    })
-    setStatus("Alert dismissed.")
-  }
+    });
+    setStatus("Alert dismissed.");
+  };
 
   return (
     <div className="space-y-2">
@@ -23,7 +23,7 @@ function AlertExampleContent() {
       </Button>
       <p className="text-xs text-muted-foreground">{status}</p>
     </div>
-  )
+  );
 }
 
 export function AlertDialogInteractiveExample() {
@@ -35,5 +35,5 @@ export function AlertDialogInteractiveExample() {
     >
       <AlertExampleContent />
     </AlertDialogProvider>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { Button } from "@/registry/radix-nova/button"
+import { Button } from "@/registry/radix-nova/button";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/registry/radix-nova/dialog"
+} from "@/registry/radix-nova/dialog";
 
 export function DialogInteractiveExample() {
   return (
@@ -25,5 +25,5 @@ export function DialogInteractiveExample() {
         <DialogFooter showCloseButton closeLabel="Dismiss" />
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "endOfLine": "lf",
+  "ignorePatterns": ["*.md"],
+  "insertFinalNewline": true,
+  "overrides": [
+    {
+      "files": ["*.json", "**/*.json", "*.jsonc", "**/*.jsonc"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ],
+  "sortPackageJson": true,
+  "sortTailwindcss": {
+    "functions": ["cn", "cva"],
+    "stylesheet": "app/globals.css"
+  },
+  "tabWidth": 2,
+  "useTabs": false
+}

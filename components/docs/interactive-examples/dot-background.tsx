@@ -1,4 +1,4 @@
-import { DotBackground } from "@/registry/radix-nova/dot-background"
+import { DotBackground } from "@/registry/radix-nova/dot-background";
 
 const colorVariants = [
   {
@@ -26,7 +26,7 @@ const colorVariants = [
     label: "Secondary",
     description: "Works well inside layered UIs.",
   },
-] as const
+] as const;
 
 const spacingVariants = [
   {
@@ -49,18 +49,14 @@ const spacingVariants = [
     label: "Loose",
     description: "Sparse dots for subtle decoration.",
   },
-] as const
+] as const;
 
 export function DotBackgroundInteractiveExample() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {colorVariants.map(({ variant, label, description }) => (
-          <DotBackground
-            key={variant}
-            variant={variant}
-            className="rounded-xl border p-4"
-          >
+          <DotBackground key={variant} variant={variant} className="rounded-xl border p-4">
             <div className="flex min-h-28 flex-col justify-between gap-4">
               <div className="flex flex-col gap-1">
                 <div className="text-sm font-medium">{label}</div>
@@ -95,8 +91,7 @@ export function DotBackgroundInteractiveExample() {
         variant="custom"
         spacing="custom"
         vars={{
-          backgroundColor:
-            "color-mix(in oklab, var(--primary) 10%, var(--background))",
+          backgroundColor: "color-mix(in oklab, var(--primary) 10%, var(--background))",
           dotColor: "color-mix(in oklab, var(--primary) 28%, transparent)",
           spacing: 24,
           dotSize: 2,
@@ -107,15 +102,12 @@ export function DotBackgroundInteractiveExample() {
           <div className="flex flex-col gap-1">
             <div className="text-sm font-medium">Custom</div>
             <p className="text-sm text-muted-foreground">
-              Override surface color, dot color, spacing, and dot size with
-              `vars`.
+              Override surface color, dot color, spacing, and dot size with `vars`.
             </p>
           </div>
-          <div className="text-xs text-muted-foreground">
-            {`variant="custom" spacing="custom"`}
-          </div>
+          <div className="text-xs text-muted-foreground">{`variant="custom" spacing="custom"`}</div>
         </div>
       </DotBackground>
     </div>
-  )
+  );
 }

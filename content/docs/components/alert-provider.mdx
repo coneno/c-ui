@@ -24,33 +24,33 @@ npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/alert-provider.
 ## Usage
 
 ```tsx
-import { Button } from "@/components/ui/button"
-import { AlertDialogProvider, useAlert } from "@/components/c-ui/alert-provider"
+import { Button } from "@/components/ui/button";
+import { AlertDialogProvider, useAlert } from "@/components/c-ui/alert-provider";
 
 function AlertAction() {
-	const alert = useAlert()
+  const alert = useAlert();
 
-	return (
-		<Button
-			onClick={() =>
-				void alert({
-					title: "Heads up",
-					description: "Your changes were applied.",
-					buttonLabel: "OK",
-				})
-			}
-		>
-			Open alert
-		</Button>
-	)
+  return (
+    <Button
+      onClick={() =>
+        void alert({
+          title: "Heads up",
+          description: "Your changes were applied.",
+          buttonLabel: "OK",
+        })
+      }
+    >
+      Open alert
+    </Button>
+  );
 }
 
 export function AlertExample() {
-	return (
-		<AlertDialogProvider>
-			<AlertAction />
-		</AlertDialogProvider>
-	)
+  return (
+    <AlertDialogProvider>
+      <AlertAction />
+    </AlertDialogProvider>
+  );
 }
 ```
 
@@ -59,19 +59,19 @@ export function AlertExample() {
 `AlertDialogProvider` can define app-level copy defaults. Per-call values passed to `alert()` still win.
 
 ```tsx
-import { AlertDialogProvider } from "@/components/c-ui/alert-provider"
+import { AlertDialogProvider } from "@/components/c-ui/alert-provider";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
-	return (
-		<AlertDialogProvider
-			messages={{
-				title: "Notice",
-				buttonLabel: "Understood",
-			}}
-		>
-			{children}
-		</AlertDialogProvider>
-	)
+  return (
+    <AlertDialogProvider
+      messages={{
+        title: "Notice",
+        buttonLabel: "Understood",
+      }}
+    >
+      {children}
+    </AlertDialogProvider>
+  );
 }
 ```
 
@@ -79,20 +79,20 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
 `AlertDialogProvider` accepts:
 
-| Prop | Type | Default | Notes |
-| --- | --- | --- | --- |
+| Prop       | Type                           | Default     | Notes                   |
+| ---------- | ------------------------------ | ----------- | ----------------------- |
 | `messages` | `Partial<AlertDialogMessages>` | `undefined` | App-level copy defaults |
 
 `useAlert()` accepts these options:
 
-| Option | Type | Default | Notes |
-| --- | --- | --- | --- |
-| `title` | `string` | Provider default or `"Notice"` | Dialog title |
-| `description` | `string` | `""` | Supporting text under title |
-| `buttonLabel` | `string` | Provider default or `"OK"` | Dismiss button label |
-| `dismissButtonVariant` | `AlertDialogCancel["variant"]` | `"default"` | Button style variant |
-| `dismissButtonClassName` | `string` | `undefined` | Extra class names for dismiss button |
-| `children` | `ReactNode` | `undefined` | Optional custom content between description and footer |
+| Option                   | Type                           | Default                        | Notes                                                  |
+| ------------------------ | ------------------------------ | ------------------------------ | ------------------------------------------------------ |
+| `title`                  | `string`                       | Provider default or `"Notice"` | Dialog title                                           |
+| `description`            | `string`                       | `""`                           | Supporting text under title                            |
+| `buttonLabel`            | `string`                       | Provider default or `"OK"`     | Dismiss button label                                   |
+| `dismissButtonVariant`   | `AlertDialogCancel["variant"]` | `"default"`                    | Button style variant                                   |
+| `dismissButtonClassName` | `string`                       | `undefined`                    | Extra class names for dismiss button                   |
+| `children`               | `ReactNode`                    | `undefined`                    | Optional custom content between description and footer |
 
 API behavior:
 

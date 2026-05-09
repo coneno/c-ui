@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/registry/radix-nova/button"
-import { ConfirmDialogProvider, useConfirm } from "@/registry/radix-nova/confirm-provider"
+import { useState } from "react";
+import { Button } from "@/registry/radix-nova/button";
+import { ConfirmDialogProvider, useConfirm } from "@/registry/radix-nova/confirm-provider";
 
 function ConfirmExampleContent() {
-  const confirm = useConfirm()
-  const [status, setStatus] = useState("No decision yet.")
+  const confirm = useConfirm();
+  const [status, setStatus] = useState("No decision yet.");
 
   const openConfirm = async () => {
     const isConfirmed = await confirm({
@@ -17,9 +17,9 @@ function ConfirmExampleContent() {
         confirmTerm: "DELETE",
         hint: "Type DELETE to enable the button.",
       },
-    })
-    setStatus(isConfirmed ? "Confirmed." : "Cancelled.")
-  }
+    });
+    setStatus(isConfirmed ? "Confirmed." : "Cancelled.");
+  };
 
   return (
     <div className="space-y-2">
@@ -28,7 +28,7 @@ function ConfirmExampleContent() {
       </Button>
       <p className="text-xs text-muted-foreground">{status}</p>
     </div>
-  )
+  );
 }
 
 export function ConfirmDialogInteractiveExample() {
@@ -42,5 +42,5 @@ export function ConfirmDialogInteractiveExample() {
     >
       <ConfirmExampleContent />
     </ConfirmDialogProvider>
-  )
+  );
 }

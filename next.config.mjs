@@ -4,9 +4,9 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/c-ui";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	output: "export",
-	trailingSlash: true,
-	...(basePath ? { basePath } : {}),
+  output: "export",
+  trailingSlash: true,
+  ...(basePath ? { basePath } : {}),
 };
 
 const withMDX = createMDX();

@@ -24,39 +24,39 @@ npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/confirm.json
 ## Usage
 
 ```tsx
-import { Button } from "@/components/ui/button"
-import { ConfirmDialogProvider, useConfirm } from "@/components/c-ui/confirm-provider"
+import { Button } from "@/components/ui/button";
+import { ConfirmDialogProvider, useConfirm } from "@/components/c-ui/confirm-provider";
 
 function DeleteAction() {
-	const confirm = useConfirm()
+  const confirm = useConfirm();
 
-	return (
-		<Button
-			variant="destructive"
-			onClick={async () => {
-				const confirmed = await confirm({
-					title: "Delete item?",
-					description: "This action cannot be undone.",
-					confirmButtonText: "Delete",
-					variant: "destructive",
-				})
+  return (
+    <Button
+      variant="destructive"
+      onClick={async () => {
+        const confirmed = await confirm({
+          title: "Delete item?",
+          description: "This action cannot be undone.",
+          confirmButtonText: "Delete",
+          variant: "destructive",
+        });
 
-				if (confirmed) {
-					// perform destructive action
-				}
-			}}
-		>
-			Delete item
-		</Button>
-	)
+        if (confirmed) {
+          // perform destructive action
+        }
+      }}
+    >
+      Delete item
+    </Button>
+  );
 }
 
 export function ConfirmExample() {
-	return (
-		<ConfirmDialogProvider>
-			<DeleteAction />
-		</ConfirmDialogProvider>
-	)
+  return (
+    <ConfirmDialogProvider>
+      <DeleteAction />
+    </ConfirmDialogProvider>
+  );
 }
 ```
 
@@ -65,23 +65,23 @@ export function ConfirmExample() {
 `ConfirmDialogProvider` can define app-level defaults for copy and variant. Per-call values passed to `confirm()` still win.
 
 ```tsx
-import { ConfirmDialogProvider } from "@/components/c-ui/confirm-provider"
+import { ConfirmDialogProvider } from "@/components/c-ui/confirm-provider";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
-	return (
-		<ConfirmDialogProvider
-			defaultVariant="destructive"
-			messages={{
-				title: "Please confirm",
-				description: "Review this action before continuing.",
-				confirmButtonText: "Continue",
-				cancelButtonText: "Go back",
-				requireConfirmationLabel: "Type {{confirmTerm}} to continue",
-			}}
-		>
-			{children}
-		</ConfirmDialogProvider>
-	)
+  return (
+    <ConfirmDialogProvider
+      defaultVariant="destructive"
+      messages={{
+        title: "Please confirm",
+        description: "Review this action before continuing.",
+        confirmButtonText: "Continue",
+        cancelButtonText: "Go back",
+        requireConfirmationLabel: "Type {{confirmTerm}} to continue",
+      }}
+    >
+      {children}
+    </ConfirmDialogProvider>
+  );
 }
 ```
 
@@ -90,37 +90,37 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 Keep translation hooks in your app and pass the resolved strings into the provider:
 
 ```tsx
-"use client"
+"use client";
 
-import type { ReactNode } from "react"
-import { useTranslations } from "next-intl"
-import { AlertDialogProvider } from "@/components/c-ui/alert-provider"
-import { ConfirmDialogProvider } from "@/components/c-ui/confirm-provider"
+import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
+import { AlertDialogProvider } from "@/components/c-ui/alert-provider";
+import { ConfirmDialogProvider } from "@/components/c-ui/confirm-provider";
 
 export function AppDialogProviders({ children }: { children: ReactNode }) {
-	const tConfirm = useTranslations("dialogs.confirm")
-	const tAlert = useTranslations("dialogs.alert")
+  const tConfirm = useTranslations("dialogs.confirm");
+  const tAlert = useTranslations("dialogs.alert");
 
-	return (
-		<AlertDialogProvider
-			messages={{
-				title: tAlert("title"),
-				buttonLabel: tAlert("buttonLabel"),
-			}}
-		>
-			<ConfirmDialogProvider
-				messages={{
-					title: tConfirm("title"),
-					description: tConfirm("description"),
-					confirmButtonText: tConfirm("confirmButtonText"),
-					cancelButtonText: tConfirm("cancelButtonText"),
-					requireConfirmationLabel: tConfirm("requireConfirmationLabel"),
-				}}
-			>
-				{children}
-			</ConfirmDialogProvider>
-		</AlertDialogProvider>
-	)
+  return (
+    <AlertDialogProvider
+      messages={{
+        title: tAlert("title"),
+        buttonLabel: tAlert("buttonLabel"),
+      }}
+    >
+      <ConfirmDialogProvider
+        messages={{
+          title: tConfirm("title"),
+          description: tConfirm("description"),
+          confirmButtonText: tConfirm("confirmButtonText"),
+          cancelButtonText: tConfirm("cancelButtonText"),
+          requireConfirmationLabel: tConfirm("requireConfirmationLabel"),
+        }}
+      >
+        {children}
+      </ConfirmDialogProvider>
+    </AlertDialogProvider>
+  );
 }
 ```
 
@@ -132,28 +132,28 @@ The `dialogs.confirm.requireConfirmationLabel` message should keep the `{{confir
 
 `ConfirmDialogProvider` accepts:
 
-| Prop | Type | Default | Notes |
-| --- | --- | --- | --- |
-| `messages` | `Partial<ConfirmDialogMessages>` | `undefined` | App-level copy defaults |
-| `defaultVariant` | `"default" \| "destructive"` | `"default"` | Default confirm button variant |
+| Prop             | Type                             | Default     | Notes                          |
+| ---------------- | -------------------------------- | ----------- | ------------------------------ |
+| `messages`       | `Partial<ConfirmDialogMessages>` | `undefined` | App-level copy defaults        |
+| `defaultVariant` | `"default" \| "destructive"`     | `"default"` | Default confirm button variant |
 
 `useConfirm()` accepts these options:
 
-| Option | Type | Default | Notes |
-| --- | --- | --- | --- |
-| `title` | `string` | Provider default or `"Confirm Action"` | Dialog title |
-| `description` | `string` | Provider default or `"Are you sure you want to proceed?"` | Description text |
-| `confirmButtonText` | `string` | Provider default or `"Confirm"` | Confirm action label |
-| `cancelButtonText` | `string` | Provider default or `"Cancel"` | Cancel action label |
-| `variant` | `"default" \| "destructive"` | Provider `defaultVariant` or `"default"` | Confirm button style |
-| `requireConfirmationInput` | `RequireConfirmationInput` | `undefined` | Forces typed confirmation |
+| Option                     | Type                         | Default                                                   | Notes                     |
+| -------------------------- | ---------------------------- | --------------------------------------------------------- | ------------------------- |
+| `title`                    | `string`                     | Provider default or `"Confirm Action"`                    | Dialog title              |
+| `description`              | `string`                     | Provider default or `"Are you sure you want to proceed?"` | Description text          |
+| `confirmButtonText`        | `string`                     | Provider default or `"Confirm"`                           | Confirm action label      |
+| `cancelButtonText`         | `string`                     | Provider default or `"Cancel"`                            | Cancel action label       |
+| `variant`                  | `"default" \| "destructive"` | Provider `defaultVariant` or `"default"`                  | Confirm button style      |
+| `requireConfirmationInput` | `RequireConfirmationInput`   | `undefined`                                               | Forces typed confirmation |
 
 `RequireConfirmationInput`:
 
-| Field | Type | Required | Notes |
-| --- | --- | --- | --- |
-| `confirmTerm` | `string` | Yes | Exact term user must type |
-| `label` | `string` | No | Per-call label. Supports `{{confirmTerm}}` placeholder. |
-| `hint` | `string` | No | Helper text below input |
+| Field         | Type     | Required | Notes                                                   |
+| ------------- | -------- | -------- | ------------------------------------------------------- |
+| `confirmTerm` | `string` | Yes      | Exact term user must type                               |
+| `label`       | `string` | No       | Per-call label. Supports `{{confirmTerm}}` placeholder. |
+| `hint`        | `string` | No       | Helper text below input                                 |
 
 `ConfirmDialogProvider.messages.requireConfirmationLabel` uses the same `{{confirmTerm}}` placeholder as `RequireConfirmationInput.label`.

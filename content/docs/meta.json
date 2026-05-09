@@ -1,9 +1,4 @@
 {
-	"title": "c-ui registry docs",
-	"pages": [
-		"--- Overview ---",
-		"index",
-		"--- Components ---",
-		"...components"
-	]
+  "title": "c-ui registry docs",
+  "pages": ["--- Overview ---", "index", "--- Components ---", "...components"]
 }
