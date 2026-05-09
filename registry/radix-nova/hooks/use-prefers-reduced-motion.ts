@@ -1,0 +1,19 @@
+"use client";
+
+import * as React from "react";
+
+export function usePrefersReducedMotion() {
+  const [reducedMotion, setReducedMotion] = React.useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(mediaQuery.matches);
+
+    update();
+    mediaQuery.addEventListener("change", update);
+
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  return reducedMotion;
+}

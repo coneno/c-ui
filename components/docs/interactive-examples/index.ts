@@ -1,4 +1,5 @@
 export { AlertDialogInteractiveExample } from "./alert-dialog";
+export { BubbleBackgroundInteractiveExample } from "./bubble-background";
 export { ButtonInteractiveExample } from "./button";
 export { ConfirmDialogInteractiveExample } from "./confirm-dialog";
 export { DialogInteractiveExample } from "./dialog";

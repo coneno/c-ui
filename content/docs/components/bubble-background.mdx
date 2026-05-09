@@ -1,0 +1,119 @@
+---
+title: Bubble Background
+description: Animated gradient bubble layers for auth screens, sidebars, and themed surfaces.
+---
+
+import { BubbleBackgroundInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/bubble-background
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/bubble-background.json
+```
+
+## Live Example
+
+<div className="not-prose">
+  <BubbleBackgroundInteractiveExample />
+</div>
+
+## Usage
+
+```tsx
+"use client";
+
+import {
+  BubbleBackground,
+  DEFAULT_BUBBLE_VIGNETTE,
+  type BubbleBackgroundLayer,
+} from "@/components/c-ui/bubble-background";
+
+const heroLayers: BubbleBackgroundLayer[] = [
+  {
+    id: "hero",
+    backdrop: [
+      "radial-gradient(circle at 18% 18%, hsl(198 76% 96% / 0.92), transparent 40%)",
+      "radial-gradient(circle at 84% 78%, hsl(332 62% 94% / 0.72), transparent 44%)",
+      "linear-gradient(180deg, hsl(210 38% 98%), hsl(328 34% 95%))",
+    ].join(","),
+    overlay: "linear-gradient(180deg, hsl(0 0% 100% / 0.08), hsl(220 30% 98% / 0.24))",
+    vignette: DEFAULT_BUBBLE_VIGNETTE,
+    blur: 70,
+    motion: {
+      driftMinMs: 45_000,
+      driftMaxMs: 80_000,
+      waypoints: 3,
+      overshoot: 0.2,
+    },
+    bubbles: [
+      {
+        id: "hero-1",
+        initialX: 0.12,
+        initialY: 0.18,
+        width: 480,
+        height: 560,
+        color: "hsl(198 88% 78%)",
+        highlightColor: "hsl(198 96% 90%)",
+        opacity: 0.34,
+      },
+    ],
+  },
+];
+
+export function HeroBubbleBackground() {
+  return <BubbleBackground layers={heroLayers} />;
+}
+```
+
+## Layer Model
+
+Each `BubbleBackground` accepts one or more layers. A layer provides the backdrop gradients, optional overlay or vignette, blur strength, motion settings, and the list of bubbles to animate.
+
+`initialX` and `initialY` are relative positions based on the container width and height. Values outside `0` to `1` are valid when you want bubbles to start beyond the visible edges.
+
+## Reduced Motion
+
+By default the component reads `prefers-reduced-motion` on the client and falls back to a static composition during the first render. Pass `reducedMotion={true}` to lock the background into a fully static render, or `reducedMotion={false}` to force animation.
+
+## BubbleBackground Props
+
+- `layers`: `BubbleBackgroundLayer[]`. Required.
+- `className`: `string | undefined`. Extends the absolute root wrapper.
+- `reducedMotion`: `boolean | null | undefined`. Overrides the media-query result.
+
+## BubbleBackgroundLayer Shape
+
+- `id`: Stable layer key.
+- `bubbles`: Array of `BubbleBackgroundBubble` items.
+- `backdrop`: CSS background string for the layer base.
+- `motion`: Shared drift settings for the layer.
+- `overlay`: Optional CSS background string rendered above the bubbles.
+- `vignette`: Optional finishing gradient.
+- `blur`: Optional blur radius in pixels. Defaults to `50`.
+- `bubbleContainerClassName`: Optional class for the blurred bubble container.
+- `transitionClassName`: Optional class applied when motion is allowed.
+- `initialSize`: Optional fallback width and height used before `ResizeObserver` measures the container.
+
+## BubbleBackgroundBubble Shape
+
+- `id`: Stable bubble key.
+- `initialX`: Relative horizontal start position.
+- `initialY`: Relative vertical start position.
+- `width`: Bubble width in pixels.
+- `height`: Optional height in pixels. Defaults to the same value as `width`.
+- `color`: Main bubble color.
+- `highlightColor`: Optional highlight color. Defaults to `color`.
+- `opacity`: Optional opacity. Defaults to `1`.
+
+## BubbleBackgroundMotion Shape
+
+- `driftMinMs`: Minimum animation duration for one drift segment.
+- `driftMaxMs`: Maximum animation duration for one drift segment.
+- `waypoints`: Number of generated intermediate positions per drift segment.
+- `overshoot`: Fraction of the container that bubbles may travel beyond each edge.

@@ -82,6 +82,25 @@
       "style": "radix-nova"
     },
     {
+      "name": "bubble-background",
+      "type": "registry:component",
+      "title": "Bubble Background",
+      "description": "Animated gradient bubble layers for auth screens, sidebars, and themed surfaces.",
+      "files": [
+        {
+          "path": "registry/radix-nova/bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/bubble-background.tsx"
+        },
+        {
+          "path": "registry/radix-nova/hooks/use-prefers-reduced-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/c-ui/use-prefers-reduced-motion.ts"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
       "name": "loading-button",
       "type": "registry:component",
       "title": "Loading Button",
