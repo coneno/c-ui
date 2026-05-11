@@ -1,0 +1,70 @@
+---
+title: Full Screen Bubble Background
+description: High-level full-screen bubble background for auth, onboarding, and hero surfaces.
+---
+
+import { FullScreenBubbleBackgroundInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/full-screen-bubble-background
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/full-screen-bubble-background.json
+```
+
+This item installs `BubbleBackground` automatically through its registry dependency.
+
+## Live Example
+
+<div className="not-prose">
+  <FullScreenBubbleBackgroundInteractiveExample />
+</div>
+
+## Usage
+
+```tsx
+"use client";
+
+import { FullScreenBubbleBackground } from "@/components/c-ui/full-screen-bubble-background";
+
+export function AuthBubbleBackground() {
+  return (
+    <FullScreenBubbleBackground
+      theme={{
+        hue: 220,
+        accentHue: 255,
+      }}
+    />
+  );
+}
+```
+
+## FullScreenBubbleBackground Props
+
+- `className`: `string | undefined`. Extends the absolute root wrapper.
+- `theme`: `FullScreenBubbleBackgroundTheme | undefined`. Tunes the palette.
+- `bubbleCount`: `number | undefined`. Defaults to `10`.
+- `blur`: `number | undefined`. Defaults to `65`.
+- `motion`: `BubbleBackgroundMotion | undefined`. Overrides the default drift timings.
+- `initialSize`: `{ width: number; height: number } | undefined`. Fallback container size before measurement.
+- `reducedMotion`: `boolean | null | undefined`. Overrides the media-query result.
+- `seed`: `number | undefined`. Overrides the mount-time bubble seed when you need reproducible placement.
+
+## FullScreenBubbleBackgroundTheme Shape
+
+- `hue`: Base hue in degrees. Defaults to `220`.
+- `accentHue`: Secondary hue for the backdrop gradients. Defaults to `hue + 35`.
+- `hueSpread`: Hue variation across generated bubbles. Defaults to `35`.
+- `saturation`: Base saturation percentage. Defaults to `68`.
+- `lightness`: Base lightness percentage. Defaults to `72`.
+- `opacity`: Base bubble opacity. Defaults to `0.38`.
+- `overlay`: Overlay strength from `0` to `1`. Defaults to `0.2`.
+
+## When To Use It
+
+Use `FullScreenBubbleBackground` when the generic `BubbleBackground` API is more flexible than you need and you want a good full-screen default for auth, onboarding, or editorial hero surfaces.

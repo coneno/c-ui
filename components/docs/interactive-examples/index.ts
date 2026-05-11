@@ -5,4 +5,6 @@ export { ConfirmDialogInteractiveExample } from "./confirm-dialog";
 export { DialogInteractiveExample } from "./dialog";
 export { DotBackgroundInteractiveExample } from "./dot-background";
 export { FilepickerDropzoneInteractiveExample } from "./filepicker-dropzone";
+export { FullScreenBubbleBackgroundInteractiveExample } from "./full-screen-bubble-background";
 export { LoadingButtonInteractiveExample } from "./loading-button";
+export { SidebarBubbleBackgroundInteractiveExample } from "./sidebar-bubble-background";

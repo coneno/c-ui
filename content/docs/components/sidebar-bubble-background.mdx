@@ -1,0 +1,72 @@
+---
+title: Sidebar Bubble Background
+description: Theme-driven sidebar bubble background with crossfade transitions.
+---
+
+import { SidebarBubbleBackgroundInteractiveExample } from "@/components/docs/interactive-examples";
+
+## Install
+
+```bash
+npx shadcn@latest add @c-ui/sidebar-bubble-background
+```
+
+Direct URL install:
+
+```bash
+npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/sidebar-bubble-background.json
+```
+
+This item installs `BubbleBackground` automatically through its registry dependency.
+
+## Live Example
+
+<div className="not-prose">
+  <SidebarBubbleBackgroundInteractiveExample />
+</div>
+
+## Usage
+
+```tsx
+"use client";
+
+import {
+  SidebarBubbleBackground,
+  type SidebarBubbleBackgroundTheme,
+} from "@/components/c-ui/sidebar-bubble-background";
+
+const theme: SidebarBubbleBackgroundTheme = {
+  key: "study-alpha",
+  hue: 28,
+};
+
+export function StudySidebarBackground() {
+  return <SidebarBubbleBackground theme={theme} />;
+}
+```
+
+Changing `theme.key` creates a new layout and crossfades the old layer out.
+
+## SidebarBubbleBackground Props
+
+- `theme`: `SidebarBubbleBackgroundTheme | undefined`. Controls the palette and transition identity.
+- `className`: `string | undefined`. Extends the absolute root wrapper.
+- `reducedMotion`: `boolean | null | undefined`. Overrides the media-query result.
+- `bubbleCount`: `number | undefined`. Defaults to `12`.
+- `blur`: `number | undefined`. Defaults to `50`.
+- `motion`: `BubbleBackgroundMotion | undefined`. Overrides the default drift timings.
+- `initialSize`: `{ width: number; height: number } | undefined`. Fallback container size before measurement.
+
+## SidebarBubbleBackgroundTheme Shape
+
+- `key`: Stable theme key. Changing it triggers a crossfade to a new layout.
+- `hue`: Base hue in degrees.
+- `hueSpread`: Hue variation across bubbles in degrees. Defaults to `20`.
+- `saturation`: Saturation percentage. Defaults to `80`.
+- `lightness`: Lightness percentage. Defaults to `70`.
+- `opacity`: Bubble opacity from `0` to `1`. Defaults to `0.38`.
+- `overlay`: Softening overlay strength from `0` to `1`. Defaults to `0.6`.
+
+## When To Use It
+
+Use `SidebarBubbleBackground` when you want a higher-level sidebar surface that keeps the existing c-ui motion model but manages theme transitions for you.

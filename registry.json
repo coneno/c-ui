@@ -101,6 +101,46 @@
       "style": "radix-nova"
     },
     {
+      "name": "full-screen-bubble-background",
+      "type": "registry:component",
+      "title": "Full Screen Bubble Background",
+      "description": "High-level full-screen bubble surface for auth, onboarding, and hero layouts.",
+      "registryDependencies": ["@c-ui/bubble-background"],
+      "files": [
+        {
+          "path": "registry/radix-nova/bubble-background-helpers.ts",
+          "type": "registry:component",
+          "target": "components/c-ui/bubble-background-helpers.ts"
+        },
+        {
+          "path": "registry/radix-nova/full-screen-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/full-screen-bubble-background.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
+      "name": "sidebar-bubble-background",
+      "type": "registry:component",
+      "title": "Sidebar Bubble Background",
+      "description": "Theme-driven bubble background with crossfade transitions for sidebars.",
+      "registryDependencies": ["@c-ui/bubble-background"],
+      "files": [
+        {
+          "path": "registry/radix-nova/bubble-background-helpers.ts",
+          "type": "registry:component",
+          "target": "components/c-ui/bubble-background-helpers.ts"
+        },
+        {
+          "path": "registry/radix-nova/sidebar-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/sidebar-bubble-background.tsx"
+        }
+      ],
+      "style": "radix-nova"
+    },
+    {
       "name": "loading-button",
       "type": "registry:component",
       "title": "Loading Button",
