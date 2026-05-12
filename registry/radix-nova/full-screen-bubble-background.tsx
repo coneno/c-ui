@@ -166,7 +166,16 @@ export function FullScreenBubbleBackground({
   );
 
   const layers = useMemo<BubbleBackgroundLayer[]>(
-    () => [buildLayer(resolvedTheme, bubbleCount, blur, resolvedMotion, resolvedInitialSize, resolvedSeed)],
+    () => [
+      buildLayer(
+        resolvedTheme,
+        bubbleCount,
+        blur,
+        resolvedMotion,
+        resolvedInitialSize,
+        resolvedSeed,
+      ),
+    ],
     [blur, bubbleCount, resolvedInitialSize, resolvedMotion, resolvedSeed, resolvedTheme],
   );
 
