@@ -195,7 +195,7 @@ function BubbleLayer({
   );
 }
 
-function BubbleBackground({
+const BubbleBackground = React.memo(function BubbleBackground({
   layers,
   className,
   reducedMotion: reducedMotionProp,
@@ -225,6 +225,6 @@ function BubbleBackground({
       ))}
     </div>
   );
-}
+});
 
 export { BubbleBackground };

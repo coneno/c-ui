@@ -40,8 +40,20 @@ const theme: SidebarBubbleBackgroundTheme = {
   hue: 28,
 };
 
-export function StudySidebarBackground() {
-  return <SidebarBubbleBackground theme={theme} />;
+export function StudySidebarSurface() {
+  return (
+    <SidebarBubbleBackground theme={theme} className="flex h-full min-h-0 flex-col">
+      <header className="px-4 py-3 text-sm font-medium">Study Name</header>
+      <nav className="flex-1 space-y-2 px-3 pb-3">
+        <button type="button" className="w-full rounded-xl bg-white/60 px-3 py-2 text-left">
+          Overview
+        </button>
+        <button type="button" className="w-full rounded-xl px-3 py-2 text-left">
+          Participants
+        </button>
+      </nav>
+    </SidebarBubbleBackground>
+  );
 }
 ```
 
@@ -50,7 +62,8 @@ Changing `theme.key` creates a new layout and crossfades the old layer out.
 ## SidebarBubbleBackground Props
 
 - `theme`: `SidebarBubbleBackgroundTheme | undefined`. Controls the palette and transition identity.
-- `className`: `string | undefined`. Extends the absolute root wrapper.
+- `className`: `string | undefined`. Extends the root wrapper when `children` are present, or the absolute background layer when they are not.
+- `children`: `ReactNode | undefined`. Optional foreground content rendered above the animated background without extra `z-index` coordination.
 - `reducedMotion`: `boolean | null | undefined`. Overrides the media-query result.
 - `bubbleCount`: `number | undefined`. Defaults to `12`.
 - `blur`: `number | undefined`. Defaults to `50`.
@@ -69,4 +82,4 @@ Changing `theme.key` creates a new layout and crossfades the old layer out.
 
 ## When To Use It
 
-Use `SidebarBubbleBackground` when you want a higher-level sidebar surface that keeps the existing c-ui motion model but manages theme transitions for you.
+Use `SidebarBubbleBackground` when you want a higher-level sidebar surface that keeps the existing c-ui motion model but manages theme transitions for you. You can keep using it as a background-only layer, or pass `children` when you want the foreground sidebar chrome to live inside the same stable wrapper.

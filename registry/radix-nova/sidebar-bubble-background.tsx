@@ -19,6 +19,7 @@ import {
   type ResolvedBubbleBackgroundTheme,
 } from "@/registry/radix-nova/bubble-background-helpers";
 import { usePrefersReducedMotion } from "@/registry/radix-nova/hooks/use-prefers-reduced-motion";
+import { cn } from "@/lib/utils";
 
 export type SidebarBubbleBackgroundTheme = BubbleBackgroundTheme & {
   key: string;
@@ -71,18 +72,6 @@ const SIDEBAR_LAYER_KEYFRAMES = `
   }
 }
 `;
-
-function resolveTheme(theme?: SidebarBubbleBackgroundTheme): ResolvedTheme {
-  return {
-    key: theme?.key ?? "default",
-    hue: normalizeHue(theme?.hue ?? 28),
-    hueSpread: clamp(theme?.hueSpread ?? 20, 0, 180),
-    saturation: clamp(theme?.saturation ?? 80, 0, 100),
-    lightness: clamp(theme?.lightness ?? 70, 0, 100),
-    opacity: clamp(theme?.opacity ?? 0.38, 0, 1),
-    overlay: clamp(theme?.overlay ?? 0.6, 0, 1),
-  };
-}
 
 function themeSignature(theme: ResolvedTheme) {
   return `${theme.key}:${theme.hue}:${theme.hueSpread}:${theme.saturation}:${theme.lightness}:${theme.opacity}:${theme.overlay}`;
@@ -166,6 +155,7 @@ function createLayerState({
 export function SidebarBubbleBackground({
   theme,
   className,
+  children,
   reducedMotion: reducedMotionProp,
   bubbleCount = DEFAULT_BUBBLE_COUNT,
   blur = 50,
@@ -176,11 +166,56 @@ export function SidebarBubbleBackground({
   const reducedMotion =
     reducedMotionProp === undefined ? preferredReducedMotion : reducedMotionProp;
 
-  const resolvedTheme = resolveTheme(theme);
+  const themeKey = theme?.key ?? "default";
+  const themeHue = normalizeHue(theme?.hue ?? 28);
+  const themeHueSpread = clamp(theme?.hueSpread ?? 20, 0, 180);
+  const themeSaturation = clamp(theme?.saturation ?? 80, 0, 100);
+  const themeLightness = clamp(theme?.lightness ?? 70, 0, 100);
+  const themeOpacity = clamp(theme?.opacity ?? 0.38, 0, 1);
+  const themeOverlay = clamp(theme?.overlay ?? 0.6, 0, 1);
+  const resolvedTheme = useMemo(
+    () => ({
+      key: themeKey,
+      hue: themeHue,
+      hueSpread: themeHueSpread,
+      saturation: themeSaturation,
+      lightness: themeLightness,
+      opacity: themeOpacity,
+      overlay: themeOverlay,
+    }),
+    [
+      themeHue,
+      themeHueSpread,
+      themeKey,
+      themeLightness,
+      themeOpacity,
+      themeOverlay,
+      themeSaturation,
+    ],
+  );
+  const resolvedMotion = useMemo<BubbleBackgroundMotion>(
+    () => ({
+      driftMinMs: motion.driftMinMs,
+      driftMaxMs: motion.driftMaxMs,
+      waypoints: motion.waypoints,
+      overshoot: motion.overshoot,
+    }),
+    [motion.driftMaxMs, motion.driftMinMs, motion.overshoot, motion.waypoints],
+  );
+  const resolvedInitialSize = useMemo(
+    () => ({ width: initialSize.width, height: initialSize.height }),
+    [initialSize.height, initialSize.width],
+  );
   const signature = `${themeSignature(resolvedTheme)}:${bubbleCount}:${blur}:${motion.driftMinMs}:${motion.driftMaxMs}:${motion.waypoints}:${motion.overshoot}:${initialSize.width}:${initialSize.height}`;
 
   const [layers, setLayers] = useState<LayerState[]>(() => [
-    createLayerState({ theme: resolvedTheme, bubbleCount, blur, motion, initialSize }),
+    createLayerState({
+      theme: resolvedTheme,
+      bubbleCount,
+      blur,
+      motion: resolvedMotion,
+      initialSize: resolvedInitialSize,
+    }),
   ]);
 
   const previousSignatureRef = useRef(signature);
@@ -193,11 +228,11 @@ export function SidebarBubbleBackground({
     previousSignatureRef.current = signature;
 
     const nextLayer = createLayerState({
-      theme: resolveTheme(theme),
+      theme: resolvedTheme,
       bubbleCount,
       blur,
-      motion,
-      initialSize,
+      motion: resolvedMotion,
+      initialSize: resolvedInitialSize,
     });
     let cancelled = false;
 
@@ -221,7 +256,15 @@ export function SidebarBubbleBackground({
       cancelled = true;
       window.clearTimeout(timeout);
     };
-  }, [blur, bubbleCount, initialSize, motion, reducedMotion, signature, theme]);
+  }, [
+    blur,
+    bubbleCount,
+    resolvedInitialSize,
+    reducedMotion,
+    resolvedMotion,
+    resolvedTheme,
+    signature,
+  ]);
 
   const backgroundLayers = useMemo<BubbleBackgroundLayer[]>(
     () =>
@@ -235,14 +278,24 @@ export function SidebarBubbleBackground({
     [layers],
   );
 
+  if (children === undefined) {
+    return (
+      <>
+        <style>{SIDEBAR_LAYER_KEYFRAMES}</style>
+        <BubbleBackground
+          layers={backgroundLayers}
+          className={className}
+          reducedMotion={reducedMotion}
+        />
+      </>
+    );
+  }
+
   return (
-    <>
+    <div className={cn("relative isolate overflow-hidden", className)}>
       <style>{SIDEBAR_LAYER_KEYFRAMES}</style>
-      <BubbleBackground
-        layers={backgroundLayers}
-        className={className}
-        reducedMotion={reducedMotion}
-      />
-    </>
+      <BubbleBackground layers={backgroundLayers} reducedMotion={reducedMotion} />
+      {children}
+    </div>
   );
 }

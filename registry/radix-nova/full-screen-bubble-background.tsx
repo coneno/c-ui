@@ -18,6 +18,7 @@ import {
   type ConfigurableBubbleBackgroundProps,
   type ResolvedBubbleBackgroundTheme,
 } from "@/registry/radix-nova/bubble-background-helpers";
+import { cn } from "@/lib/utils";
 
 export type FullScreenBubbleBackgroundTheme = BubbleBackgroundTheme & {
   accentHue?: number;
@@ -42,20 +43,6 @@ const DEFAULT_FULLSCREEN_MOTION: BubbleBackgroundMotion = {
 };
 
 const DEFAULT_INITIAL_SIZE = { width: 1440, height: 900 };
-
-function resolveTheme(theme?: FullScreenBubbleBackgroundTheme): ResolvedTheme {
-  const hue = normalizeHue(theme?.hue ?? 220);
-
-  return {
-    hue,
-    accentHue: normalizeHue(theme?.accentHue ?? hue + 35),
-    hueSpread: clamp(theme?.hueSpread ?? 35, 0, 180),
-    saturation: clamp(theme?.saturation ?? 68, 0, 100),
-    lightness: clamp(theme?.lightness ?? 72, 0, 100),
-    opacity: clamp(theme?.opacity ?? 0.38, 0, 1),
-    overlay: clamp(theme?.overlay ?? 0.2, 0, 1),
-  };
-}
 
 function buildBackdrop(theme: ResolvedTheme) {
   const primarySaturation = clamp(theme.saturation - 24, 10, 80);
@@ -125,6 +112,7 @@ function buildLayer(
 
 export function FullScreenBubbleBackground({
   className,
+  children,
   theme,
   bubbleCount = DEFAULT_BUBBLE_COUNT,
   blur = 65,
@@ -135,14 +123,61 @@ export function FullScreenBubbleBackground({
 }: FullScreenBubbleBackgroundProps) {
   const [generatedSeed] = useState(() => (Math.random() * 0xffffffff) >>> 0);
 
-  const resolvedTheme = useMemo(() => resolveTheme(theme), [theme]);
-
   const resolvedSeed = seed ?? generatedSeed;
-
-  const layers = useMemo<BubbleBackgroundLayer[]>(
-    () => [buildLayer(resolvedTheme, bubbleCount, blur, motion, initialSize, resolvedSeed)],
-    [blur, bubbleCount, initialSize, motion, resolvedSeed, resolvedTheme],
+  const themeHue = normalizeHue(theme?.hue ?? 220);
+  const themeAccentHue = normalizeHue(theme?.accentHue ?? themeHue + 35);
+  const themeHueSpread = clamp(theme?.hueSpread ?? 35, 0, 180);
+  const themeSaturation = clamp(theme?.saturation ?? 68, 0, 100);
+  const themeLightness = clamp(theme?.lightness ?? 72, 0, 100);
+  const themeOpacity = clamp(theme?.opacity ?? 0.38, 0, 1);
+  const themeOverlay = clamp(theme?.overlay ?? 0.2, 0, 1);
+  const resolvedTheme = useMemo(
+    () => ({
+      hue: themeHue,
+      accentHue: themeAccentHue,
+      hueSpread: themeHueSpread,
+      saturation: themeSaturation,
+      lightness: themeLightness,
+      opacity: themeOpacity,
+      overlay: themeOverlay,
+    }),
+    [
+      themeAccentHue,
+      themeHue,
+      themeHueSpread,
+      themeLightness,
+      themeOpacity,
+      themeOverlay,
+      themeSaturation,
+    ],
+  );
+  const resolvedMotion = useMemo<BubbleBackgroundMotion>(
+    () => ({
+      driftMinMs: motion.driftMinMs,
+      driftMaxMs: motion.driftMaxMs,
+      waypoints: motion.waypoints,
+      overshoot: motion.overshoot,
+    }),
+    [motion.driftMaxMs, motion.driftMinMs, motion.overshoot, motion.waypoints],
+  );
+  const resolvedInitialSize = useMemo(
+    () => ({ width: initialSize.width, height: initialSize.height }),
+    [initialSize.height, initialSize.width],
   );
 
-  return <BubbleBackground layers={layers} className={className} reducedMotion={reducedMotion} />;
+  const layers = useMemo<BubbleBackgroundLayer[]>(
+    () => [buildLayer(resolvedTheme, bubbleCount, blur, resolvedMotion, resolvedInitialSize, resolvedSeed)],
+    [blur, bubbleCount, resolvedInitialSize, resolvedMotion, resolvedSeed, resolvedTheme],
+  );
+
+  if (children === undefined) {
+    return <BubbleBackground layers={layers} className={className} reducedMotion={reducedMotion} />;
+  }
+
+  return (
+    <div className={cn("relative isolate overflow-hidden", className)}>
+      <BubbleBackground layers={layers} reducedMotion={reducedMotion} />
+      {children}
+    </div>
+  );
 }

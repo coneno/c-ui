@@ -32,21 +32,27 @@ This item installs `BubbleBackground` automatically through its registry depende
 
 import { FullScreenBubbleBackground } from "@/components/c-ui/full-screen-bubble-background";
 
-export function AuthBubbleBackground() {
+export function AuthSurface() {
   return (
     <FullScreenBubbleBackground
+      className="flex min-h-screen items-center justify-center px-4"
       theme={{
         hue: 220,
         accentHue: 255,
       }}
-    />
+    >
+      <div className="w-full max-w-sm rounded-3xl bg-white/60 p-8 shadow-2xl backdrop-blur-xl">
+        Sign-in content
+      </div>
+    </FullScreenBubbleBackground>
   );
 }
 ```
 
 ## FullScreenBubbleBackground Props
 
-- `className`: `string | undefined`. Extends the absolute root wrapper.
+- `className`: `string | undefined`. Extends the root wrapper when `children` are present, or the absolute background layer when they are not.
+- `children`: `ReactNode | undefined`. Optional foreground content rendered above the animated background without extra `z-index` coordination.
 - `theme`: `FullScreenBubbleBackgroundTheme | undefined`. Tunes the palette.
 - `bubbleCount`: `number | undefined`. Defaults to `10`.
 - `blur`: `number | undefined`. Defaults to `65`.
@@ -67,4 +73,4 @@ export function AuthBubbleBackground() {
 
 ## When To Use It
 
-Use `FullScreenBubbleBackground` when the generic `BubbleBackground` API is more flexible than you need and you want a good full-screen default for auth, onboarding, or editorial hero surfaces.
+Use `FullScreenBubbleBackground` when the generic `BubbleBackground` API is more flexible than you need and you want a good full-screen default for auth, onboarding, or editorial hero surfaces. You can keep using it as a background-only layer, or pass `children` when you want the foreground content to live inside the same stable wrapper.

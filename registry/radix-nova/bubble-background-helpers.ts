@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import type { BubbleBackgroundMotion } from "@/registry/radix-nova/bubble-background";
 
 export type BubbleBackgroundTheme = {
@@ -11,6 +13,7 @@ export type BubbleBackgroundTheme = {
 
 export type ConfigurableBubbleBackgroundProps = {
   className?: string;
+  children?: ReactNode;
   bubbleCount?: number;
   blur?: number;
   motion?: BubbleBackgroundMotion;
