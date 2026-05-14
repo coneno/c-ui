@@ -1,25 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-
 import {
-  BubbleBackground,
   DEFAULT_BUBBLE_VIGNETTE,
-  type BubbleBackgroundBubble,
-  type BubbleBackgroundLayer,
   type BubbleBackgroundMotion,
 } from "@/registry/radix-nova/bubble-background";
+import { ConfigurableBubbleBackground } from "@/registry/radix-nova/configurable-bubble-background";
 import {
-  clamp,
-  createRng,
-  normalizeHue,
-  pickBetween,
+  type BubbleBackgroundSceneConfig,
   type BubbleBackgroundTheme,
+  type BubbleBackgroundThemeDefaults,
   type ConfigurableBubbleBackgroundProps,
-  type ResolvedBubbleBackgroundTheme,
 } from "@/registry/radix-nova/bubble-background-helpers";
-import { usePrefersReducedMotion } from "@/registry/radix-nova/hooks/use-prefers-reduced-motion";
-import { cn } from "@/lib/utils";
 
 export type SidebarBubbleBackgroundTheme = BubbleBackgroundTheme & {
   key: string;
@@ -28,20 +19,11 @@ export type SidebarBubbleBackgroundTheme = BubbleBackgroundTheme & {
 
 export type SidebarBubbleBackgroundProps = ConfigurableBubbleBackgroundProps & {
   theme?: SidebarBubbleBackgroundTheme;
-};
-
-type ResolvedTheme = ResolvedBubbleBackgroundTheme & {
-  key: string;
-};
-
-type LayerState = {
-  id: string;
-  layer: Omit<BubbleBackgroundLayer, "id" | "transitionClassName">;
-  mode: "enter" | "exit";
+  /** [minPx, maxPx] pixel size range for each bubble. Defaults to [180, 360] (sidebar scale). */
+  bubbleSize?: [number, number];
 };
 
 const DEFAULT_BUBBLE_COUNT = 12;
-const EXIT_MS = 900;
 
 const DEFAULT_SIDEBAR_MOTION: BubbleBackgroundMotion = {
   driftMinMs: 35_000,
@@ -52,105 +34,27 @@ const DEFAULT_SIDEBAR_MOTION: BubbleBackgroundMotion = {
 
 const DEFAULT_INITIAL_SIZE = { width: 400, height: 800 };
 
-const ENTER_CLASS_NAME = "[animation:c-ui-sidebar-bubble-layer-enter_0.9s_ease-out_both]";
-const EXIT_CLASS_NAME = "[animation:c-ui-sidebar-bubble-layer-exit_0.8s_ease-out_both]";
+const SIDEBAR_THEME_DEFAULTS: BubbleBackgroundThemeDefaults = {
+  key: "default",
+  hue: 28,
+  hueSpread: 20,
+  saturation: 80,
+  lightness: 70,
+  opacity: 0.38,
+  overlay: 0.6,
+};
 
-const SIDEBAR_LAYER_KEYFRAMES = `
-@keyframes c-ui-sidebar-bubble-layer-enter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes c-ui-sidebar-bubble-layer-exit {
-  to {
-    opacity: 0;
-  }
-}
-`;
-
-function themeSignature(theme: ResolvedTheme) {
-  return `${theme.key}:${theme.hue}:${theme.hueSpread}:${theme.saturation}:${theme.lightness}:${theme.opacity}:${theme.overlay}`;
-}
-
-function buildBubbles(
-  theme: ResolvedTheme,
-  layerId: string,
-  rngSeed: number,
-  bubbleCount: number,
-): BubbleBackgroundBubble[] {
-  const rng = createRng(rngSeed);
-
-  return Array.from({ length: bubbleCount }, (_, index) => {
-    const hue = normalizeHue(theme.hue + pickBetween(rng, -theme.hueSpread, theme.hueSpread));
-    const saturation = clamp(theme.saturation + pickBetween(rng, -12, 12), 0, 100);
-    const lightness = clamp(theme.lightness + pickBetween(rng, -12, 12), 0, 100);
-    const opacity = clamp(theme.opacity + pickBetween(rng, -0.08, 0.08), 0.05, 1);
-    const width = pickBetween(rng, 180, 360);
-
-    return {
-      id: `${layerId}-${index}`,
-      initialX: pickBetween(rng, -0.5, 1.5),
-      initialY: pickBetween(rng, -0.3, 1.3),
-      width,
-      height: width * pickBetween(rng, 0.82, 1.22),
-      highlightColor: `hsl(${hue.toFixed(0)} ${clamp(saturation + 8, 0, 100).toFixed(0)}% ${clamp(lightness + 18, 0, 100).toFixed(0)}%)`,
-      color: `hsl(${hue.toFixed(0)} ${saturation.toFixed(0)}% ${lightness.toFixed(0)}%)`,
-      opacity,
-    };
-  });
-}
-
-function buildBackdrop(theme: ResolvedTheme) {
-  const saturation = clamp(theme.saturation - 24, 10, 80);
-  const accentHue = normalizeHue(theme.hue + Math.max(theme.hueSpread, 18));
-
-  return [
-    `radial-gradient(circle at 18% 14%, hsl(${theme.hue} ${clamp(saturation - theme.hueSpread * 0.4, 0, 100).toFixed(0)}% 97% / 0.9), transparent 42%)`,
-    `radial-gradient(circle at 82% 78%, hsl(${accentHue} ${clamp(saturation - theme.hueSpread * 0.8, 0, 100).toFixed(0)}% 93% / 0.72), transparent 46%)`,
-    `linear-gradient(180deg, hsl(${theme.hue} ${clamp(saturation - 10, 5, 80)}% 98%), hsl(${accentHue} ${clamp(saturation - 15, 5, 72)}% 94%))`,
-  ].join(",");
-}
-
-function createLayerState({
-  theme,
-  bubbleCount,
-  blur,
-  motion,
-  initialSize,
-}: {
-  theme: ResolvedTheme;
-  bubbleCount: number;
-  blur: number;
-  motion: BubbleBackgroundMotion;
-  initialSize: { width: number; height: number };
-}): LayerState {
-  const id = Math.random().toString(36).substring(2);
-  const seed = (Math.random() * 0xffffffff) >>> 0;
-  const accentHue = normalizeHue(theme.hue + Math.max(theme.hueSpread, 18));
-  const overlay =
-    theme.overlay > 0
-      ? `linear-gradient(180deg, hsl(${theme.hue} 26% 99% / ${(theme.overlay * 0.72).toFixed(2)}), hsl(${accentHue} 18% 98% / ${theme.overlay.toFixed(2)}))`
-      : null;
-
-  return {
-    id,
-    layer: {
-      bubbles: buildBubbles(theme, id, seed, bubbleCount),
-      backdrop: buildBackdrop(theme),
-      overlay,
-      vignette: DEFAULT_BUBBLE_VIGNETTE,
-      blur,
-      motion,
-      initialSize,
-    },
-    mode: "enter",
-  };
-}
+const SIDEBAR_SCENE_BASE: Omit<BubbleBackgroundSceneConfig, "bubbleSize"> = {
+  key: "sidebar",
+  vignette: DEFAULT_BUBBLE_VIGNETTE,
+  initialXRange: [-0.5, 1.5],
+  initialYRange: [-0.3, 1.3],
+  saturationVariance: 12,
+  lightnessVariance: 12,
+  opacityVariance: 0.08,
+  overlayTopAlphaMultiplier: 0.72,
+  backdropStyle: "spread",
+};
 
 export function SidebarBubbleBackground({
   theme,
@@ -161,141 +65,22 @@ export function SidebarBubbleBackground({
   blur = 50,
   motion = DEFAULT_SIDEBAR_MOTION,
   initialSize = DEFAULT_INITIAL_SIZE,
+  bubbleSize = [180, 360],
 }: SidebarBubbleBackgroundProps) {
-  const preferredReducedMotion = usePrefersReducedMotion();
-  const reducedMotion =
-    reducedMotionProp === undefined ? preferredReducedMotion : reducedMotionProp;
-
-  const themeKey = theme?.key ?? "default";
-  const themeHue = normalizeHue(theme?.hue ?? 28);
-  const themeHueSpread = clamp(theme?.hueSpread ?? 20, 0, 180);
-  const themeSaturation = clamp(theme?.saturation ?? 80, 0, 100);
-  const themeLightness = clamp(theme?.lightness ?? 70, 0, 100);
-  const themeOpacity = clamp(theme?.opacity ?? 0.38, 0, 1);
-  const themeOverlay = clamp(theme?.overlay ?? 0.6, 0, 1);
-  const resolvedTheme = useMemo(
-    () => ({
-      key: themeKey,
-      hue: themeHue,
-      hueSpread: themeHueSpread,
-      saturation: themeSaturation,
-      lightness: themeLightness,
-      opacity: themeOpacity,
-      overlay: themeOverlay,
-    }),
-    [
-      themeHue,
-      themeHueSpread,
-      themeKey,
-      themeLightness,
-      themeOpacity,
-      themeOverlay,
-      themeSaturation,
-    ],
-  );
-  const resolvedMotion = useMemo<BubbleBackgroundMotion>(
-    () => ({
-      driftMinMs: motion.driftMinMs,
-      driftMaxMs: motion.driftMaxMs,
-      waypoints: motion.waypoints,
-      overshoot: motion.overshoot,
-    }),
-    [motion.driftMaxMs, motion.driftMinMs, motion.overshoot, motion.waypoints],
-  );
-  const resolvedInitialSize = useMemo(
-    () => ({ width: initialSize.width, height: initialSize.height }),
-    [initialSize.height, initialSize.width],
-  );
-  const signature = `${themeSignature(resolvedTheme)}:${bubbleCount}:${blur}:${motion.driftMinMs}:${motion.driftMaxMs}:${motion.waypoints}:${motion.overshoot}:${initialSize.width}:${initialSize.height}`;
-
-  const [layers, setLayers] = useState<LayerState[]>(() => [
-    createLayerState({
-      theme: resolvedTheme,
-      bubbleCount,
-      blur,
-      motion: resolvedMotion,
-      initialSize: resolvedInitialSize,
-    }),
-  ]);
-
-  const previousSignatureRef = useRef(signature);
-
-  useEffect(() => {
-    if (signature === previousSignatureRef.current) {
-      return;
-    }
-
-    previousSignatureRef.current = signature;
-
-    const nextLayer = createLayerState({
-      theme: resolvedTheme,
-      bubbleCount,
-      blur,
-      motion: resolvedMotion,
-      initialSize: resolvedInitialSize,
-    });
-    let cancelled = false;
-
-    queueMicrotask(() => {
-      if (cancelled) {
-        return;
-      }
-
-      setLayers((previousLayers) => [
-        ...previousLayers.map((layer) => ({ ...layer, mode: "exit" as const })),
-        nextLayer,
-      ]);
-    });
-
-    const timeout = window.setTimeout(
-      () => setLayers((previousLayers) => previousLayers.filter((layer) => layer.mode === "enter")),
-      reducedMotion ? 0 : EXIT_MS,
-    );
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeout);
-    };
-  }, [
-    blur,
-    bubbleCount,
-    resolvedInitialSize,
-    reducedMotion,
-    resolvedMotion,
-    resolvedTheme,
-    signature,
-  ]);
-
-  const backgroundLayers = useMemo<BubbleBackgroundLayer[]>(
-    () =>
-      layers.map((layer) => {
-        return {
-          id: layer.id,
-          ...layer.layer,
-          transitionClassName: layer.mode === "enter" ? ENTER_CLASS_NAME : EXIT_CLASS_NAME,
-        };
-      }),
-    [layers],
-  );
-
-  if (children === undefined) {
-    return (
-      <>
-        <style>{SIDEBAR_LAYER_KEYFRAMES}</style>
-        <BubbleBackground
-          layers={backgroundLayers}
-          className={className}
-          reducedMotion={reducedMotion}
-        />
-      </>
-    );
-  }
-
   return (
-    <div className={cn("relative isolate overflow-hidden", className)}>
-      <style>{SIDEBAR_LAYER_KEYFRAMES}</style>
-      <BubbleBackground layers={backgroundLayers} reducedMotion={reducedMotion} />
+    <ConfigurableBubbleBackground
+      theme={theme}
+      themeDefaults={SIDEBAR_THEME_DEFAULTS}
+      scene={{ ...SIDEBAR_SCENE_BASE, bubbleSize }}
+      className={className}
+      reducedMotion={reducedMotionProp}
+      bubbleCount={bubbleCount}
+      blur={blur}
+      motion={motion}
+      initialSize={initialSize}
+      crossfade
+    >
       {children}
-    </div>
+    </ConfigurableBubbleBackground>
   );
 }

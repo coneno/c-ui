@@ -113,6 +113,11 @@
           "target": "components/c-ui/bubble-background-helpers.ts"
         },
         {
+          "path": "registry/radix-nova/configurable-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/configurable-bubble-background.tsx"
+        },
+        {
           "path": "registry/radix-nova/full-screen-bubble-background.tsx",
           "type": "registry:component",
           "target": "components/c-ui/full-screen-bubble-background.tsx"
@@ -131,6 +136,11 @@
           "path": "registry/radix-nova/bubble-background-helpers.ts",
           "type": "registry:component",
           "target": "components/c-ui/bubble-background-helpers.ts"
+        },
+        {
+          "path": "registry/radix-nova/configurable-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/configurable-bubble-background.tsx"
         },
         {
           "path": "registry/radix-nova/sidebar-bubble-background.tsx",
