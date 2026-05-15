@@ -38,7 +38,7 @@ type ConfigurableBubbleBackgroundSceneProps = ConfigurableBubbleBackgroundProps 
 
 type LayerState = {
   layer: BubbleBackgroundLayer;
-  mode: "enter" | "exit";
+  mode: "steady" | "enter" | "exit";
 };
 
 const EXIT_MS = 900;
@@ -68,6 +68,7 @@ function createTransitionLayer({
   bubbleCount,
   blur,
   initialSize,
+  mode = "enter",
   motion,
   scene,
   theme,
@@ -76,6 +77,7 @@ function createTransitionLayer({
   scene: BubbleBackgroundSceneConfig;
   bubbleCount: number;
   blur: number;
+  mode?: LayerState["mode"];
   motion: BubbleBackgroundMotion;
   initialSize: { width: number; height: number };
 }): LayerState {
@@ -93,7 +95,7 @@ function createTransitionLayer({
       motion,
       initialSize,
     }),
-    mode: "enter",
+    mode,
   };
 }
 
@@ -185,6 +187,7 @@ export function ConfigurableBubbleBackground({
         scene,
         bubbleCount,
         blur,
+        mode: "steady",
         motion: resolvedMotion,
         initialSize: resolvedInitialSize,
       }),
@@ -224,7 +227,12 @@ export function ConfigurableBubbleBackground({
     const timeout = window.setTimeout(
       () =>
         setTransitionLayers((previousLayers) =>
-          previousLayers.filter((layer) => layer.mode === "enter"),
+          previousLayers
+            .filter((layer) => layer.mode !== "exit")
+            .map((layer) => ({
+              ...layer,
+              mode: "steady" as const,
+            })),
         ),
       reducedMotion ? 0 : EXIT_MS,
     );
@@ -252,7 +260,8 @@ export function ConfigurableBubbleBackground({
 
     return transitionLayers.map(({ layer, mode }) => ({
       ...layer,
-      transitionClassName: mode === "enter" ? ENTER_CLASS_NAME : EXIT_CLASS_NAME,
+      transitionClassName:
+        mode === "enter" ? ENTER_CLASS_NAME : mode === "exit" ? EXIT_CLASS_NAME : undefined,
     }));
   }, [crossfade, layers, transitionLayers]);
 

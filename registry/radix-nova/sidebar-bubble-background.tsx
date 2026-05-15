@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import {
   DEFAULT_BUBBLE_VIGNETTE,
   type BubbleBackgroundMotion,
@@ -33,6 +35,7 @@ const DEFAULT_SIDEBAR_MOTION: BubbleBackgroundMotion = {
 };
 
 const DEFAULT_INITIAL_SIZE = { width: 400, height: 800 };
+const DEFAULT_BUBBLE_SIZE: [number, number] = [180, 360];
 
 const SIDEBAR_THEME_DEFAULTS: BubbleBackgroundThemeDefaults = {
   key: "default",
@@ -65,13 +68,18 @@ export function SidebarBubbleBackground({
   blur = 50,
   motion = DEFAULT_SIDEBAR_MOTION,
   initialSize = DEFAULT_INITIAL_SIZE,
-  bubbleSize = [180, 360],
+  bubbleSize = DEFAULT_BUBBLE_SIZE,
 }: SidebarBubbleBackgroundProps) {
+  const scene = useMemo<BubbleBackgroundSceneConfig>(
+    () => ({ ...SIDEBAR_SCENE_BASE, bubbleSize: [bubbleSize[0], bubbleSize[1]] }),
+    [bubbleSize[0], bubbleSize[1]],
+  );
+
   return (
     <ConfigurableBubbleBackground
       theme={theme}
       themeDefaults={SIDEBAR_THEME_DEFAULTS}
-      scene={{ ...SIDEBAR_SCENE_BASE, bubbleSize }}
+      scene={scene}
       className={className}
       reducedMotion={reducedMotionProp}
       bubbleCount={bubbleCount}
