@@ -64,12 +64,13 @@ Changing `theme.key` creates a new layout and crossfades the old layer out.
 - `theme`: `SidebarBubbleBackgroundTheme | undefined`. Controls the palette and transition identity.
 - `className`: `string | undefined`. Extends the root wrapper when `children` are present, or the absolute background layer when they are not.
 - `children`: `ReactNode | undefined`. Optional foreground content rendered above the animated background without extra `z-index` coordination.
-- `reducedMotion`: `boolean | null | undefined`. Overrides the media-query result.
+- `reducedMotion`: `boolean | undefined`. Overrides the media-query result.
 - `bubbleCount`: `number | undefined`. Defaults to `12`.
 - `blur`: `number | undefined`. Defaults to `50`.
 - `motion`: `BubbleBackgroundMotion | undefined`. Overrides the default drift timings.
 - `initialSize`: `{ width: number; height: number } | undefined`. Fallback container size before measurement.
 - `bubbleSize`: `[number, number] | undefined`. Optional pixel range for generated bubble widths. Defaults to `[180, 360]`.
+- `seed`: `number | undefined`. Overrides the generated scene seed when you need reproducible placement.
 
 ## SidebarBubbleBackgroundTheme Shape
 

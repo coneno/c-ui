@@ -39,7 +39,7 @@ export type BubbleBackgroundLayer = {
 export type BubbleBackgroundProps = {
   layers: BubbleBackgroundLayer[];
   className?: string;
-  reducedMotion?: boolean | null;
+  reducedMotion?: boolean;
 };
 
 export const DEFAULT_BUBBLE_VIGNETTE =
@@ -203,16 +203,6 @@ const BubbleBackground = React.memo(function BubbleBackground({
   const preferredReducedMotion = usePrefersReducedMotion();
   const reducedMotion =
     reducedMotionProp === undefined ? preferredReducedMotion : reducedMotionProp;
-
-  if (reducedMotion === null) {
-    return (
-      <div
-        data-slot="bubble-background"
-        className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
-        aria-hidden="true"
-      />
-    );
-  }
 
   return (
     <div

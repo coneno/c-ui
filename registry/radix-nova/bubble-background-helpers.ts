@@ -18,7 +18,7 @@ export type ConfigurableBubbleBackgroundProps = {
   blur?: number;
   motion?: BubbleBackgroundMotion;
   initialSize?: { width: number; height: number };
-  reducedMotion?: boolean | null;
+  reducedMotion?: boolean;
 };
 
 export type ResolvedBubbleBackgroundTheme = {
@@ -80,6 +80,17 @@ export function createRng(seed: number) {
     next ^= next + Math.imul(next ^ (next >>> 7), 61 | next);
     return ((next ^ (next >>> 14)) >>> 0) / 4294967296;
   };
+}
+
+export function hashBubbleBackgroundKey(value: string) {
+  let hash = 2166136261;
+
+  for (let index = 0; index < value.length; index++) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return hash >>> 0;
 }
 
 export function pickBetween(rng: () => number, min: number, max: number) {
@@ -286,12 +297,4 @@ export function createBubbleBackgroundLayer({
     motion,
     initialSize,
   };
-}
-
-export function randomBubbleBackgroundLayerId() {
-  return Math.random().toString(36).substring(2);
-}
-
-export function randomBubbleBackgroundSeed() {
-  return (Math.random() * 0xffffffff) >>> 0;
 }

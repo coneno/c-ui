@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
 
 import {
   BubbleBackground,
@@ -12,8 +12,7 @@ import {
   cloneBubbleBackgroundMotion,
   createBubbleBackgroundLayer,
   getBubbleBackgroundSceneSignature,
-  randomBubbleBackgroundLayerId,
-  randomBubbleBackgroundSeed,
+  hashBubbleBackgroundKey,
   resolveBubbleBackgroundTheme,
   type BubbleBackgroundSceneConfig,
   type BubbleBackgroundSceneTheme,
@@ -72,6 +71,8 @@ function createTransitionLayer({
   motion,
   scene,
   theme,
+  layerId,
+  seed,
 }: {
   theme: ResolvedBubbleBackgroundSceneTheme;
   scene: BubbleBackgroundSceneConfig;
@@ -80,10 +81,9 @@ function createTransitionLayer({
   mode?: LayerState["mode"];
   motion: BubbleBackgroundMotion;
   initialSize: { width: number; height: number };
+  layerId: string;
+  seed: number;
 }): LayerState {
-  const layerId = randomBubbleBackgroundLayerId();
-  const seed = randomBubbleBackgroundSeed();
-
   return {
     layer: createBubbleBackgroundLayer({
       layerId,
@@ -144,9 +144,25 @@ export function ConfigurableBubbleBackground({
       }),
     [blur, bubbleCount, resolvedInitialSize, resolvedMotion, resolvedTheme, scene],
   );
-
-  const [generatedSeed] = useState(() => randomBubbleBackgroundSeed());
-  const resolvedSeed = seed ?? generatedSeed;
+  const instanceId = useId();
+  const initialLayerId = `${scene.key}-${instanceId}-0`;
+  const baseSeed = useMemo(
+    () => seed ?? hashBubbleBackgroundKey(`${signature}:${instanceId}`),
+    [instanceId, seed, signature],
+  );
+  const transitionSignature = `${signature}:${baseSeed}`;
+  const createNextTransitionLayer = useEffectEvent((transitionIndex: number) =>
+    createTransitionLayer({
+      theme: resolvedTheme,
+      scene,
+      bubbleCount,
+      blur,
+      motion: resolvedMotion,
+      initialSize: resolvedInitialSize,
+      layerId: `${scene.key}-${instanceId}-${transitionIndex}`,
+      seed: hashBubbleBackgroundKey(`${transitionSignature}:${instanceId}:${transitionIndex}`),
+    }),
+  );
 
   const layers = useMemo<BubbleBackgroundLayer[]>(() => {
     if (crossfade) {
@@ -155,8 +171,8 @@ export function ConfigurableBubbleBackground({
 
     return [
       createBubbleBackgroundLayer({
-        layerId: `${scene.key}-${resolvedSeed}`,
-        seed: resolvedSeed,
+        layerId: initialLayerId,
+        seed: baseSeed,
         theme: resolvedTheme,
         scene,
         bubbleCount,
@@ -169,13 +185,15 @@ export function ConfigurableBubbleBackground({
     blur,
     bubbleCount,
     crossfade,
+    initialLayerId,
+    baseSeed,
     resolvedInitialSize,
     resolvedMotion,
-    resolvedSeed,
     resolvedTheme,
     scene,
   ]);
 
+  const transitionLayerIndexRef = useRef(1);
   const [transitionLayers, setTransitionLayers] = useState<LayerState[]>(() => {
     if (!crossfade) {
       return [];
@@ -190,39 +208,27 @@ export function ConfigurableBubbleBackground({
         mode: "steady",
         motion: resolvedMotion,
         initialSize: resolvedInitialSize,
+        layerId: initialLayerId,
+        seed: baseSeed,
       }),
     ];
   });
 
-  const previousSignatureRef = useRef(signature);
+  const previousTransitionSignatureRef = useRef(transitionSignature);
 
   useEffect(() => {
-    if (!crossfade || signature === previousSignatureRef.current) {
+    if (!crossfade || transitionSignature === previousTransitionSignatureRef.current) {
       return;
     }
 
-    previousSignatureRef.current = signature;
+    previousTransitionSignatureRef.current = transitionSignature;
+    const transitionIndex = transitionLayerIndexRef.current++;
 
-    const nextLayer = createTransitionLayer({
-      theme: resolvedTheme,
-      scene,
-      bubbleCount,
-      blur,
-      motion: resolvedMotion,
-      initialSize: resolvedInitialSize,
-    });
-    let cancelled = false;
-
-    queueMicrotask(() => {
-      if (cancelled) {
-        return;
-      }
-
-      setTransitionLayers((previousLayers) => [
-        ...previousLayers.map((layer) => ({ ...layer, mode: "exit" as const })),
-        nextLayer,
-      ]);
-    });
+    const nextLayer = createNextTransitionLayer(transitionIndex);
+    setTransitionLayers((previousLayers) => [
+      ...previousLayers.map((layer) => ({ ...layer, mode: "exit" as const })),
+      nextLayer,
+    ]);
 
     const timeout = window.setTimeout(
       () =>
@@ -237,21 +243,8 @@ export function ConfigurableBubbleBackground({
       reducedMotion ? 0 : EXIT_MS,
     );
 
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeout);
-    };
-  }, [
-    blur,
-    bubbleCount,
-    crossfade,
-    reducedMotion,
-    resolvedInitialSize,
-    resolvedMotion,
-    resolvedTheme,
-    scene,
-    signature,
-  ]);
+    return () => window.clearTimeout(timeout);
+  }, [crossfade, instanceId, reducedMotion, transitionSignature]);
 
   const backgroundLayers = useMemo<BubbleBackgroundLayer[]>(() => {
     if (!crossfade) {

@@ -23,6 +23,7 @@ export type SidebarBubbleBackgroundProps = ConfigurableBubbleBackgroundProps & {
   theme?: SidebarBubbleBackgroundTheme;
   /** [minPx, maxPx] pixel size range for each bubble. Defaults to [180, 360] (sidebar scale). */
   bubbleSize?: [number, number];
+  seed?: number;
 };
 
 const DEFAULT_BUBBLE_COUNT = 12;
@@ -69,10 +70,12 @@ export function SidebarBubbleBackground({
   motion = DEFAULT_SIDEBAR_MOTION,
   initialSize = DEFAULT_INITIAL_SIZE,
   bubbleSize = DEFAULT_BUBBLE_SIZE,
+  seed,
 }: SidebarBubbleBackgroundProps) {
+  const [minBubbleSize, maxBubbleSize] = bubbleSize;
   const scene = useMemo<BubbleBackgroundSceneConfig>(
-    () => ({ ...SIDEBAR_SCENE_BASE, bubbleSize: [bubbleSize[0], bubbleSize[1]] }),
-    [bubbleSize[0], bubbleSize[1]],
+    () => ({ ...SIDEBAR_SCENE_BASE, bubbleSize: [minBubbleSize, maxBubbleSize] }),
+    [minBubbleSize, maxBubbleSize],
   );
 
   return (
@@ -86,6 +89,7 @@ export function SidebarBubbleBackground({
       blur={blur}
       motion={motion}
       initialSize={initialSize}
+      seed={seed}
       crossfade
     >
       {children}

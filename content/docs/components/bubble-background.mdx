@@ -81,13 +81,13 @@ Each `BubbleBackground` accepts one or more layers. A layer provides the backdro
 
 ## Reduced Motion
 
-By default the component reads `prefers-reduced-motion` on the client and falls back to a static composition during the first render. Pass `reducedMotion={true}` to lock the background into a fully static render, or `reducedMotion={false}` to force animation.
+By default the component reads `prefers-reduced-motion` on the client and renders a static composition when motion should be reduced. Pass `reducedMotion={true}` to lock the background into a fully static render, or `reducedMotion={false}` to force animation.
 
 ## BubbleBackground Props
 
 - `layers`: `BubbleBackgroundLayer[]`. Required.
 - `className`: `string | undefined`. Extends the absolute root wrapper.
-- `reducedMotion`: `boolean | null | undefined`. Overrides the media-query result.
+- `reducedMotion`: `boolean | undefined`. Overrides the media-query result.
 
 ## BubbleBackgroundLayer Shape
 
