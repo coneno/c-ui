@@ -7,6 +7,8 @@ import { DotBackgroundInteractiveExample } from "@/components/docs/interactive-e
 
 ## Install
 
+The examples use `base-nova`. For Radix, use `radix-nova` in the URL.
+
 ```bash
 npx shadcn@latest add @c-ui/dot-background
 ```
@@ -14,7 +16,7 @@ npx shadcn@latest add @c-ui/dot-background
 Direct URL install:
 
 ```bash
-npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/dot-background.json
+npx shadcn@latest add https://coneno.github.io/c-ui/r/base-nova/dot-background.json
 ```
 
 ## Live Example
@@ -96,7 +98,7 @@ Use `variant="custom"` and `spacing="custom"` when you want the surface to be dr
 | `vars.dotColor`        | `string`                                                                | `undefined` | Overrides the dot color                                          |
 | `vars.spacing`         | `number \| string`                                                      | `undefined` | Custom dot spacing; numbers become `px`                          |
 | `vars.dotSize`         | `number \| string`                                                      | `undefined` | Custom dot size; numbers become `px`                             |
-| `asChild`              | `boolean`                                                               | `false`     | Render the pattern styles onto a child element via Radix `Slot`  |
+| `render`               | `ReactElement` or render function                                       | —           | Render the pattern onto a custom element (Base UI)               |
 | `className`            | `string`                                                                | `undefined` | Extends layout and border styling                                |
 | `style`                | `React.CSSProperties`                                                   | `undefined` | Supports the `--dot-background-*` CSS custom properties directly |
 
