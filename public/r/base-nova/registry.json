@@ -8,35 +8,47 @@
       "type": "registry:component",
       "title": "Alert Provider",
       "description": "An alert dialog service with provider and hook.",
-      "registryDependencies": ["@shadcn/alert-dialog"],
+      "registryDependencies": ["@c-ui/button"],
       "files": [
         {
-          "path": "registry/radix-nova/alert-provider.tsx",
+          "path": "registry/base-nova/alert-provider.tsx",
           "type": "registry:component",
           "target": "components/c-ui/alert-provider.tsx"
+        },
+        {
+          "path": "registry/base-nova/alert-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/ui/alert-dialog.tsx"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react"]
     },
     {
       "name": "confirm",
       "type": "registry:component",
       "title": "Confirm Dialog",
       "description": "A confirmation dialog service with provider and hook.",
-      "registryDependencies": ["@shadcn/alert-dialog", "@shadcn/input", "@shadcn/label"],
+      "registryDependencies": ["@c-ui/button", "@shadcn/input", "@shadcn/label"],
       "files": [
         {
-          "path": "registry/radix-nova/confirm-provider.tsx",
+          "path": "registry/base-nova/confirm-provider.tsx",
           "type": "registry:component",
           "target": "components/c-ui/confirm-provider.tsx"
         },
         {
-          "path": "registry/radix-nova/confirm-dialog.tsx",
+          "path": "registry/base-nova/confirm-dialog.tsx",
           "type": "registry:component",
           "target": "components/c-ui/confirm-dialog.tsx"
+        },
+        {
+          "path": "registry/base-nova/alert-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/ui/alert-dialog.tsx"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react"]
     },
     {
       "name": "button",
@@ -45,13 +57,13 @@
       "description": "A button with a subtle press animation.",
       "files": [
         {
-          "path": "registry/radix-nova/button.tsx",
+          "path": "registry/base-nova/button.tsx",
           "type": "registry:component",
           "target": "components/ui/button.tsx"
         }
       ],
-      "style": "radix-nova",
-      "dependencies": ["radix-ui", "class-variance-authority"]
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react", "class-variance-authority"]
     },
     {
       "name": "dialog",
@@ -61,13 +73,13 @@
       "registryDependencies": ["@c-ui/button"],
       "files": [
         {
-          "path": "registry/radix-nova/dialog.tsx",
+          "path": "registry/base-nova/dialog.tsx",
           "type": "registry:component",
           "target": "components/ui/dialog.tsx"
         }
       ],
-      "style": "radix-nova",
-      "dependencies": ["radix-ui", "lucide-react"]
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react", "lucide-react"]
     },
     {
       "name": "dot-background",
@@ -76,13 +88,13 @@
       "description": "A dotted surface wrapper with semantic color and spacing variants.",
       "files": [
         {
-          "path": "registry/radix-nova/dot-background.tsx",
+          "path": "registry/base-nova/dot-background.tsx",
           "type": "registry:component",
           "target": "components/c-ui/dot-background.tsx"
         }
       ],
-      "style": "radix-nova",
-      "dependencies": ["radix-ui", "class-variance-authority"]
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react", "class-variance-authority"]
     },
     {
       "name": "bubble-background",
@@ -101,7 +113,7 @@
           "target": "hooks/c-ui/use-prefers-reduced-motion.ts"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova"
     },
     {
       "name": "full-screen-bubble-background",
@@ -126,7 +138,7 @@
           "target": "components/c-ui/full-screen-bubble-background.tsx"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova"
     },
     {
       "name": "sidebar-bubble-background",
@@ -151,7 +163,7 @@
           "target": "components/c-ui/sidebar-bubble-background.tsx"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova"
     },
     {
       "name": "loading-button",
@@ -162,12 +174,12 @@
       "dependencies": ["lucide-react", "class-variance-authority"],
       "files": [
         {
-          "path": "registry/radix-nova/loading-button.tsx",
+          "path": "registry/base-nova/loading-button.tsx",
           "type": "registry:component",
           "target": "components/c-ui/loading-button.tsx"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova"
     },
     {
       "name": "filepicker-dropzone",
@@ -183,7 +195,7 @@
           "target": "components/c-ui/filepicker-dropzone.tsx"
         }
       ],
-      "style": "radix-nova"
+      "style": "base-nova"
     }
   ]
 }

@@ -7,18 +7,24 @@ import { ComponentOverview } from "@/components/docs/component-overview";
 
 ## Required Setup
 
-Add `@c-ui` to your consumer app's `components.json` and set style to `radix-nova`:
+Add `@c-ui` to your consumer app's `components.json` and use the style matching your component library:
 
 ```json
 {
-  "style": "radix-nova",
+  "style": "base-nova",
   "registries": {
     "@c-ui": "https://coneno.github.io/c-ui/r/{style}/{name}.json"
   }
 }
 ```
 
-This registry currently supports only `radix-nova`.
+Both `base-nova` (Base UI) and `radix-nova` (Radix UI) are supported.
+The `{style}` placeholder selects the matching registry automatically. Existing
+Radix projects can keep their current configuration.
+
+Changing the style does not migrate installed components. For an existing app,
+migrate its wrappers and call sites before installing Base UI versions.
+See [Migrating to Base UI](/docs/base-ui-migration).
 
 ## Install Components
 
@@ -36,7 +42,7 @@ npx shadcn@latest add @c-ui/alert-provider @c-ui/confirm @c-ui/dialog
 
 Registry index:
 
-`https://coneno.github.io/c-ui/r/radix-nova/registry.json`
+`https://coneno.github.io/c-ui/r/base-nova/registry.json`
 
 ## Component Overview
 
