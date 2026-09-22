@@ -8,8 +8,10 @@ Files: components/ui/separator.tsx.
 
 Uses the Base Separator primitive in documentation field layouts.
 
-Base source leftover scan for radix-ui, @radix-ui and IconPlaceholder is clean.
+Base implementation and shared provider logic contain no Radix primitive imports or IconPlaceholder references.
 The project typecheck and static build passed after the implementation.
+
+components/ui/field.tsx now passes role="none" for FieldSeparator. Semantic Separator defaults remain unchanged; the decorative field rule is excluded from separator semantics.
 
 ## Left alone
 

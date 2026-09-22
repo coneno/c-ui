@@ -8,8 +8,10 @@ Files: registry/base-nova/alert-dialog.tsx; components/ui/alert-dialog.tsx.
 
 Uses Base AlertDialog parts. Both provider registry items bundle this wrapper and depend on @c-ui/button, avoiding stock button replacement during installation.
 
-Base source leftover scan for radix-ui, @radix-ui and IconPlaceholder is clean.
+Base implementation and shared provider logic contain no Radix primitive imports or IconPlaceholder references.
 The project typecheck and static build passed after the implementation.
+
+The Base manifest now targets components/c-ui/provider-alert-dialog.tsx, preserving consumer-owned components/ui/alert-dialog.tsx. components/c-ui/provider-alert-dialog.tsx is the docs adapter. The upstream plain-action behavior is unchanged.
 
 ## Left alone
 
@@ -23,3 +25,8 @@ AlertDialogAction is a plain button; owners close controlled dialogs explicitly.
 ## Verify by hand
 
 Open, dismiss with Cancel and Escape, check focus return and title announcement.
+
+Review verification: Base and Radix provider updates through shadcn CLI 4.21.0
+installed the private wrapper and both consumer fixtures typechecked. Base
+installation with --overwrite preserved a consumer-owned shared alert-dialog
+byte-for-byte.

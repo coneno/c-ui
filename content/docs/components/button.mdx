@@ -49,3 +49,18 @@ export function ButtonExample() {
 | `className`    | `string`                                                                             | `undefined` | Extends styles                                |
 
 All native `<button>` props are supported.
+
+## Radix API
+
+For `radix-nova`, use `asChild` instead of the Base-only `render` and
+`nativeButton` props. The other documented options apply to both styles.
+
+| Prop      | Type      | Default | Notes                                                          |
+| --------- | --------- | ------- | -------------------------------------------------------------- |
+| `asChild` | `boolean` | `false` | Apply the component props to its single child using Radix Slot |
+
+```tsx
+<Button asChild>
+  <a href="/settings">Settings</a>
+</Button>
+```

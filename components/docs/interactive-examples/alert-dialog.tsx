@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertDialogProvider, useAlert } from "@/registry/base-nova/alert-provider";
+import { AlertDialogProvider, useAlert } from "@/registry/radix-nova/alert-provider";
 import { Button } from "@/registry/base-nova/button";
 
 function AlertExampleContent() {

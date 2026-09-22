@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/registry/base-nova/button";
-import { ConfirmDialogProvider, useConfirm } from "@/registry/base-nova/confirm-provider";
+import { ConfirmDialogProvider, useConfirm } from "@/registry/radix-nova/confirm-provider";
 
 function ConfirmExampleContent() {
   const confirm = useConfirm();

@@ -111,3 +111,9 @@ styles using the existing GitHub Pages workflow.
 Consumers select `base-nova` or `radix-nova` in `components.json` with the namespace
 URL `https://coneno.github.io/c-ui/r/{style}/{name}.json`. A style change alone
 does not migrate consumer source. See `content/docs/base-ui-migration.mdx`.
+
+Provider logic is shared from `registry/radix-nova/` by both manifests. Providers
+import `@/components/c-ui/provider-alert-dialog`: Base bundles its wrapper at that
+private target, while Radix bundles a re-export adapter to its shadcn dependency.
+Do not install the Base provider wrapper into `components/ui/alert-dialog.tsx`.
+The docs-only adapter in `components/c-ui/` resolves the private import to Base UI.

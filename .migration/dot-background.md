@@ -11,6 +11,8 @@ Replaces Slot with useRender, preserving ref forwarding, CSS variables and varia
 Base source leftover scan for radix-ui, @radix-ui and IconPlaceholder is clean.
 The project typecheck and static build passed after the implementation.
 
+Shared documentation now explicitly documents Radix asChild alongside the Base composition API.
+
 ## Left alone
 
 Legacy Radix registry endpoints remain supported. Library-independent backgrounds

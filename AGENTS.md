@@ -134,3 +134,9 @@ from `registry/radix-nova/`; do not duplicate those just to change their path.
 Update both manifests when changing shared files or dependencies. Base alert and
 confirmation items include their alert-dialog wrapper and depend on `@c-ui/button`
 to preserve the custom button when installed together.
+
+Provider logic is shared from `registry/radix-nova/` by both manifests. Providers
+import `@/components/c-ui/provider-alert-dialog`: Base bundles its wrapper at that
+private target, while Radix bundles a re-export adapter to its shadcn dependency.
+Do not install the Base provider wrapper into `components/ui/alert-dialog.tsx`.
+The docs-only adapter in `components/c-ui/` resolves the private import to Base UI.

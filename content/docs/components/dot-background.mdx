@@ -103,3 +103,17 @@ Use `variant="custom"` and `spacing="custom"` when you want the surface to be dr
 | `style`                | `React.CSSProperties`                                                   | `undefined` | Supports the `--dot-background-*` CSS custom properties directly |
 
 All native `<div>` props are forwarded.
+
+## Radix API
+
+For `radix-nova`, use `asChild` instead of the Base-only `render` prop. The other documented options apply to both styles.
+
+| Prop      | Type      | Default | Notes                                                          |
+| --------- | --------- | ------- | -------------------------------------------------------------- |
+| `asChild` | `boolean` | `false` | Apply the component props to its single child using Radix Slot |
+
+```tsx
+<DotBackground asChild>
+  <section>Content</section>
+</DotBackground>
+```

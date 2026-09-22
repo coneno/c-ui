@@ -56,3 +56,15 @@ both styles. `react-dropzone` remains the file picker implementation.
 
 Run your typecheck/build and test dialogs with the keyboard. In this repository,
 `pnpm registry:build` generates both styles and `pnpm build` validates the docs.
+
+## Provider-owned dialog wrapper
+
+Base `alert-provider` and `confirm` install their internal alert-dialog wrapper at
+`components/c-ui/provider-alert-dialog.tsx`. They do not install or replace
+`components/ui/alert-dialog.tsx`. Existing standalone shadcn dialogs remain owned
+by your app. Both styles share the provider and confirmation logic; Radix installs
+a small adapter at the same internal path that re-exports its shadcn wrapper.
+
+If you installed an earlier Base preview that replaced your shared alert-dialog,
+restore your app's version from version control after updating these providers.
+Updating the providers does not automatically restore previously replaced files.

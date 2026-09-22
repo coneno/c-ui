@@ -3,7 +3,7 @@
   "name": "loading-button",
   "title": "Loading Button",
   "description": "A button with a loading state.",
-  "dependencies": ["lucide-react", "class-variance-authority"],
+  "dependencies": ["lucide-react"],
   "registryDependencies": ["@c-ui/button"],
   "files": [
     {

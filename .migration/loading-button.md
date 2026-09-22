@@ -8,8 +8,10 @@ Files: registry/base-nova/loading-button.tsx; components/docs/interactive-exampl
 
 Inherits Base Button props and retains loading/disabled behavior and ref forwarding.
 
-Base source leftover scan for radix-ui, @radix-ui and IconPlaceholder is clean.
+Base implementation and shared provider logic contain no Radix primitive imports or IconPlaceholder references.
 The project typecheck and static build passed after the implementation.
+
+Removed the redundant class-variance-authority declaration from the Base loading-button item; its button dependency still declares CVA. Restored Radix asChild documentation alongside the Base API.
 
 ## Left alone
 

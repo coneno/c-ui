@@ -11,14 +11,14 @@
       "registryDependencies": ["@c-ui/button"],
       "files": [
         {
-          "path": "registry/base-nova/alert-provider.tsx",
+          "path": "registry/radix-nova/alert-provider.tsx",
           "type": "registry:component",
           "target": "components/c-ui/alert-provider.tsx"
         },
         {
           "path": "registry/base-nova/alert-dialog.tsx",
           "type": "registry:component",
-          "target": "components/ui/alert-dialog.tsx"
+          "target": "components/c-ui/provider-alert-dialog.tsx"
         }
       ],
       "style": "base-nova",
@@ -32,19 +32,19 @@
       "registryDependencies": ["@c-ui/button", "@shadcn/input", "@shadcn/label"],
       "files": [
         {
-          "path": "registry/base-nova/confirm-provider.tsx",
+          "path": "registry/radix-nova/confirm-provider.tsx",
           "type": "registry:component",
           "target": "components/c-ui/confirm-provider.tsx"
         },
         {
-          "path": "registry/base-nova/confirm-dialog.tsx",
+          "path": "registry/radix-nova/confirm-dialog.tsx",
           "type": "registry:component",
           "target": "components/c-ui/confirm-dialog.tsx"
         },
         {
           "path": "registry/base-nova/alert-dialog.tsx",
           "type": "registry:component",
-          "target": "components/ui/alert-dialog.tsx"
+          "target": "components/c-ui/provider-alert-dialog.tsx"
         }
       ],
       "style": "base-nova",
@@ -171,7 +171,7 @@
       "title": "Loading Button",
       "description": "A button with a loading state.",
       "registryDependencies": ["@c-ui/button"],
-      "dependencies": ["lucide-react", "class-variance-authority"],
+      "dependencies": ["lucide-react"],
       "files": [
         {
           "path": "registry/base-nova/loading-button.tsx",

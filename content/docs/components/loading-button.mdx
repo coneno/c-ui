@@ -56,3 +56,12 @@ export function SubmitAction() {
 | `render`    | `ReactElement` or render function | —           | Forwarded to the Base UI button   |
 
 All native `<button>` props are supported and forwarded.
+
+## Radix API
+
+For `radix-nova`, use `asChild` instead of the Base-only `render` and
+`nativeButton` props. The other documented options apply to both styles.
+
+| Prop      | Type      | Default | Notes                                                          |
+| --------- | --------- | ------- | -------------------------------------------------------------- |
+| `asChild` | `boolean` | `false` | Apply the component props to its single child using Radix Slot |

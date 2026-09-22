@@ -6,8 +6,9 @@
 
 Added registry.base.json and registry/base-nova sources; components.json and live
 examples now use Base UI. Both manifests preserve the ten public item names and
-consumer install targets. Library-independent backgrounds and file picker reuse
-existing source. Base alert and confirm items bundle their alert-dialog wrapper
+existing public component install targets. Library-independent backgrounds and file picker reuse
+existing source. Provider and confirmation logic is also shared from registry/radix-nova. Base alert and confirm items bundle their alert-dialog wrapper
+at components/c-ui/provider-alert-dialog.tsx, preserving consumer-owned UI wrappers,
 and depend on @c-ui/button so installing providers cannot replace the custom
 button with the stock shadcn dependency.
 
@@ -54,3 +55,15 @@ used the successfully built static export instead.
 Derived status: 0 documentation UI wrappers import Radix; 3 direct Radix source
 components (button, dialog, dot-background) are intentionally retained for the
 legacy registry. Base source has 0 direct Radix imports.
+
+Review follow-up: shared provider source removes three duplicate Base files.
+Radix installs a private re-export adapter; Base installs its private wrapper.
+The documentation app resolves that import through components/c-ui.
+Radix composition APIs are documented on the shared component pages.
+FieldSeparator explicitly uses role="none"; the Base loading-button metadata
+no longer redundantly declares class-variance-authority.
+
+Follow-up validation passed: both generated registries match source; Base and
+Radix consumer updates typecheck; Base installation with --overwrite preserves
+the existing components/ui/alert-dialog.tsx byte-for-byte. Production build and
+formatting checks pass.

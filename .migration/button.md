@@ -11,6 +11,8 @@ Uses the real Base Button with render, nativeButton and state-aware className. P
 Base source leftover scan for radix-ui, @radix-ui and IconPlaceholder is clean.
 The project typecheck and static build passed after the implementation.
 
+Shared documentation now explicitly documents Radix asChild alongside the Base composition API.
+
 ## Left alone
 
 Legacy Radix registry endpoints remain supported. Library-independent backgrounds
