@@ -7,6 +7,8 @@ import { DialogInteractiveExample } from "@/components/docs/interactive-examples
 
 ## Install
 
+The examples use `base-nova`. For Radix, use `radix-nova` in the URL.
+
 ```bash
 npx shadcn@latest add @c-ui/dialog
 ```
@@ -14,7 +16,7 @@ npx shadcn@latest add @c-ui/dialog
 Direct URL install:
 
 ```bash
-npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/dialog.json
+npx shadcn@latest add https://coneno.github.io/c-ui/r/base-nova/dialog.json
 ```
 
 ## Live Example
@@ -38,9 +40,7 @@ import {
 export function ExampleDialog() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button>Open dialog</Button>
-      </DialogTrigger>
+      <DialogTrigger render={<Button />}>Open dialog</DialogTrigger>
       <DialogContent closeLabel="Close dialog">
         <DialogHeader>
           <DialogTitle>Dialog title</DialogTitle>
@@ -69,4 +69,5 @@ export function ExampleDialog() {
 | `showCloseButton` | `boolean` | `false`   | Adds a secondary footer close button |
 | `closeLabel`      | `string`  | `"Close"` | Label for footer close button        |
 
-All other shadcn/Radix dialog props remain available.
+Base variants expose Base UI dialog props; Radix variants expose Radix props.
+See [Migrating to Base UI](/docs/base-ui-migration) for callback and focus changes.
