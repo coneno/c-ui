@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/registry/radix-nova/button";
+import { Button } from "@/registry/base-nova/button";
 import { ConfirmDialogProvider, useConfirm } from "@/registry/radix-nova/confirm-provider";
 
 function ConfirmExampleContent() {

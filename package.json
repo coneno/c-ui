@@ -10,10 +10,13 @@
     "format": "oxfmt --disable-nested-config .",
     "format:check": "oxfmt --disable-nested-config --check .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "registry:build": "shadcn build --output public/r/radix-nova",
-    "start": "pnpm dlx serve@latest out"
+    "registry:build": "pnpm registry:build:radix && pnpm registry:build:base && oxfmt --disable-nested-config public/r",
+    "start": "pnpm dlx serve@latest out",
+    "registry:build:radix": "shadcn build registry.json --output public/r/radix-nova",
+    "registry:build:base": "shadcn build registry.base.json --output public/r/base-nova"
   },
   "dependencies": {
+    "@base-ui/react": "^1.8.0",
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

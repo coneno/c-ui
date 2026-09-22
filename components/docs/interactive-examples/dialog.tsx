@@ -1,4 +1,4 @@
-import { Button } from "@/registry/radix-nova/button";
+import { Button } from "@/registry/base-nova/button";
 import {
   Dialog,
   DialogContent,
@@ -7,14 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/registry/radix-nova/dialog";
+} from "@/registry/base-nova/dialog";
 
 export function DialogInteractiveExample() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button type="button">Open Dialog</Button>
-      </DialogTrigger>
+      <DialogTrigger render={<Button type="button" />}>Open Dialog</DialogTrigger>
       <DialogContent closeLabel="Close dialog">
         <DialogHeader>
           <DialogTitle>Profile updated</DialogTitle>

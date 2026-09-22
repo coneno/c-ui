@@ -42,5 +42,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# registry
-public/r/
+# Registry JSON is generated and committed for both styles.

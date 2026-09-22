@@ -18,7 +18,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/components/c-ui/provider-alert-dialog";
 import { cn } from "@/lib/utils";
 
 export interface AlertOptions {

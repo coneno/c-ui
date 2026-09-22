@@ -1,0 +1,201 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "c-ui",
+  "homepage": "https://coneno.github.io/c-ui",
+  "items": [
+    {
+      "name": "alert-provider",
+      "type": "registry:component",
+      "title": "Alert Provider",
+      "description": "An alert dialog service with provider and hook.",
+      "registryDependencies": ["@c-ui/button"],
+      "files": [
+        {
+          "path": "registry/radix-nova/alert-provider.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/alert-provider.tsx"
+        },
+        {
+          "path": "registry/base-nova/alert-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/provider-alert-dialog.tsx"
+        }
+      ],
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react"]
+    },
+    {
+      "name": "confirm",
+      "type": "registry:component",
+      "title": "Confirm Dialog",
+      "description": "A confirmation dialog service with provider and hook.",
+      "registryDependencies": ["@c-ui/button", "@shadcn/input", "@shadcn/label"],
+      "files": [
+        {
+          "path": "registry/radix-nova/confirm-provider.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/confirm-provider.tsx"
+        },
+        {
+          "path": "registry/radix-nova/confirm-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/confirm-dialog.tsx"
+        },
+        {
+          "path": "registry/base-nova/alert-dialog.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/provider-alert-dialog.tsx"
+        }
+      ],
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react"]
+    },
+    {
+      "name": "button",
+      "type": "registry:component",
+      "title": "Button",
+      "description": "A button with a subtle press animation.",
+      "files": [
+        {
+          "path": "registry/base-nova/button.tsx",
+          "type": "registry:component",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react", "class-variance-authority"]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:component",
+      "title": "Dialog",
+      "description": "A customized shadcn dialog with overridable close labels for i18n-friendly accessibility.",
+      "registryDependencies": ["@c-ui/button"],
+      "files": [
+        {
+          "path": "registry/base-nova/dialog.tsx",
+          "type": "registry:component",
+          "target": "components/ui/dialog.tsx"
+        }
+      ],
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react", "lucide-react"]
+    },
+    {
+      "name": "dot-background",
+      "type": "registry:component",
+      "title": "Dot Background",
+      "description": "A dotted surface wrapper with semantic color and spacing variants.",
+      "files": [
+        {
+          "path": "registry/base-nova/dot-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/dot-background.tsx"
+        }
+      ],
+      "style": "base-nova",
+      "dependencies": ["@base-ui/react", "class-variance-authority"]
+    },
+    {
+      "name": "bubble-background",
+      "type": "registry:component",
+      "title": "Bubble Background",
+      "description": "Animated gradient bubble layers for auth screens, sidebars, and themed surfaces.",
+      "files": [
+        {
+          "path": "registry/radix-nova/bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/bubble-background.tsx"
+        },
+        {
+          "path": "registry/radix-nova/hooks/use-prefers-reduced-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/c-ui/use-prefers-reduced-motion.ts"
+        }
+      ],
+      "style": "base-nova"
+    },
+    {
+      "name": "full-screen-bubble-background",
+      "type": "registry:component",
+      "title": "Full Screen Bubble Background",
+      "description": "High-level full-screen bubble surface for auth, onboarding, and hero layouts.",
+      "registryDependencies": ["@c-ui/bubble-background"],
+      "files": [
+        {
+          "path": "registry/radix-nova/bubble-background-helpers.ts",
+          "type": "registry:component",
+          "target": "components/c-ui/bubble-background-helpers.ts"
+        },
+        {
+          "path": "registry/radix-nova/configurable-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/configurable-bubble-background.tsx"
+        },
+        {
+          "path": "registry/radix-nova/full-screen-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/full-screen-bubble-background.tsx"
+        }
+      ],
+      "style": "base-nova"
+    },
+    {
+      "name": "sidebar-bubble-background",
+      "type": "registry:component",
+      "title": "Sidebar Bubble Background",
+      "description": "Theme-driven bubble background with crossfade transitions for sidebars.",
+      "registryDependencies": ["@c-ui/bubble-background"],
+      "files": [
+        {
+          "path": "registry/radix-nova/bubble-background-helpers.ts",
+          "type": "registry:component",
+          "target": "components/c-ui/bubble-background-helpers.ts"
+        },
+        {
+          "path": "registry/radix-nova/configurable-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/configurable-bubble-background.tsx"
+        },
+        {
+          "path": "registry/radix-nova/sidebar-bubble-background.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/sidebar-bubble-background.tsx"
+        }
+      ],
+      "style": "base-nova"
+    },
+    {
+      "name": "loading-button",
+      "type": "registry:component",
+      "title": "Loading Button",
+      "description": "A button with a loading state.",
+      "registryDependencies": ["@c-ui/button"],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "registry/base-nova/loading-button.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/loading-button.tsx"
+        }
+      ],
+      "style": "base-nova"
+    },
+    {
+      "name": "filepicker-dropzone",
+      "type": "registry:component",
+      "title": "Filepicker Dropzone",
+      "description": "A shadcn-styled file picker dropzone with translatable labels.",
+      "registryDependencies": ["@shadcn/field"],
+      "dependencies": ["react-dropzone", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/radix-nova/filepicker-dropzone.tsx",
+          "type": "registry:component",
+          "target": "components/c-ui/filepicker-dropzone.tsx"
+        }
+      ],
+      "style": "base-nova"
+    }
+  ]
+}

@@ -1,1 +1,1 @@
-export * from "@/components/ui/dialog";
+export * from "@/registry/base-nova/dialog";

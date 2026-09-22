@@ -1,4 +1,4 @@
-import { DotBackground } from "@/registry/radix-nova/dot-background";
+import { DotBackground } from "@/registry/base-nova/dot-background";
 
 const colorVariants = [
   {

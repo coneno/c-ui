@@ -17,14 +17,15 @@ not installed yet, install them first so those docs exist locally.
   pages that are meant to be installed into other projects.
 - Treat installed copies inside consumer repos as downstream outputs, not as
   the primary source, unless the user explicitly wants an app-local fork.
-- Treat `public/r/radix-nova/*` as generated artifacts. Do not edit those files
+- Treat `public/r/{base-nova,radix-nova}/*` as generated artifacts. Do not edit those files
   manually.
 
 ## Source Of Truth By Path
 
-- `registry/radix-nova/*`: source files for installable registry items.
-- `registry.json`: the registry manifest consumed by `shadcn build`.
-- `public/r/radix-nova/*`: generated registry JSON artifacts that are committed
+- `registry/base-nova/*`: Base UI source files.
+- `registry/radix-nova/*`: Radix and library-independent shared source files.
+- `registry.json` and `registry.base.json`: Radix and Base manifests consumed by `shadcn build`.
+- `public/r/{base-nova,radix-nova}/*`: generated registry JSON artifacts that are committed
   and published.
 - `content/docs/*`: MDX documentation content.
 - `content/docs/components/meta.json`: sidebar ordering for component docs.
@@ -43,7 +44,7 @@ not installed yet, install them first so those docs exist locally.
   `NEXT_PUBLIC_BASE_PATH=/c-ui`, so the published docs live at
   `/c-ui/docs/`.
 - Registry artifacts are generated with
-  `shadcn build --output public/r/radix-nova`.
+  `pnpm registry:build` (both styles).
 - If route behavior looks wrong locally, check `next.config.mjs`,
   `lib/source.ts`, and any `NEXT_PUBLIC_BASE_PATH` value in the current
   environment.
@@ -75,14 +76,14 @@ Use these expectations:
 
 When adding or updating a registry-backed component:
 
-1. Edit source files under `registry/radix-nova/`.
-2. Update the matching item in `registry.json` if the title, description,
+1. Edit source files under the appropriate style directory.
+2. Update the matching item in `registry.json` or `registry.base.json` if the title, description,
    files, dependencies, or registry dependencies changed.
 3. Update the docs page under `content/docs/components/`.
 4. Update `content/docs/components/meta.json` when adding a new docs page.
 5. Run `pnpm registry:build`.
 6. Run `pnpm build`.
-7. Commit the source changes and generated `public/r/radix-nova/*` output
+7. Commit the source changes and generated `public/r/{base-nova,radix-nova}/*` output
    together.
 
 Important registry rules:
@@ -91,7 +92,7 @@ Important registry rules:
 - Keep `files[].target` aligned with the destination path consumers should get.
 - Use `registryDependencies` for other shadcn registry items.
 - Use `dependencies` for package-manager dependencies consumers must install.
-- Do not hand-edit generated JSON in `public/r/radix-nova/`.
+- Do not hand-edit generated JSON in `public/r/`.
 
 ## Docs Workflow
 
@@ -111,7 +112,7 @@ Important registry rules:
 
 ## Validation Expectations
 
-- After editing `registry/radix-nova/*` or `registry.json`, always run
+- After editing either registry source directory or manifest, always run
   `pnpm registry:build`.
 - After changing docs, routes, or registry items, run `pnpm build`.
 - Use `pnpm format:check` when you touch formatting-sensitive files or before
@@ -120,8 +121,22 @@ Important registry rules:
 ## Relevant Source Files
 
 - `README.md` explains the contributor workflow and publishing model.
-- `registry.json` is the authoritative manifest for published items.
+- `registry.json` and `registry.base.json` are authoritative for their styles.
 - `next.config.mjs` and `.github/workflows/deploy-registry-pages.yml` explain
   why deployed URLs differ from unprefixed docs routes.
 - `components.json` defines the local shadcn project configuration for this
   repo itself.
+## Dual-library development
+
+The documentation app uses Base UI (`base-nova`). Keep legacy Radix sources and
+endpoints available. `registry.base.json` reuses library-independent source files
+from `registry/radix-nova/`; do not duplicate those just to change their path.
+Update both manifests when changing shared files or dependencies. Base alert and
+confirmation items include their alert-dialog wrapper and depend on `@c-ui/button`
+to preserve the custom button when installed together.
+
+Provider logic is shared from `registry/radix-nova/` by both manifests. Providers
+import `@/components/c-ui/provider-alert-dialog`: Base bundles its wrapper at that
+private target, while Radix bundles a re-export adapter to its shadcn dependency.
+Do not install the Base provider wrapper into `components/ui/alert-dialog.tsx`.
+The docs-only adapter in `components/c-ui/` resolves the private import to Base UI.

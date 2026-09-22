@@ -1,0 +1,70 @@
+---
+title: Migrating to Base UI
+description: Choose the matching registry and update composition APIs.
+---
+
+c-ui publishes the same ten items for `base-nova` and `radix-nova`. The live
+examples use Base UI. Existing Radix endpoints and install targets are preserved.
+
+## Setup
+
+For a Base UI app, use `"style": "base-nova"` in `components.json` and configure:
+
+```json
+{
+  "registries": {
+    "@c-ui": "https://coneno.github.io/c-ui/r/{style}/{name}.json"
+  }
+}
+```
+
+Keep `radix-nova` for an existing Radix app until its wrappers and consumers have
+been migrated. Changing the configuration alone does not convert source code.
+
+## Composition
+
+Base UI uses `render` instead of `asChild` on buttons, dialog triggers and closes,
+and `DotBackground`. For example:
+
+```tsx
+<DialogTrigger render={<Button />}>Open dialog</DialogTrigger>
+<DotBackground render={<section />} className="p-6">Content</DotBackground>
+```
+
+`LoadingButton` inherits the Base button props, including `render` and
+`nativeButton`, and retains `isLoading`. For navigation links, apply
+`buttonVariants` to a native link to preserve link semantics.
+
+## Dialogs and services
+
+`DialogContent` and `DialogFooter` retain `showCloseButton` and `closeLabel`.
+Base dialogs expose `initialFocus` and `finalFocus` instead of Radix autofocus
+callbacks. Root `onOpenChange` receives event details as a second argument;
+use `eventDetails.cancel()` to prevent a requested close.
+
+`useAlert` and `useConfirm` keep their existing options and Promise results.
+Base `AlertDialogAction` is a button that does not close automatically; the
+confirmation provider already owns closing after confirmation. Verify Escape,
+cancel, confirmation, typed confirmation, and focus return after migrating.
+
+## Unchanged items
+
+The bubble background family and file picker share their existing source between
+both styles. `react-dropzone` remains the file picker implementation.
+
+## Validation
+
+Run your typecheck/build and test dialogs with the keyboard. In this repository,
+`pnpm registry:build` generates both styles and `pnpm build` validates the docs.
+
+## Provider-owned dialog wrapper
+
+Base `alert-provider` and `confirm` install their internal alert-dialog wrapper at
+`components/c-ui/provider-alert-dialog.tsx`. They do not install or replace
+`components/ui/alert-dialog.tsx`. Existing standalone shadcn dialogs remain owned
+by your app. Both styles share the provider and confirmation logic; Radix installs
+a small adapter at the same internal path that re-exports its shadcn wrapper.
+
+If you installed an earlier Base preview that replaced your shared alert-dialog,
+restore your app's version from version control after updating these providers.
+Updating the providers does not automatically restore previously replaced files.

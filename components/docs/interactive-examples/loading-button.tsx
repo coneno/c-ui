@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LoadingButton } from "@/registry/radix-nova/loading-button";
+import { LoadingButton } from "@/registry/base-nova/loading-button";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

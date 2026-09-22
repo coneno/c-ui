@@ -1,4 +1,4 @@
-import { Button } from "@/registry/radix-nova/button";
+import { Button } from "@/registry/base-nova/button";
 
 export function ButtonInteractiveExample() {
   return (
