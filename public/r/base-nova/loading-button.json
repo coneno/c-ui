@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "loading-button",
+  "title": "Loading Button",
+  "description": "A button with a loading state.",
+  "dependencies": ["lucide-react", "class-variance-authority"],
+  "registryDependencies": ["@c-ui/button"],
+  "files": [
+    {
+      "path": "registry/base-nova/loading-button.tsx",
+      "content": "import * as React from \"react\";\nimport { Loader2Icon } from \"lucide-react\";\nimport { Button } from \"@/components/ui/button\";\n\ntype LoadingButtonProps = React.ComponentProps<typeof Button> & { isLoading?: boolean };\n\nconst LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(\n  ({ isLoading, disabled, children, ...props }, ref) => {\n    return (\n      <Button ref={ref} disabled={disabled || isLoading} {...props}>\n        {isLoading && <Loader2Icon className=\"animate-spin\" />}\n        {children}\n      </Button>\n    );\n  },\n);\n\nLoadingButton.displayName = \"LoadingButton\";\n\nexport { LoadingButton };\n",
+      "type": "registry:component",
+      "target": "components/c-ui/loading-button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

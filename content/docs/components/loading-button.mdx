@@ -7,6 +7,8 @@ import { LoadingButtonInteractiveExample } from "@/components/docs/interactive-e
 
 ## Install
 
+The examples use `base-nova`. For Radix, use `radix-nova` in the URL.
+
 ```bash
 npx shadcn@latest add @c-ui/loading-button
 ```
@@ -14,7 +16,7 @@ npx shadcn@latest add @c-ui/loading-button
 Direct URL install:
 
 ```bash
-npx shadcn@latest add https://coneno.github.io/c-ui/r/radix-nova/loading-button.json
+npx shadcn@latest add https://coneno.github.io/c-ui/r/base-nova/loading-button.json
 ```
 
 ## Live Example
@@ -46,11 +48,11 @@ export function SubmitAction() {
 
 ## Configuration
 
-| Prop        | Type                      | Default     | Notes                             |
-| ----------- | ------------------------- | ----------- | --------------------------------- |
-| `isLoading` | `boolean`                 | `false`     | Shows spinner and disables button |
-| `variant`   | same as `Button` variants | `"default"` | Forwarded to base button          |
-| `size`      | same as `Button` sizes    | `"default"` | Forwarded to base button          |
-| `asChild`   | `boolean`                 | `false`     | Forwarded to base button          |
+| Prop        | Type                              | Default     | Notes                             |
+| ----------- | --------------------------------- | ----------- | --------------------------------- |
+| `isLoading` | `boolean`                         | `false`     | Shows spinner and disables button |
+| `variant`   | same as `Button` variants         | `"default"` | Forwarded to base button          |
+| `size`      | same as `Button` sizes            | `"default"` | Forwarded to base button          |
+| `render`    | `ReactElement` or render function | —           | Forwarded to the Base UI button   |
 
 All native `<button>` props are supported and forwarded.
